@@ -1,0 +1,5 @@
+C:\Users\Administrator\Desktop\GMS\GMS\bin\GMS.Crm.BLL.dll
+C:\Users\Administrator\Desktop\GMS\GMS\bin\GMS.Crm.BLL.pdb
+C:\Users\Administrator\Desktop\GMS\GMS\Src\GMS.Crm.BLL\obj\Debug\GMS.Crm.BLL.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Desktop\GMS\GMS\Src\GMS.Crm.BLL\obj\Debug\GMS.Crm.BLL.dll
+C:\Users\Administrator\Desktop\GMS\GMS\Src\GMS.Crm.BLL\obj\Debug\GMS.Crm.BLL.pdb

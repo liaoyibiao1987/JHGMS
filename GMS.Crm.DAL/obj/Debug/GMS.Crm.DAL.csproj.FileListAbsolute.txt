@@ -1,0 +1,5 @@
+C:\Users\Administrator\Desktop\GMS\GMS\bin\GMS.Crm.DAL.dll
+C:\Users\Administrator\Desktop\GMS\GMS\bin\GMS.Crm.DAL.pdb
+C:\Users\Administrator\Desktop\GMS\GMS\Src\GMS.Crm.DAL\obj\Debug\GMS.Crm.DAL.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Desktop\GMS\GMS\Src\GMS.Crm.DAL\obj\Debug\GMS.Crm.DAL.dll
+C:\Users\Administrator\Desktop\GMS\GMS\Src\GMS.Crm.DAL\obj\Debug\GMS.Crm.DAL.pdb

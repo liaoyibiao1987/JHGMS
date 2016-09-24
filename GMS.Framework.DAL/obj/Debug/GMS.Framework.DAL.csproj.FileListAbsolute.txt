@@ -1,0 +1,6 @@
+C:\Users\Administrator\Desktop\GMS\GMS\bin\GMS.Framework.DAL.XML
+C:\Users\Administrator\Desktop\GMS\GMS\bin\GMS.Framework.DAL.dll
+C:\Users\Administrator\Desktop\GMS\GMS\bin\GMS.Framework.DAL.pdb
+C:\Users\Administrator\Desktop\GMS\GMS\Src\GMS.Framework.DAL\obj\Debug\GMS.Framework.DAL.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Desktop\GMS\GMS\Src\GMS.Framework.DAL\obj\Debug\GMS.Framework.DAL.dll
+C:\Users\Administrator\Desktop\GMS\GMS\Src\GMS.Framework.DAL\obj\Debug\GMS.Framework.DAL.pdb

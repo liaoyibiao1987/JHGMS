@@ -1,0 +1,6 @@
+C:\Users\Administrator\Desktop\GMS\GMS\bin\GMS.Framework.BLL.XML
+C:\Users\Administrator\Desktop\GMS\GMS\bin\GMS.Framework.BLL.dll
+C:\Users\Administrator\Desktop\GMS\GMS\bin\GMS.Framework.BLL.pdb
+C:\Users\Administrator\Desktop\GMS\GMS\Src\GMS.Framework.BLL\obj\Debug\GMS.Framework.BLL.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Desktop\GMS\GMS\Src\GMS.Framework.BLL\obj\Debug\GMS.Framework.BLL.dll
+C:\Users\Administrator\Desktop\GMS\GMS\Src\GMS.Framework.BLL\obj\Debug\GMS.Framework.BLL.pdb
