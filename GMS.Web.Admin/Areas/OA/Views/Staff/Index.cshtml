@@ -53,7 +53,7 @@
                 部门
             </th>
             <th>
-                登录号
+                登录名
             </th>
             <th>
                 性别
@@ -92,7 +92,7 @@
                 @(m.Branch == null ? "未分配" : m.Branch.Name)
             </td>
             <td>
-                @(m.LoginID == null ? "未分配" : m.Branch.Name)
+                @( string.IsNullOrEmpty(m.UserName) == true ? "未分配" : m.UserName)
             </td>
             <td>
                 @EnumHelper.GetEnumTitle((EnumGender)m.Gender)

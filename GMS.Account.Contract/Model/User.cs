@@ -45,6 +45,8 @@ namespace GMS.Account.Contract
 
         public bool IsActive { get; set; }
 
+        public int? StaffID { get; set; }
+
         /// <summary>
         /// 角色列表
         /// </summary>

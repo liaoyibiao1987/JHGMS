@@ -1,4 +1,3 @@
-C:\Users\Administrator\Desktop\GMS\GMS\Src\GMS.Web.Admin\obj\Debug\GMS.Web.Admin.csprojResolveAssemblyReference.cache
 C:\Users\Administrator\Desktop\GMS\GMS\Src\GMS.Web.Admin\bin\GMS.Web.Admin.dll.config
 C:\Users\Administrator\Desktop\GMS\GMS\Src\GMS.Web.Admin\bin\GMS.Web.Admin.dll
 C:\Users\Administrator\Desktop\GMS\GMS\Src\GMS.Web.Admin\bin\GMS.Web.Admin.pdb
@@ -54,5 +53,6 @@ C:\Users\Administrator\Desktop\GMS\GMS\Src\GMS.Web.Admin\bin\GMS.Core.Log.pdb
 C:\Users\Administrator\Desktop\GMS\GMS\Src\GMS.Web.Admin\bin\GMS.Core.Service.pdb
 C:\Users\Administrator\Desktop\GMS\GMS\Src\GMS.Web.Admin\bin\GMS.Framework.DAL.pdb
 C:\Users\Administrator\Desktop\GMS\GMS\Src\GMS.Web.Admin\bin\GMS.Framework.DAL.xml
+C:\Users\Administrator\Desktop\GMS\GMS\Src\GMS.Web.Admin\obj\Debug\GMS.Web.Admin.csprojResolveAssemblyReference.cache
 C:\Users\Administrator\Desktop\GMS\GMS\Src\GMS.Web.Admin\obj\Debug\GMS.Web.Admin.dll
 C:\Users\Administrator\Desktop\GMS\GMS\Src\GMS.Web.Admin\obj\Debug\GMS.Web.Admin.pdb

@@ -13,7 +13,6 @@ namespace GMS.OA.Contract
     [Table("Staff")]
     public class Staff : ModelBase
     {
-        private IAccountService AccountService;
         public Staff()
         {
             this.BranchId = 0;
@@ -40,17 +39,19 @@ namespace GMS.OA.Contract
 
         [StringLength(100, ErrorMessage = "地址不能超过100个字")]
         public string Address { get; set; }
-        public int? BranchId { get; set; }
-        public int? LoginID { get; set; }
 
-        public string LoginName
-        {
-            get;
-            set;
-        }
+        [NotMapped]
+        public int? UserID { get; set; }
+
+        [NotMapped]
+        public string UserName { get; set; }
+
+
+        public int? BranchId { get; set; }
+
         public virtual Branch Branch { get; set; }
 
-
+    }
     /// <summary>
     /// 性别
     /// </summary>

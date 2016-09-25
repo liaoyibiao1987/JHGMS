@@ -117,14 +117,14 @@ namespace GMS.Account.BLL
         {
             using (var dbContext = new AccountDbContext())
             {
-                return dbContext.Users.Include("Roles").Where(u=>u.ID == id).SingleOrDefault();
+                return dbContext.Users.Include("Roles").Where(u => u.ID == id).SingleOrDefault();
             }
         }
 
         public IEnumerable<User> GetUserList(UserRequest request = null)
         {
             request = request ?? new UserRequest();
-            
+
             using (var dbContext = new AccountDbContext())
             {
                 IQueryable<User> users = dbContext.Users.Include("Roles");
@@ -137,6 +137,19 @@ namespace GMS.Account.BLL
 
                 return users.OrderByDescending(u => u.ID).ToPagedList(request.PageIndex, request.PageSize);
             }
+        }
+
+        public IEnumerable<User> GetActivedUserList(int staffid = 0)
+        {
+            //IEnumerable<User> ret;
+            using (var dbContext = new AccountDbContext())
+            {
+                IQueryable<User> users;
+                users = dbContext.Users.Include("Roles");
+
+                return users.Where(p => (p.IsActive == true && (p.StaffID.HasValue == false || p.StaffID == staffid))).OrderByDescending(u => u.ID).ToList();
+            }
+            // return ret;
         }
 
         public void SaveUser(User user)
@@ -234,7 +247,7 @@ namespace GMS.Account.BLL
 
             using (var dbContext = new AccountDbContext())
             {
-                var verifyCode = new VerifyCode(){VerifyText = verifyCodeText, Guid = Guid.NewGuid()};
+                var verifyCode = new VerifyCode() { VerifyText = verifyCodeText, Guid = Guid.NewGuid() };
                 dbContext.Insert<VerifyCode>(verifyCode);
                 return verifyCode.Guid;
             }

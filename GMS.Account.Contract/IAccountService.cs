@@ -12,6 +12,7 @@ namespace GMS.Account.Contract
 
         User GetUser(int id);
         IEnumerable<User> GetUserList(UserRequest request = null);
+        IEnumerable<User> GetActivedUserList(int staffid = 0);
         void SaveUser(User user);
         void DeleteUser(List<int> ids);
 
