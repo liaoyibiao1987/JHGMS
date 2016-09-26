@@ -47,10 +47,15 @@
     <Reference Include="System.Data.Entity" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccountService.cs" />
     <Compile Include="OAService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\GMS.Core.Config\GMS.Core.Config.csproj">
+      <Project>{3bf4147e-d01d-4fff-b8e7-fe24959b2d7e}</Project>
+      <Name>GMS.Core.Config</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GMS.OA.Contract\GMS.OA.Contract.csproj">
       <Project>{F6F83E95-5F65-410C-B49F-7763E2184251}</Project>
       <Name>GMS.OA.Contract</Name>

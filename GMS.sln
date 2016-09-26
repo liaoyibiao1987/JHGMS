@@ -7,8 +7,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Framework", "_Framework", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Core", "_Core", "{CEBC9D73-2745-46DB-8DCB-1651F581177F}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Account", "Account", "{6490EDE1-A1F7-4196-A10C-B6447C46F52E}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{27FDFCC9-2984-4AE8-BF68-41CA976C17EF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cms", "Cms", "{D6C0A9E6-2E50-40AD-9CF9-DB401AB360BA}"
@@ -31,13 +29,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMS.Core.Cache", "GMS.Core.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMS.Framework.DAL", "GMS.Framework.DAL\GMS.Framework.DAL.csproj", "{D988D0DA-99C9-4BB6-98BB-4C0526F6F524}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMS.Account.DAL", "GMS.Account.DAL\GMS.Account.DAL.csproj", "{36C53C41-48DB-4D74-9D83-78DF614DC83B}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMS.Framework.BLL", "GMS.Framework.BLL\GMS.Framework.BLL.csproj", "{290B5D69-973B-444E-A956-555534090CD7}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMS.Account.BLL", "GMS.Account.BLL\GMS.Account.BLL.csproj", "{70A7663C-09AB-4BAB-9BFC-F0649FE6C8F4}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMS.Account.Contract", "GMS.Account.Contract\GMS.Account.Contract.csproj", "{08CFB8BA-AA0E-42F5-B6BF-140C64E34377}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMS.Web", "GMS.Web\GMS.Web.csproj", "{E905FFE6-A1D5-48B2-81B7-8E8D4BC5F895}"
 EndProject
@@ -68,112 +60,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMS.OA.BLL", "GMS.OA.BLL\GMS.OA.BLL.csproj", "{7EDEF7B7-E1EE-4441-B3AD-29896DB3BFDB}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 26
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://pingpingliao.visualstudio.com/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = GMS.Account.BLL\\GMS.Account.BLL.csproj
-		SccProjectTopLevelParentUniqueName1 = GMS.sln
-		SccProjectName1 = GMS.Account.BLL
-		SccLocalPath1 = GMS.Account.BLL
-		SccProjectUniqueName2 = GMS.Account.Contract\\GMS.Account.Contract.csproj
-		SccProjectTopLevelParentUniqueName2 = GMS.sln
-		SccProjectName2 = GMS.Account.Contract
-		SccLocalPath2 = GMS.Account.Contract
-		SccProjectUniqueName3 = GMS.Account.DAL\\GMS.Account.DAL.csproj
-		SccProjectTopLevelParentUniqueName3 = GMS.sln
-		SccProjectName3 = GMS.Account.DAL
-		SccLocalPath3 = GMS.Account.DAL
-		SccProjectUniqueName4 = GMS.Cms.BLL\\GMS.Cms.BLL.csproj
-		SccProjectTopLevelParentUniqueName4 = GMS.sln
-		SccProjectName4 = GMS.Cms.BLL
-		SccLocalPath4 = GMS.Cms.BLL
-		SccProjectUniqueName5 = GMS.Cms.Contract\\GMS.Cms.Contract.csproj
-		SccProjectTopLevelParentUniqueName5 = GMS.sln
-		SccProjectName5 = GMS.Cms.Contract
-		SccLocalPath5 = GMS.Cms.Contract
-		SccProjectUniqueName6 = GMS.Cms.DAL\\GMS.Cms.DAL.csproj
-		SccProjectTopLevelParentUniqueName6 = GMS.sln
-		SccProjectName6 = GMS.Cms.DAL
-		SccLocalPath6 = GMS.Cms.DAL
-		SccProjectUniqueName7 = GMS.Core.Cache\\GMS.Core.Cache.csproj
-		SccProjectTopLevelParentUniqueName7 = GMS.sln
-		SccProjectName7 = GMS.Core.Cache
-		SccLocalPath7 = GMS.Core.Cache
-		SccProjectUniqueName8 = GMS.Core.Config\\GMS.Core.Config.csproj
-		SccProjectTopLevelParentUniqueName8 = GMS.sln
-		SccProjectName8 = GMS.Core.Config
-		SccLocalPath8 = GMS.Core.Config
-		SccProjectUniqueName9 = GMS.Core.Log\\GMS.Core.Log.csproj
-		SccProjectTopLevelParentUniqueName9 = GMS.sln
-		SccProjectName9 = GMS.Core.Log
-		SccLocalPath9 = GMS.Core.Log
-		SccProjectUniqueName10 = GMS.Core.Module\\GMS.Core.Module.csproj
-		SccProjectTopLevelParentUniqueName10 = GMS.sln
-		SccProjectName10 = GMS.Core.Module
-		SccLocalPath10 = GMS.Core.Module
-		SccProjectUniqueName11 = GMS.Core.Service\\GMS.Core.Service.csproj
-		SccProjectTopLevelParentUniqueName11 = GMS.sln
-		SccProjectName11 = GMS.Core.Service
-		SccLocalPath11 = GMS.Core.Service
-		SccProjectUniqueName12 = GMS.Core.Upload\\GMS.Core.Upload.csproj
-		SccProjectTopLevelParentUniqueName12 = GMS.sln
-		SccProjectName12 = GMS.Core.Upload
-		SccLocalPath12 = GMS.Core.Upload
-		SccProjectUniqueName13 = GMS.Crm.BLL\\GMS.Crm.BLL.csproj
-		SccProjectTopLevelParentUniqueName13 = GMS.sln
-		SccProjectName13 = GMS.Crm.BLL
-		SccLocalPath13 = GMS.Crm.BLL
-		SccProjectUniqueName14 = GMS.Crm.Contract\\GMS.Crm.Contract.csproj
-		SccProjectTopLevelParentUniqueName14 = GMS.sln
-		SccProjectName14 = GMS.Crm.Contract
-		SccLocalPath14 = GMS.Crm.Contract
-		SccProjectUniqueName15 = GMS.Crm.DAL\\GMS.Crm.DAL.csproj
-		SccProjectTopLevelParentUniqueName15 = GMS.sln
-		SccProjectName15 = GMS.Crm.DAL
-		SccLocalPath15 = GMS.Crm.DAL
-		SccProjectUniqueName16 = GMS.Framework.BLL\\GMS.Framework.BLL.csproj
-		SccProjectTopLevelParentUniqueName16 = GMS.sln
-		SccProjectName16 = GMS.Framework.BLL
-		SccLocalPath16 = GMS.Framework.BLL
-		SccProjectUniqueName17 = GMS.Framework.Contract\\GMS.Framework.Contract.csproj
-		SccProjectTopLevelParentUniqueName17 = GMS.sln
-		SccProjectName17 = GMS.Framework.Contract
-		SccLocalPath17 = GMS.Framework.Contract
-		SccProjectUniqueName18 = GMS.Framework.DAL\\GMS.Framework.DAL.csproj
-		SccProjectTopLevelParentUniqueName18 = GMS.sln
-		SccProjectName18 = GMS.Framework.DAL
-		SccLocalPath18 = GMS.Framework.DAL
-		SccProjectUniqueName19 = GMS.Framework.Utility\\GMS.Framework.Utility.csproj
-		SccProjectTopLevelParentUniqueName19 = GMS.sln
-		SccProjectName19 = GMS.Framework.Utility
-		SccLocalPath19 = GMS.Framework.Utility
-		SccProjectUniqueName20 = GMS.Framework.Web\\GMS.Framework.Web.csproj
-		SccProjectTopLevelParentUniqueName20 = GMS.sln
-		SccProjectName20 = GMS.Framework.Web
-		SccLocalPath20 = GMS.Framework.Web
-		SccProjectUniqueName21 = GMS.OA.BLL\\GMS.OA.BLL.csproj
-		SccProjectTopLevelParentUniqueName21 = GMS.sln
-		SccProjectName21 = GMS.OA.BLL
-		SccLocalPath21 = GMS.OA.BLL
-		SccProjectUniqueName22 = GMS.OA.Contract\\GMS.OA.Contract.csproj
-		SccProjectTopLevelParentUniqueName22 = GMS.sln
-		SccProjectName22 = GMS.OA.Contract
-		SccLocalPath22 = GMS.OA.Contract
-		SccProjectUniqueName23 = GMS.OA.DAL\\GMS.OA.DAL.csproj
-		SccProjectTopLevelParentUniqueName23 = GMS.sln
-		SccProjectName23 = GMS.OA.DAL
-		SccLocalPath23 = GMS.OA.DAL
-		SccProjectUniqueName24 = GMS.Web.Admin\\GMS.Web.Admin.csproj
-		SccProjectTopLevelParentUniqueName24 = GMS.sln
-		SccProjectName24 = GMS.Web.Admin
-		SccLocalPath24 = GMS.Web.Admin
-		SccProjectUniqueName25 = GMS.Web\\GMS.Web.csproj
-		SccProjectTopLevelParentUniqueName25 = GMS.sln
-		SccProjectName25 = GMS.Web
-		SccLocalPath25 = GMS.Web
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -207,22 +93,10 @@ Global
 		{D988D0DA-99C9-4BB6-98BB-4C0526F6F524}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D988D0DA-99C9-4BB6-98BB-4C0526F6F524}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D988D0DA-99C9-4BB6-98BB-4C0526F6F524}.Release|Any CPU.Build.0 = Release|Any CPU
-		{36C53C41-48DB-4D74-9D83-78DF614DC83B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{36C53C41-48DB-4D74-9D83-78DF614DC83B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{36C53C41-48DB-4D74-9D83-78DF614DC83B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{36C53C41-48DB-4D74-9D83-78DF614DC83B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{290B5D69-973B-444E-A956-555534090CD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{290B5D69-973B-444E-A956-555534090CD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{290B5D69-973B-444E-A956-555534090CD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{290B5D69-973B-444E-A956-555534090CD7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{70A7663C-09AB-4BAB-9BFC-F0649FE6C8F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{70A7663C-09AB-4BAB-9BFC-F0649FE6C8F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{70A7663C-09AB-4BAB-9BFC-F0649FE6C8F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{70A7663C-09AB-4BAB-9BFC-F0649FE6C8F4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{08CFB8BA-AA0E-42F5-B6BF-140C64E34377}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{08CFB8BA-AA0E-42F5-B6BF-140C64E34377}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{08CFB8BA-AA0E-42F5-B6BF-140C64E34377}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{08CFB8BA-AA0E-42F5-B6BF-140C64E34377}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E905FFE6-A1D5-48B2-81B7-8E8D4BC5F895}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E905FFE6-A1D5-48B2-81B7-8E8D4BC5F895}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E905FFE6-A1D5-48B2-81B7-8E8D4BC5F895}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -291,10 +165,7 @@ Global
 		{11214D97-F23C-4E16-AA12-ECD824454744} = {37CB0357-0851-490B-9A39-2C8193156D4D}
 		{A155C5D8-FEE0-415C-940A-26C94D61BE9B} = {CEBC9D73-2745-46DB-8DCB-1651F581177F}
 		{D988D0DA-99C9-4BB6-98BB-4C0526F6F524} = {37CB0357-0851-490B-9A39-2C8193156D4D}
-		{36C53C41-48DB-4D74-9D83-78DF614DC83B} = {6490EDE1-A1F7-4196-A10C-B6447C46F52E}
 		{290B5D69-973B-444E-A956-555534090CD7} = {37CB0357-0851-490B-9A39-2C8193156D4D}
-		{70A7663C-09AB-4BAB-9BFC-F0649FE6C8F4} = {6490EDE1-A1F7-4196-A10C-B6447C46F52E}
-		{08CFB8BA-AA0E-42F5-B6BF-140C64E34377} = {6490EDE1-A1F7-4196-A10C-B6447C46F52E}
 		{E905FFE6-A1D5-48B2-81B7-8E8D4BC5F895} = {27FDFCC9-2984-4AE8-BF68-41CA976C17EF}
 		{CD06E340-B210-43F0-B963-D99D16073B79} = {CEBC9D73-2745-46DB-8DCB-1651F581177F}
 		{8AE51EE2-67DB-4F57-98FE-CBB890C9A5A2} = {CEBC9D73-2745-46DB-8DCB-1651F581177F}

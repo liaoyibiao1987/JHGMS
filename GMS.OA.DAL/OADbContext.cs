@@ -5,6 +5,7 @@ using System.Data.Entity.Infrastructure;
 using System.Data.Entity;
 using GMS.OA.Contract;
 using GMS.Core.Log;
+using GMS.Account.Contract;
 
 namespace GMS.OA.DAL
 {
@@ -20,7 +21,7 @@ namespace GMS.OA.DAL
             Database.SetInitializer<OADbContext>(null);
             base.OnModelCreating(modelBuilder);
         }
-
+        public DbSet<User> Users { get; set; }
         public DbSet<Staff> Staffs { get; set; }
         public DbSet<Branch> Branchs { get; set; }
     }

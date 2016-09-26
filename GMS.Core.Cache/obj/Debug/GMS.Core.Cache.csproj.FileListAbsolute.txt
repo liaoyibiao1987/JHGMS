@@ -3,3 +3,8 @@ C:\Users\Administrator\Desktop\GMS\GMS\bin\GMS.Core.Cache.pdb
 C:\Users\Administrator\Desktop\GMS\GMS\Src\GMS.Core.Cache\obj\Debug\GMS.Core.Cache.csprojResolveAssemblyReference.cache
 C:\Users\Administrator\Desktop\GMS\GMS\Src\GMS.Core.Cache\obj\Debug\GMS.Core.Cache.dll
 C:\Users\Administrator\Desktop\GMS\GMS\Src\GMS.Core.Cache\obj\Debug\GMS.Core.Cache.pdb
+E:\TFS\bin\GMS.Core.Cache.dll
+E:\TFS\bin\GMS.Core.Cache.pdb
+E:\TFS\GMS\GMS.Core.Cache\obj\Debug\GMS.Core.Cache.csprojResolveAssemblyReference.cache
+E:\TFS\GMS\GMS.Core.Cache\obj\Debug\GMS.Core.Cache.dll
+E:\TFS\GMS\GMS.Core.Cache\obj\Debug\GMS.Core.Cache.pdb

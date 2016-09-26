@@ -44,18 +44,20 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IAccountService.cs" />
+    <Compile Include="Model\EnumBusinessPermission.cs" />
+    <Compile Include="Model\LoginInfo.cs" />
+    <Compile Include="Model\Role.cs" />
     <Compile Include="Model\Staff.cs" />
     <Compile Include="IOAService.cs" />
     <Compile Include="Model\Branch.cs" />
     <Compile Include="Model\Requests.cs" />
+    <Compile Include="Model\User.cs" />
+    <Compile Include="Model\VerifyCode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\GMS.Account.Contract\GMS.Account.Contract.csproj">
-      <Project>{08cfb8ba-aa0e-42f5-b6bf-140c64e34377}</Project>
-      <Name>GMS.Account.Contract</Name>
-    </ProjectReference>
     <ProjectReference Include="..\GMS.Framework.Contract\GMS.Framework.Contract.csproj">
       <Project>{11214D97-F23C-4E16-AA12-ECD824454744}</Project>
       <Name>GMS.Framework.Contract</Name>

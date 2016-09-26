@@ -15,3 +15,17 @@ namespace GMS.OA.Contract
         public string Name { get; set; }
     }
 }
+
+namespace GMS.Account.Contract
+{
+    public class UserRequest : Request
+    {
+        public string LoginName { get; set; }
+        public string Mobile { get; set; }
+    }
+
+    public class RoleRequest : Request
+    {
+        public string RoleName { get; set; }
+    }
+}

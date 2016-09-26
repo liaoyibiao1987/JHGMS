@@ -63,7 +63,27 @@ namespace GMS.Web.Admin.Areas.OA.Controllers
         public ActionResult Edit(int id, FormCollection collection)
         {
             var model = this.OAService.GetStaff(id);
+            int? olduserid = model.UserID;
+
+
             this.TryUpdateModel<Staff>(model);
+            if (olduserid != model.UserID)
+            {
+                if (olduserid.HasValue)
+                {
+                    User olduser = this.AccountService.GetUser(olduserid.Value);
+                    olduser.StaffID = null;
+                    AccountService.SaveUser(olduser);
+                }
+
+                if (model.UserID != null)
+                {
+                    User newuser = this.AccountService.GetUser(model.UserID.Value);
+                    newuser.StaffID = model.ID;
+                    AccountService.SaveUser(newuser);
+                }
+
+            }
 
             this.OAService.SaveStaff(model);
 
@@ -79,10 +99,10 @@ namespace GMS.Web.Admin.Areas.OA.Controllers
             return RedirectToAction("Index");
         }
 
-        private SelectList GetAllLoginID(int staffid)
+        private SelectList GetAllLoginID(int staffId, int currentUserID)
         {
-            IEnumerable<User> users = AccountService.GetActivedUserList();
-            return new SelectList(users, "StaffID", "LoginName", staffid);
+            IEnumerable<User> users = AccountService.GetActivedUserList(staffId);
+            return new SelectList(users, "ID", "LoginName", currentUserID);
         }
 
         private void RenderMyViewData(Staff model)
@@ -90,7 +110,7 @@ namespace GMS.Web.Admin.Areas.OA.Controllers
             ViewData.Add("Position", new SelectList(EnumHelper.GetItemValueList<EnumPosition>(), "Key", "Value", model.Position));
             ViewData.Add("Gender", new SelectList(EnumHelper.GetItemValueList<EnumGender>(), "Key", "Value", model.Gender));
             //ViewData.Add("LoginIDs", new SelectList(this.AccountService.GetActivedUserList(), "ID", "LoginName", model.LoginID ?? -1));
-            ViewData.Add("UserID", GetAllLoginID(model.ID));
+            ViewData.Add("UserID", GetAllLoginID(model.ID, model.UserID ?? -1));
         }
     }
 }

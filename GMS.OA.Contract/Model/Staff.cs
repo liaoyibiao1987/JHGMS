@@ -40,12 +40,23 @@ namespace GMS.OA.Contract
         [StringLength(100, ErrorMessage = "地址不能超过100个字")]
         public string Address { get; set; }
 
-        [NotMapped]
-        public int? UserID { get; set; }
-
-        [NotMapped]
-        public string UserName { get; set; }
-
+        private int? userID;
+        public int? UserID
+        {
+            get
+            {
+                return userID;
+            }
+            set
+            {
+                if (value == null)
+                {
+                    User = null;
+                }
+                userID = value;
+            }
+        }
+        public virtual User User { get; set; }
 
         public int? BranchId { get; set; }
 

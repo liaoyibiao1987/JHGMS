@@ -9,6 +9,7 @@ using System.Data.Objects;
 using GMS.Framework.Contract;
 using EntityFramework.Extensions;
 using GMS.Core.Cache;
+using GMS.Account.Contract;
 
 namespace GMS.OA.BLL
 {
@@ -19,7 +20,7 @@ namespace GMS.OA.BLL
         {
             using (var dbContext = new OADbContext())
             {
-                return dbContext.Staffs.Include("Branch").FirstOrDefault(a => a.ID == id);
+                return dbContext.Staffs.Include("Branch").Include("User").FirstOrDefault(a => a.ID == id);
             }
         }
 
@@ -28,8 +29,7 @@ namespace GMS.OA.BLL
             request = request ?? new StaffRequest();
             using (var dbContext = new OADbContext())
             {
-                IQueryable<Staff> staffs = dbContext.Staffs.Include("Branch");
-
+                IQueryable<Staff> staffs = dbContext.Staffs.Include("Branch").Include("User");
                 if (!string.IsNullOrEmpty(request.Name))
                     staffs = staffs.Where(u => u.Name.Contains(request.Name));
 
@@ -51,7 +51,17 @@ namespace GMS.OA.BLL
                 }
                 else
                 {
-                    dbContext.Insert<Staff>(staff);
+                    Staff newstaff = dbContext.Insert<Staff>(staff);
+                    if (newstaff != null)
+                    {
+                        if (newstaff.UserID != null)
+                        {
+                            var user = dbContext.Users.FirstOrDefault(p => p.ID == newstaff.UserID);
+                            user.StaffID = newstaff.ID;
+                            dbContext.Update<User>(user);
+                        }
+                    }
+
                 }
             }
         }
@@ -60,7 +70,33 @@ namespace GMS.OA.BLL
         {
             using (var dbContext = new OADbContext())
             {
+                Func<User, User> fun = new Func<User, User>((p) =>
+                {
+                    if (ids.Contains(p.ID))
+                    {
+                        p.StaffID = null;
+                    }
+                    return p;
+                });
+                //dbContext.Users.SqlQuery("update [user] set StaffID in'{0}' ", string.Join(",", ids)).;
+                //dbContext.Users.Update<User>(p => ids.Contains(p.ID), q => q.UpdateStaffID(9));
+                dbContext.Users.ToList().ForEach((u) =>
+                    {
+                        if (ids.Contains(u.ID))
+                        {
+                            u.StaffID = null;
+                        }
+                    });
+                //dbContext.Users.Update(u =>
+                //    {
+                //        if (ids.Contains(u.ID))
+                //        {
+                //            u.StaffID = null;
+                //        }
+                //        return u;
+                //    });
                 dbContext.Staffs.Where(u => ids.Contains(u.ID)).Delete();
+                dbContext.SaveChanges();
             }
         }
         #endregion

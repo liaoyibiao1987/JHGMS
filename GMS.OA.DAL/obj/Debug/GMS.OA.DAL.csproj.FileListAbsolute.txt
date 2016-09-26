@@ -1,5 +1,10 @@
+C:\Users\Administrator\Desktop\GMS\GMS\Src\GMS.OA.DAL\obj\Debug\GMS.OA.DAL.csprojResolveAssemblyReference.cache
 C:\Users\Administrator\Desktop\GMS\GMS\bin\GMS.OA.DAL.dll
 C:\Users\Administrator\Desktop\GMS\GMS\bin\GMS.OA.DAL.pdb
-C:\Users\Administrator\Desktop\GMS\GMS\Src\GMS.OA.DAL\obj\Debug\GMS.OA.DAL.csprojResolveAssemblyReference.cache
 C:\Users\Administrator\Desktop\GMS\GMS\Src\GMS.OA.DAL\obj\Debug\GMS.OA.DAL.dll
 C:\Users\Administrator\Desktop\GMS\GMS\Src\GMS.OA.DAL\obj\Debug\GMS.OA.DAL.pdb
+E:\TFS\bin\GMS.OA.DAL.dll
+E:\TFS\bin\GMS.OA.DAL.pdb
+E:\TFS\GMS\GMS.OA.DAL\obj\Debug\GMS.OA.DAL.csprojResolveAssemblyReference.cache
+E:\TFS\GMS\GMS.OA.DAL\obj\Debug\GMS.OA.DAL.dll
+E:\TFS\GMS\GMS.OA.DAL\obj\Debug\GMS.OA.DAL.pdb

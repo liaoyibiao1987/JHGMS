@@ -3,3 +3,8 @@ C:\Users\Administrator\Desktop\GMS\GMS\bin\GMS.Core.Service.pdb
 C:\Users\Administrator\Desktop\GMS\GMS\Src\GMS.Core.Service\obj\Debug\GMS.Core.Service.csprojResolveAssemblyReference.cache
 C:\Users\Administrator\Desktop\GMS\GMS\Src\GMS.Core.Service\obj\Debug\GMS.Core.Service.dll
 C:\Users\Administrator\Desktop\GMS\GMS\Src\GMS.Core.Service\obj\Debug\GMS.Core.Service.pdb
+E:\TFS\bin\GMS.Core.Service.dll
+E:\TFS\bin\GMS.Core.Service.pdb
+E:\TFS\GMS\GMS.Core.Service\obj\Debug\GMS.Core.Service.csprojResolveAssemblyReference.cache
+E:\TFS\GMS\GMS.Core.Service\obj\Debug\GMS.Core.Service.dll
+E:\TFS\GMS\GMS.Core.Service\obj\Debug\GMS.Core.Service.pdb

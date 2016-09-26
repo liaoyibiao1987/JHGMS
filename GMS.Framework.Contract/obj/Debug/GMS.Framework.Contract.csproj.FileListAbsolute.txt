@@ -4,3 +4,9 @@ C:\Users\Administrator\Desktop\GMS\GMS\bin\GMS.Framework.Contract.pdb
 C:\Users\Administrator\Desktop\GMS\GMS\Src\GMS.Framework.Contract\obj\Debug\GMS.Framework.Contract.csprojResolveAssemblyReference.cache
 C:\Users\Administrator\Desktop\GMS\GMS\Src\GMS.Framework.Contract\obj\Debug\GMS.Framework.Contract.dll
 C:\Users\Administrator\Desktop\GMS\GMS\Src\GMS.Framework.Contract\obj\Debug\GMS.Framework.Contract.pdb
+E:\TFS\bin\GMS.Framework.Contract.XML
+E:\TFS\bin\GMS.Framework.Contract.dll
+E:\TFS\bin\GMS.Framework.Contract.pdb
+E:\TFS\GMS\GMS.Framework.Contract\obj\Debug\GMS.Framework.Contract.csprojResolveAssemblyReference.cache
+E:\TFS\GMS\GMS.Framework.Contract\obj\Debug\GMS.Framework.Contract.dll
+E:\TFS\GMS\GMS.Framework.Contract\obj\Debug\GMS.Framework.Contract.pdb

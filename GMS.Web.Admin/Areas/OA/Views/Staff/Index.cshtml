@@ -16,16 +16,16 @@
     </div>
     <div class="span8">
         @using (Html.BeginForm(null, null, null, FormMethod.Get, new { id = "search" }))
-        { 
-        <div class="dataTables_filter">
-            <label>
-                <button type="submit" class="btn">搜索 <i class="icon-search"></i></button>
-             </label>
-            <label>
-                <span>姓名：</span>
-                @Html.TextBox("Name", null, new { @class = "m-wrap small" })
-            </label>
-        </div>
+        {
+            <div class="dataTables_filter">
+                <label>
+                    <button type="submit" class="btn">搜索 <i class="icon-search"></i></button>
+                </label>
+                <label>
+                    <span>姓名：</span>
+                    @Html.TextBox("Name", null, new { @class = "m-wrap small" })
+                </label>
+            </div>
         }
     </div>
 </div>
@@ -37,88 +37,99 @@
 
 @using (Html.BeginForm("Delete", "Staff", FormMethod.Post, new { id = "mainForm" }))
 {
-<table class="table table-striped table-hover ">
-    <thead>
-        <tr>
-            <th style="width: 8px;">
-                <input type="checkbox" id="checkall" class="group-checkable" />
-            </th>
-            <th>
-                姓名
-            </th>
-            <th>
-                职位
-            </th>
-            <th>
-                部门
-            </th>
-            <th>
-                登录名
-            </th>
-            <th>
-                性别
-            </th>
-            <th>
-                生日
-            </th>
-            <th>
-                电子邮件
-            </th>
-            <th>
-                电话
-            </th>
-            <th>
-                联系地址
-            </th>
-            <th>
-                操作
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var m in Model)
-        {
-        <tr>
-            <td>
-                <input type="checkbox" class="checkboxes" name='ids' value='@m.ID' />
-            </td>
-            <td>
-                @m.Name
-            </td>
-            <td>
-                @EnumHelper.GetEnumTitle((EnumPosition)m.Position)
-            </td>
-            <td>
-                @(m.Branch == null ? "未分配" : m.Branch.Name)
-            </td>
-            <td>
-                @( string.IsNullOrEmpty(m.UserName) == true ? "未分配" : m.UserName)
-            </td>
-            <td>
-                @EnumHelper.GetEnumTitle((EnumGender)m.Gender)
-            </td>
-            <td>
-                @m.BirthDate.ToCnDataString()
-            </td>
-            <td>
-                @m.Email
-            </td>
-            <td>
-                @m.Tel
-            </td>
-            <td>
-                @m.Address
-            </td>
-            <td>
-                <a class="btn mini purple thickbox" title='编辑员工信息' href="@Url.Action("Edit", new { id = m.ID })?TB_iframe=true&height=400&width=500">
-                    <i class="icon-edit"></i>
-                    编辑
-                </a>
-            </td>
-        </tr>
-        }
-    </tbody>
-</table>
+    <table class="table table-striped table-hover ">
+        <thead>
+            <tr>
+                <th style="width: 8px;">
+                    <input type="checkbox" id="checkall" class="group-checkable" />
+                </th>
+                <th>
+                    姓名
+                </th>
+                <th>
+                    职位
+                </th>
+                <th>
+                    部门
+                </th>
+                <th>
+                    登录名
+                </th>
+                <th>
+                    性别
+                </th>
+                <th>
+                    生日
+                </th>
+                <th>
+                    电子邮件
+                </th>
+                <th>
+                    电话
+                </th>
+                <th>
+                    联系地址
+                </th>
+                <th>
+                    操作
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var m in Model)
+            {
+                <tr>
+                    <td>
+                        <input type="checkbox" class="checkboxes" name='ids' value='@m.ID' />
+                    </td>
+                    <td>
+                        @m.Name
+                    </td>
+                    <td>
+                        @EnumHelper.GetEnumTitle((EnumPosition)m.Position)
+                    </td>
+                    <td>
+                        @(m.Branch == null ? "未分配" : m.Branch.Name)
+                    </td>
+
+                    @if (m.User == null || m.User.ID == 0)
+                    {
+                        <td>
+                            <font color="red">未分配</font>
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            @m.User.LoginName
+                        </td>
+                    }
+
+                    <td>
+                        @EnumHelper.GetEnumTitle((EnumGender)m.Gender)
+                    </td>
+                    <td>
+                        @m.BirthDate.ToCnDataString()
+                    </td>
+                    <td>
+                        @m.Email
+                    </td>
+                    <td>
+                        @m.Tel
+                    </td>
+                    <td>
+                        @m.Address
+                    </td>
+                    <td>
+                        <a class="btn mini purple thickbox" title='编辑员工信息' href="@Url.Action("Edit", new { id = m.ID })?TB_iframe=true&height=400&width=500">
+                            <i class="icon-edit"></i>
+                            编辑
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 }
 <div class="dataTables_paginate paging_bootstrap pagination">
     @Html.Pager(Model, new PagerOptions() { ShowTotalItemCount = true })
