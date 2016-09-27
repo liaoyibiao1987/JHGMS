@@ -74,8 +74,8 @@ E:\TFS\GMS\GMS.Web.Admin\bin\System.Web.Razor.dll
 E:\TFS\GMS\GMS.Web.Admin\bin\System.Web.WebPages.Deployment.dll
 E:\TFS\GMS\GMS.Web.Admin\bin\System.Web.WebPages.dll
 E:\TFS\GMS\GMS.Web.Admin\bin\System.Web.WebPages.Razor.dll
-E:\TFS\GMS\GMS.Web.Admin\bin\EntityFramework.dll
 E:\TFS\GMS\GMS.Web.Admin\bin\DevTrends.MvcDonutCaching.dll
+E:\TFS\GMS\GMS.Web.Admin\bin\EntityFramework.dll
 E:\TFS\GMS\GMS.Web.Admin\bin\GMS.Core.Log.dll
 E:\TFS\GMS\GMS.Web.Admin\bin\GMS.Core.Service.dll
 E:\TFS\GMS\GMS.Web.Admin\bin\GMS.Framework.DAL.dll

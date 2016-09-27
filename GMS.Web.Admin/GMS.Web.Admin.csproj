@@ -1522,19 +1522,23 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GMS.Core.Cache\GMS.Core.Cache.csproj">
-      <Project>{A155C5D8-FEE0-415C-940A-26C94D61BE9B}</Project>
+      <Project>{a155c5d8-fee0-415c-940a-26c94d61be9b}</Project>
       <Name>GMS.Core.Cache</Name>
     </ProjectReference>
     <ProjectReference Include="..\GMS.Core.Config\GMS.Core.Config.csproj">
-      <Project>{3BF4147E-D01D-4FFF-B8E7-FE24959B2D7E}</Project>
+      <Project>{3bf4147e-d01d-4fff-b8e7-fe24959b2d7e}</Project>
       <Name>GMS.Core.Config</Name>
     </ProjectReference>
     <ProjectReference Include="..\GMS.Core.Module\GMS.Core.Module.csproj">
-      <Project>{CD06E340-B210-43F0-B963-D99D16073B79}</Project>
+      <Project>{cd06e340-b210-43f0-b963-d99d16073b79}</Project>
       <Name>GMS.Core.Module</Name>
     </ProjectReference>
+    <ProjectReference Include="..\GMS.Core.Service\GMS.Core.Service.csproj">
+      <Project>{812c05fd-2baa-4799-b0ab-2711781133ba}</Project>
+      <Name>GMS.Core.Service</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GMS.Core.Upload\GMS.Core.Upload.csproj">
-      <Project>{99D0022F-17D5-4DD5-B4D3-BA8FDC81F7AF}</Project>
+      <Project>{99d0022f-17d5-4dd5-b4d3-ba8fdc81f7af}</Project>
       <Name>GMS.Core.Upload</Name>
     </ProjectReference>
     <ProjectReference Include="..\GMS.Framework.Contract\GMS.Framework.Contract.csproj">
@@ -1550,11 +1554,11 @@
       <Name>GMS.Framework.Web</Name>
     </ProjectReference>
     <ProjectReference Include="..\GMS.OA.Contract\GMS.OA.Contract.csproj">
-      <Project>{F6F83E95-5F65-410C-B49F-7763E2184251}</Project>
+      <Project>{f6f83e95-5f65-410c-b49f-7763e2184251}</Project>
       <Name>GMS.OA.Contract</Name>
     </ProjectReference>
     <ProjectReference Include="..\GMS.Web\GMS.Web.csproj">
-      <Project>{E905FFE6-A1D5-48B2-81B7-8E8D4BC5F895}</Project>
+      <Project>{e905ffe6-a1d5-48b2-81b7-8e8d4bc5f895}</Project>
       <Name>GMS.Web</Name>
     </ProjectReference>
   </ItemGroup>
