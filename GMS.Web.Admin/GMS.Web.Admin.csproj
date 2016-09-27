@@ -1002,7 +1002,9 @@
     <Content Include="Content\Styles\admin.main.css" />
     <Content Include="Content\Styles\jquery.thickbox.css" />
     <Content Include="Config\CacheConfig.xml" />
-    <Content Include="Config\DaoConfig.xml" />
+    <Content Include="Config\DaoConfig.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Content\Uploadify\cancel.png" />
     <Content Include="Content\Uploadify\jquery-1.4.2.min.js" />
     <Content Include="Content\Uploadify\jquery.uploadify.v2.1.4.js" />
