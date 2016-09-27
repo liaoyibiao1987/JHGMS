@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="AccountService.cs" />
     <Compile Include="CmsService.cs" />
+    <Compile Include="CrmService.cs" />
     <Compile Include="OAService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

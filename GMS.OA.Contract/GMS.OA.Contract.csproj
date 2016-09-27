@@ -46,10 +46,15 @@
   <ItemGroup>
     <Compile Include="IAccountService.cs" />
     <Compile Include="ICmsService.cs" />
+    <Compile Include="ICrmService.cs" />
+    <Compile Include="Model\Area.cs" />
     <Compile Include="Model\Article.cs" />
     <Compile Include="Model\Channel.cs" />
+    <Compile Include="Model\City.cs" />
+    <Compile Include="Model\Customer.cs" />
     <Compile Include="Model\EnumBusinessPermission.cs" />
     <Compile Include="Model\LoginInfo.cs" />
+    <Compile Include="Model\Project.cs" />
     <Compile Include="Model\Role.cs" />
     <Compile Include="Model\Staff.cs" />
     <Compile Include="IOAService.cs" />
@@ -58,6 +63,7 @@
     <Compile Include="Model\Tag.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="Model\VerifyCode.cs" />
+    <Compile Include="Model\VisitRecord.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

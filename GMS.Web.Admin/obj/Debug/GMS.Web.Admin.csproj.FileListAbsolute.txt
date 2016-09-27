@@ -61,7 +61,6 @@ E:\TFS\GMS\GMS.Web.Admin\bin\GMS.Core.Cache.dll
 E:\TFS\GMS\GMS.Web.Admin\bin\GMS.Core.Config.dll
 E:\TFS\GMS\GMS.Web.Admin\bin\GMS.Core.Module.dll
 E:\TFS\GMS\GMS.Web.Admin\bin\GMS.Core.Upload.dll
-E:\TFS\GMS\GMS.Web.Admin\bin\GMS.Crm.Contract.dll
 E:\TFS\GMS\GMS.Web.Admin\bin\GMS.Framework.Contract.dll
 E:\TFS\GMS\GMS.Web.Admin\bin\GMS.Framework.Utility.dll
 E:\TFS\GMS\GMS.Web.Admin\bin\GMS.Framework.Web.dll
@@ -86,7 +85,6 @@ E:\TFS\GMS\GMS.Web.Admin\bin\GMS.Core.Cache.pdb
 E:\TFS\GMS\GMS.Web.Admin\bin\GMS.Core.Config.pdb
 E:\TFS\GMS\GMS.Web.Admin\bin\GMS.Core.Module.pdb
 E:\TFS\GMS\GMS.Web.Admin\bin\GMS.Core.Upload.pdb
-E:\TFS\GMS\GMS.Web.Admin\bin\GMS.Crm.Contract.pdb
 E:\TFS\GMS\GMS.Web.Admin\bin\GMS.Framework.Contract.pdb
 E:\TFS\GMS\GMS.Web.Admin\bin\GMS.Framework.Contract.xml
 E:\TFS\GMS\GMS.Web.Admin\bin\GMS.Framework.Utility.pdb

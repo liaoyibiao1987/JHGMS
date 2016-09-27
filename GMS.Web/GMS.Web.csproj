@@ -98,10 +98,6 @@
       <Project>{99D0022F-17D5-4DD5-B4D3-BA8FDC81F7AF}</Project>
       <Name>GMS.Core.Upload</Name>
     </ProjectReference>
-    <ProjectReference Include="..\GMS.Crm.Contract\GMS.Crm.Contract.csproj">
-      <Project>{0DB50285-89DE-42C7-9274-8D1633AAF01C}</Project>
-      <Name>GMS.Crm.Contract</Name>
-    </ProjectReference>
     <ProjectReference Include="..\GMS.Framework.Contract\GMS.Framework.Contract.csproj">
       <Project>{11214D97-F23C-4E16-AA12-ECD824454744}</Project>
       <Name>GMS.Framework.Contract</Name>

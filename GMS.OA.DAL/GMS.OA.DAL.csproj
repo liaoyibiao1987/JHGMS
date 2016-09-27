@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="AccountDbContext.cs" />
     <Compile Include="CmsDbContext.cs" />
+    <Compile Include="CrmDbContext.cs" />
     <Compile Include="OADbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
