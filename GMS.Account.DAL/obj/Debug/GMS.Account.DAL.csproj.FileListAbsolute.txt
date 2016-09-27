@@ -1,5 +1,0 @@
-C:\Users\Administrator\Desktop\GMS\GMS\bin\GMS.Account.DAL.dll
-C:\Users\Administrator\Desktop\GMS\GMS\bin\GMS.Account.DAL.pdb
-C:\Users\Administrator\Desktop\GMS\GMS\Src\GMS.Account.DAL\obj\Debug\GMS.Account.DAL.csprojResolveAssemblyReference.cache
-C:\Users\Administrator\Desktop\GMS\GMS\Src\GMS.Account.DAL\obj\Debug\GMS.Account.DAL.dll
-C:\Users\Administrator\Desktop\GMS\GMS\Src\GMS.Account.DAL\obj\Debug\GMS.Account.DAL.pdb
