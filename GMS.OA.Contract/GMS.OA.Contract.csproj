@@ -45,6 +45,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IAccountService.cs" />
+    <Compile Include="ICmsService.cs" />
+    <Compile Include="Model\Article.cs" />
+    <Compile Include="Model\Channel.cs" />
     <Compile Include="Model\EnumBusinessPermission.cs" />
     <Compile Include="Model\LoginInfo.cs" />
     <Compile Include="Model\Role.cs" />
@@ -52,6 +55,7 @@
     <Compile Include="IOAService.cs" />
     <Compile Include="Model\Branch.cs" />
     <Compile Include="Model\Requests.cs" />
+    <Compile Include="Model\Tag.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="Model\VerifyCode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

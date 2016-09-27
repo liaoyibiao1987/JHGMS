@@ -8,4 +8,3 @@ E:\TFS\bin\GMS.Framework.Utility.dll
 E:\TFS\bin\GMS.Framework.Utility.pdb
 E:\TFS\GMS\GMS.Framework.Utility\obj\Debug\GMS.Framework.Utility.dll
 E:\TFS\GMS\GMS.Framework.Utility\obj\Debug\GMS.Framework.Utility.pdb
-E:\TFS\GMS\GMS.Framework.Utility\obj\Debug\GMS.Framework.Utility.csprojResolveAssemblyReference.cache

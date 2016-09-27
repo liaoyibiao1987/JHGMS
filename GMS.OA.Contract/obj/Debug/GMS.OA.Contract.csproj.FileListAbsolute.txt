@@ -7,3 +7,4 @@ E:\TFS\bin\GMS.OA.Contract.dll
 E:\TFS\bin\GMS.OA.Contract.pdb
 E:\TFS\GMS\GMS.OA.Contract\obj\Debug\GMS.OA.Contract.dll
 E:\TFS\GMS\GMS.OA.Contract\obj\Debug\GMS.OA.Contract.pdb
+E:\TFS\GMS\GMS.OA.Contract\obj\Debug\GMS.OA.Contract.csprojResolveAssemblyReference.cache

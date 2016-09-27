@@ -57,7 +57,6 @@ C:\Users\Administrator\Desktop\GMS\GMS\Src\GMS.Web.Admin\obj\Debug\GMS.Web.Admin
 E:\TFS\GMS\GMS.Web.Admin\bin\GMS.Web.Admin.dll.config
 E:\TFS\GMS\GMS.Web.Admin\bin\GMS.Web.Admin.dll
 E:\TFS\GMS\GMS.Web.Admin\bin\GMS.Web.Admin.pdb
-E:\TFS\GMS\GMS.Web.Admin\bin\GMS.Cms.Contract.dll
 E:\TFS\GMS\GMS.Web.Admin\bin\GMS.Core.Cache.dll
 E:\TFS\GMS\GMS.Web.Admin\bin\GMS.Core.Config.dll
 E:\TFS\GMS\GMS.Web.Admin\bin\GMS.Core.Module.dll
@@ -83,7 +82,6 @@ E:\TFS\GMS\GMS.Web.Admin\bin\GMS.Core.Service.dll
 E:\TFS\GMS\GMS.Web.Admin\bin\GMS.Framework.DAL.dll
 E:\TFS\GMS\GMS.Web.Admin\bin\log4net.dll
 E:\TFS\GMS\GMS.Web.Admin\bin\Castle.Core.dll
-E:\TFS\GMS\GMS.Web.Admin\bin\GMS.Cms.Contract.pdb
 E:\TFS\GMS\GMS.Web.Admin\bin\GMS.Core.Cache.pdb
 E:\TFS\GMS\GMS.Web.Admin\bin\GMS.Core.Config.pdb
 E:\TFS\GMS\GMS.Web.Admin\bin\GMS.Core.Module.pdb

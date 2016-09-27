@@ -82,10 +82,6 @@
     <Compile Include="VerifyCodeHelper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GMS.Cms.Contract\GMS.Cms.Contract.csproj">
-      <Project>{B5C93A51-4CBF-419C-A8B1-290B3F163B5E}</Project>
-      <Name>GMS.Cms.Contract</Name>
-    </ProjectReference>
     <ProjectReference Include="..\GMS.Core.Cache\GMS.Core.Cache.csproj">
       <Project>{A155C5D8-FEE0-415C-940A-26C94D61BE9B}</Project>
       <Name>GMS.Core.Cache</Name>
