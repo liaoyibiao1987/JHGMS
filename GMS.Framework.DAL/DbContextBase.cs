@@ -84,6 +84,19 @@ namespace GMS.Framework.DAL
             return result;
         }
 
+        /// <summary>  
+        /// 执行原始SQL命令  
+        /// </summary>  
+        /// <param name="commandText">SQL命令</param>  
+        /// <param name="parameters">参数</param>  
+        /// <returns>影响的记录数</returns>  
+        public Object[] ExecuteSqlNonQuery<T>(string commandText, params Object[] parameters)
+        {
+            var results = this.Database.SqlQuery<T>(commandText, parameters);
+            results.Single();
+            return parameters;
+        }
+
         internal void WriteAuditLog()
         {
             if (this.AuditLogger == null)

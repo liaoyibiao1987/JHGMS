@@ -22,13 +22,13 @@ namespace GMS.Web
             }
         }
 
-        public virtual ICmsService CmsService
-        {
-            get
-            {
-                return ServiceContext.Current.CmsService;
-            }
-        }
+        //public virtual ICmsService CmsService
+        //{
+        //    get
+        //    {
+        //        return ServiceContext.Current.CmsService;
+        //    }
+        //}
 
         public virtual ICrmService CrmService
         {

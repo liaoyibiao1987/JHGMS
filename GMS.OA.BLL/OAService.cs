@@ -80,23 +80,27 @@ namespace GMS.OA.BLL
                 });
                 //dbContext.Users.SqlQuery("update [user] set StaffID in'{0}' ", string.Join(",", ids)).;
                 //dbContext.Users.Update<User>(p => ids.Contains(p.ID), q => q.UpdateStaffID(9));
-                dbContext.Users.ToList().ForEach((u) =>
-                    {
-                        if (ids.Contains(u.ID))
-                        {
-                            u.StaffID = null;
-                        }
-                    });
-                //dbContext.Users.Update(u =>
+                //dbContext.Users.ToList().ForEach((u) =>
                 //    {
                 //        if (ids.Contains(u.ID))
                 //        {
                 //            u.StaffID = null;
                 //        }
-                //        return u;
                 //    });
+                // var staffID = new System.Data.SqlClient.SqlParameter
+                //{
+                //    ParameterName = "@id",
+                //    Value = 1
+                //};
+                //var votesParam = new System.Data.SqlClient.SqlParameter
+                //{
+                //    ParameterName = "@voteCount",
+                //    Value = 0,
+                //    Direction = ParameterDirection.Output
+                //};
+                //dbContext.Database.ExecuteSqlCommand("update User set StaffID = @StaffID on ID IN @IDS",,string.Join(",", ids));
+                dbContext.Users.Update(p => ids.Contains(p.ID), u => new User { StaffID = null });
                 dbContext.Staffs.Where(u => ids.Contains(u.ID)).Delete();
-                dbContext.SaveChanges();
             }
         }
         #endregion

@@ -103,9 +103,6 @@
     <Compile Include="Areas\Account\Controllers\CustomerFilterAttribute.cs" />
     <Compile Include="Areas\Account\Controllers\RoleController.cs" />
     <Compile Include="Areas\Account\Controllers\UserController.cs" />
-    <Compile Include="Areas\Cms\CmsAreaRegistration.cs" />
-    <Compile Include="Areas\Cms\Controllers\ArticleController.cs" />
-    <Compile Include="Areas\Cms\Controllers\ChannelController.cs" />
     <Compile Include="Areas\Crm\Controllers\CustomerController.cs" />
     <Compile Include="Areas\Crm\Controllers\ProjectController.cs" />
     <Compile Include="Areas\Crm\Controllers\AnalysisController.cs" />
@@ -1302,11 +1299,6 @@
     <Content Include="Areas\Account\Views\User\Edit.cshtml" />
     <Content Include="Areas\Account\Views\Role\Edit.cshtml" />
     <Content Include="Areas\Account\Views\Role\Index.cshtml" />
-    <Content Include="Areas\Cms\Views\Web.config" />
-    <Content Include="Areas\Cms\Views\Article\Edit.cshtml" />
-    <Content Include="Areas\Cms\Views\Article\Index.cshtml" />
-    <Content Include="Areas\Cms\Views\Channel\Edit.cshtml" />
-    <Content Include="Areas\Cms\Views\Channel\Index.cshtml" />
     <Content Include="Areas\Crm\Views\Web.config" />
     <Content Include="Areas\Crm\Views\Project\Index.cshtml" />
     <Content Include="Areas\Crm\Views\Project\Edit.cshtml" />

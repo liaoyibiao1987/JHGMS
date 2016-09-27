@@ -5,6 +5,5 @@ C:\Users\Administrator\Desktop\GMS\GMS\Src\GMS.Crm.Contract\obj\Debug\GMS.Crm.Co
 C:\Users\Administrator\Desktop\GMS\GMS\Src\GMS.Crm.Contract\obj\Debug\GMS.Crm.Contract.pdb
 E:\TFS\bin\GMS.Crm.Contract.dll
 E:\TFS\bin\GMS.Crm.Contract.pdb
-E:\TFS\GMS\GMS.Crm.Contract\obj\Debug\GMS.Crm.Contract.csprojResolveAssemblyReference.cache
 E:\TFS\GMS\GMS.Crm.Contract\obj\Debug\GMS.Crm.Contract.dll
 E:\TFS\GMS\GMS.Crm.Contract\obj\Debug\GMS.Crm.Contract.pdb
