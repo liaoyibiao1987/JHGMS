@@ -43,6 +43,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMS.OA.DAL", "GMS.OA.DAL\GM
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GMS.OA.BLL", "GMS.OA.BLL\GMS.OA.BLL.csproj", "{7EDEF7B7-E1EE-4441-B3AD-29896DB3BFDB}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DB", "DB", "{A4E33E83-7517-4BA3-852B-B2CFAA734126}"
+	ProjectSection(SolutionItems) = preProject
+		2016-9-27.sql = 2016-9-27.sql
+		数据库.txt = 数据库.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
