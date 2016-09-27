@@ -17,19 +17,21 @@ namespace GMS.Account.Contract
             LoginToken = Guid.NewGuid();
         }
 
-        public LoginInfo(int userID, string loginName)
+        public LoginInfo(int userID, string loginName, int? staffID)
         {
             LastAccessTime = DateTime.Now;
             LoginToken = Guid.NewGuid();
 
             UserID = userID;
             LoginName = loginName;
+            StaffID = staffID;
         }
 
         public Guid LoginToken { get; set; }
         public DateTime LastAccessTime { get; set; }
         public int UserID { get; set; }
         public string LoginName { get; set; }
+        public int? StaffID { get; set; }
         public string ClientIP { get; set; }
 
         public EnumLoginAccountType EnumLoginAccountType { get; set; }

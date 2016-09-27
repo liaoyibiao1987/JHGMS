@@ -75,20 +75,10 @@ namespace GMS.Crm.BLL
             request = request ?? new CustomerRequest();
             using (var dbContext = new CrmDbContext())
             {
-                IQueryable<Customer> queryList = dbContext.Customers.Include("VisitRecords");
+                IQueryable<Customer> queryList = dbContext.Customers.Include("VisitRecords").Include("Staff");
 
-                if (request.Customer.UserId > 0)
-                    queryList = queryList.Where(d => d.UserId == request.Customer.UserId);
-                
                 if (!string.IsNullOrEmpty(request.Customer.Name))
                     queryList = queryList.Where(d => d.Name.Contains(request.Customer.Name));
-
-                if (!string.IsNullOrEmpty(request.Customer.Number))
-                    queryList = queryList.Where(d => d.Number.Contains(request.Customer.Number));
-
-                if (!string.IsNullOrEmpty(request.Customer.Username))
-                    queryList = queryList.Where(d => d.Username.Contains(request.Customer.Username));
-
                 if (!string.IsNullOrEmpty(request.Customer.Tel))
                     queryList = queryList.Where(d => d.Tel.Contains(request.Customer.Tel));
 
@@ -97,9 +87,6 @@ namespace GMS.Crm.BLL
 
                 if (request.Customer.Category > 0)
                     queryList = queryList.Where(d => d.Category == request.Customer.Category);
-
-                if (request.Customer.Profession > 0)
-                    queryList = queryList.Where(d => d.Profession == request.Customer.Profession);
 
                 if (request.Customer.AgeGroup > 0)
                     queryList = queryList.Where(d => d.AgeGroup == request.Customer.AgeGroup);
@@ -117,9 +104,7 @@ namespace GMS.Crm.BLL
                     if (dbContext.Customers.Any(c => c.Tel == customer.Tel && c.ID != customer.ID))
                         throw new BusinessException("Tel", "已存在此电话的客户！");
 
-                    if (dbContext.Customers.Any(c => c.Number == customer.Number && c.ID != customer.ID))
-                        throw new BusinessException("Number", "已存在此编号的客户！");
-                    
+
                     dbContext.Update<Customer>(customer);
                 }
                 else
@@ -127,9 +112,6 @@ namespace GMS.Crm.BLL
                     if (dbContext.Customers.Any(c => c.Tel == customer.Tel))
                         throw new BusinessException("Tel", "已存在此电话的客户！");
 
-                    if (dbContext.Customers.Any(c => c.Number == customer.Number))
-                        throw new BusinessException("Number", "已存在此编号的客户！");
-                    
                     dbContext.Insert<Customer>(customer);
                 }
             }
@@ -167,9 +149,6 @@ namespace GMS.Crm.BLL
 
                 if (model.Customer != null && !string.IsNullOrEmpty(model.Customer.Name))
                     queryList = queryList.Where(d => d.Customer.Name.Contains(model.Customer.Name));
-
-                if (model.Customer != null && !string.IsNullOrEmpty(model.Customer.Number))
-                    queryList = queryList.Where(d => d.Customer.Number.Contains(model.Customer.Number));
 
                 if (model.Customer != null && !string.IsNullOrEmpty(model.Customer.Tel))
                     queryList = queryList.Where(d => d.Customer.Tel.Contains(model.Customer.Tel));

@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using GMS.Framework.Contract;
 using GMS.Framework.Utility;
+using GMS.OA.Contract;
 
 namespace GMS.Crm.Contract
 {
@@ -12,32 +13,41 @@ namespace GMS.Crm.Contract
     public class Customer : ModelBase
     {
         [StringLength(50, ErrorMessage = "客户名不能超过50个字")]
-        [Required(ErrorMessage="客户名不能为空")]
+        [Required(ErrorMessage = "客户名不能为空")]
         public string Name { get; set; }
-        [StringLength(50, ErrorMessage = "客户编号不能超过50个字")]
-        [Required(ErrorMessage = "客户编号不能为空")]
-        public string Number { get; set; }
+
         [StringLength(50, ErrorMessage = "电话不能超过50个字")]
-        [Required(ErrorMessage = "电话不能为空")]
         public string Tel { get; set; }
-        public int UserId { get; set; }
-        [StringLength(50)]
-        public string Username { get; set; }
+
         [RegularExpression(@"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}", ErrorMessage = "电子邮件地址无效")]
         public string Email { get; set; }
         /// <summary>
         /// 通讯地址
         /// </summary>
-         [StringLength(100, ErrorMessage = "地址不能超过100个字")]
+        [StringLength(100, ErrorMessage = "地址不能超过100个字")]
         public string Address { get; set; }
-        /// <summary>
-        /// 职业
-        /// </summary>
-        public int Profession { get; set; }
         public int Gender { get; set; }
         public int Category { get; set; }
         public virtual ICollection<VisitRecord> VisitRecords { get; set; }
         public int AgeGroup { get; set; }
+
+        private int? staffId;
+        public int? StaffId
+        {
+            get
+            {
+                return staffId;
+            }
+            set
+            {
+                if (staffId == null)
+                {
+                    Staff = null;
+                }
+                staffId = value;
+            }
+        }
+        public virtual Staff Staff { get; set; }
     }
 
     public enum EnumAgeGroup
@@ -68,7 +78,7 @@ namespace GMS.Crm.Contract
     {
         [EnumTitle("无", IsDisplay = false)]
         None = 0,
-        
+
         [EnumTitle("政府机关")]
         Government = 1,
 
@@ -79,25 +89,25 @@ namespace GMS.Crm.Contract
         BankingBusiness = 3,
 
         [EnumTitle("个体私营")]
-        PrivateEnterprises  = 4,
+        PrivateEnterprises = 4,
 
         [EnumTitle("服务业")]
         ServicingBusiness = 5,
 
         [EnumTitle("广告传媒")]
-        NewElement  = 6,
+        NewElement = 6,
 
         [EnumTitle("制造业")]
         Manufacturing = 7,
 
         [EnumTitle("运输业")]
-        TransportService  = 8,
+        TransportService = 8,
 
         [EnumTitle("商贸")]
         Trade = 9,
 
         [EnumTitle("军警")]
-        MilitaryPolice  = 10,
+        MilitaryPolice = 10,
 
         [EnumTitle("退休")]
         Retirement = 11,
@@ -106,7 +116,7 @@ namespace GMS.Crm.Contract
         Komuniko = 12,
 
         [EnumTitle("医疗卫生教育")]
-        MedicalTreatment  = 13,
+        MedicalTreatment = 13,
 
         [EnumTitle("房地产建筑业")]
         Realty = 14,
@@ -145,7 +155,7 @@ namespace GMS.Crm.Contract
         MarriedButChild = 3,
 
         [EnumTitle("三代同堂")]
-        ExtendedFamily  = 4,
+        ExtendedFamily = 4,
 
         [EnumTitle("其他结构")]
         Others = 5

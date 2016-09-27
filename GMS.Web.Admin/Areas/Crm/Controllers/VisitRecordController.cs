@@ -23,11 +23,11 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
             this.TryUpdateModel<VisitRecord>(request.VisitRecord);
 
             this.ModelState.Clear();
-            
+
             this.RenderMyViewData(request.VisitRecord, true);
             var areas = this.AreaDic.Values.Select(c => new { Id = c.ID, Name = c.Name + "-" + this.CityDic[c.CityId].Name });
             ViewData.Add("AreaId", new SelectList(areas, "Id", "Name", request.VisitRecord.AreaId));
-            
+
             var result = this.CrmService.GetVisitRecordList(request);
             return View(result);
         }
@@ -67,7 +67,7 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
                 this.RenderMyViewData(model);
                 return View("Edit", model);
             }
-            
+
 
             return this.RefreshParent();
         }
@@ -149,7 +149,7 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
             ViewData.Add("AreaId", new SelectList(areas, "Id", "Name", model.AreaId));
 
             var request = new CustomerRequest();
-            request.Customer.UserId = this.UserContext.LoginInfo.UserID;
+            request.Customer.StaffId = this.UserContext.LoginInfo.StaffID;
             var customerList = this.CrmService.GetCustomerList(request).ToList();
             customerList.ForEach(c => c.Name = string.Format("{0}({1})", c.Name, c.Tel));
             ViewData.Add("CustomerId", new SelectList(customerList, "Id", "Name", model.CustomerId));

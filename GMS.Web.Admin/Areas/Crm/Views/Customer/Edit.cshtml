@@ -29,14 +29,6 @@
             </div>
 
             <div class="control-group">
-                <label class="control-label"><span class="required">*</span>客户编号：</label>
-                <div class="controls">
-                @Html.TextBoxFor(m => m.Number, new { @class = "m-wrap" })
-                <span class="help-inline">@Html.ValidationMessageFor(m => m.Number)</span>
-                </div>
-            </div>
-
-            <div class="control-group">
                 <label class="control-label"><span class="required">*</span>客户电话：</label>
                 <div class="controls">
                 @Html.TextBoxFor(m => m.Tel, new { @class = "m-wrap" })
@@ -73,14 +65,6 @@
                 <div class="controls">
                 @Html.RadioBoxList("Category")   
                 <span class="help-inline">@Html.ValidationMessageFor(m => m.Category)</span>
-                </div>
-            </div>
-
-            <div class="control-group">
-                <label class="control-label"><span class="required">*</span>职业：</label>
-                <div class="controls">
-                @Html.RadioBoxList("Profession")   
-                <span class="help-inline">@Html.ValidationMessageFor(m => m.Profession)</span>
                 </div>
             </div>
 

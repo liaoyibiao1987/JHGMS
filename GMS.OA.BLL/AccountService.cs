@@ -68,7 +68,7 @@ namespace GMS.Account.BLL
                     }
                     else
                     {
-                        loginInfo = new LoginInfo(user.ID, user.LoginName);
+                        loginInfo = new LoginInfo(user.ID, user.LoginName, user.StaffID);
                         loginInfo.ClientIP = ip;
                         loginInfo.BusinessPermissionList = user.BusinessPermissionList;
                         dbContext.Insert<LoginInfo>(loginInfo);

@@ -5,6 +5,7 @@ using System.Data.Entity.Infrastructure;
 using System.Data.Entity;
 using GMS.Crm.Contract;
 using GMS.Core.Log;
+using GMS.OA.Contract;
 
 namespace GMS.Crm.DAL
 {
@@ -21,6 +22,7 @@ namespace GMS.Crm.DAL
             base.OnModelCreating(modelBuilder);
         }
 
+        public DbSet<Staff> Staffs { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<VisitRecord> VisitRecords { get; set; }
         public DbSet<Project> Projects { get; set; }
