@@ -65,7 +65,7 @@ CREATE TABLE [dbo].[Business] (
     [CustomerID] INT            NULL,
     [Message]    NVARCHAR (200) NULL,
     [Log]        TEXT           NULL,
-    [CreateDate] DATE           NOT NULL,
+    [CreateTime] DATETime           NOT NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 

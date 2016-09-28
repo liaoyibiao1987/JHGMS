@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_Framework", "_Framework", "{37CB0357-0851-490B-9A39-2C8193156D4D}"
 EndProject
@@ -46,6 +46,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DB", "DB", "{A4E33E83-7517-4BA3-852B-B2CFAA734126}"
 	ProjectSection(SolutionItems) = preProject
 		2016-9-27.sql = 2016-9-27.sql
+		Business.sql = Business.sql
 		数据库.txt = 数据库.txt
 	EndProjectSection
 EndProject
