@@ -8,75 +8,81 @@
 }
 @section PageSpecificStyleSheetIncludes{
     <style type="text/css">
-        .controls label
-        {
-            display:inline;
+        .controls label {
+            display: inline;
         }
     </style>
 }
 @section PageSpecificJavascriptIncludes{
 }
 @section MainContent{
-<div class="portlet-body form-horizontal form-bordered form-row-stripped">
-    <div class="row-fluid"> 
+    <div class="portlet-body form-horizontal form-bordered form-row-stripped">
+        <div class="row-fluid">
 
             <div class="control-group">
                 <label class="control-label"><span class="required">*</span>客户姓名：</label>
                 <div class="controls">
-                @Html.TextBoxFor(m => m.Name, new { @class = "m-wrap" })
-                <span class="help-inline">@Html.ValidationMessageFor(m => m.Name)</span>
+                    @Html.TextBoxFor(m => m.Name, new { @class = "m-wrap" })
+                    <span class="help-inline">@Html.ValidationMessageFor(m => m.Name)</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label"><span class="required">*</span>联系人：</label>
+                <div class="controls">
+                    @Html.TextBoxFor(m => m.Contacter, new { @class = "m-wrap" })
+                    <span class="help-inline">@Html.ValidationMessageFor(m => m.Contacter)</span>
                 </div>
             </div>
 
             <div class="control-group">
                 <label class="control-label"><span class="required">*</span>客户电话：</label>
                 <div class="controls">
-                @Html.TextBoxFor(m => m.Tel, new { @class = "m-wrap" })
-                <span class="help-inline">@Html.ValidationMessageFor(m => m.Tel)</span>
+                    @Html.TextBoxFor(m => m.Tel, new { @class = "m-wrap" })
+                    <span class="help-inline">@Html.ValidationMessageFor(m => m.Tel)</span>
                 </div>
             </div>
 
             <div class="control-group">
                 <label class="control-label"><span class="required">*</span>电子邮件：</label>
                 <div class="controls">
-                @Html.TextBoxFor(m => m.Email, new { @class = "m-wrap" })
-                <span class="help-inline">@Html.ValidationMessageFor(m => m.Email)</span>
+                    @Html.TextBoxFor(m => m.Email, new { @class = "m-wrap" })
+                    <span class="help-inline">@Html.ValidationMessageFor(m => m.Email)</span>
                 </div>
             </div>
 
             <div class="control-group">
                 <label class="control-label"><span class="required">*</span>通讯地址：</label>
                 <div class="controls">
-                @Html.TextBoxFor(m => m.Address, new { @class = "m-wrap" })
-                <span class="help-inline">@Html.ValidationMessageFor(m => m.Address)</span>
+                    @Html.TextBoxFor(m => m.Address, new { @class = "m-wrap" })
+                    <span class="help-inline">@Html.ValidationMessageFor(m => m.Address)</span>
                 </div>
             </div>
 
             <div class="control-group">
                 <label class="control-label"><span class="required">*</span>性别：</label>
                 <div class="controls">
-                @Html.RadioBoxList("Gender")   
-                <span class="help-inline">@Html.ValidationMessageFor(m => m.Gender)</span>
+                    @Html.RadioBoxList("Gender")
+                    <span class="help-inline">@Html.ValidationMessageFor(m => m.Gender)</span>
                 </div>
             </div>
 
             <div class="control-group">
                 <label class="control-label"><span class="required">*</span>客户类型：</label>
                 <div class="controls">
-                @Html.RadioBoxList("Category")   
-                <span class="help-inline">@Html.ValidationMessageFor(m => m.Category)</span>
+                    @Html.RadioBoxList("Category")
+                    <span class="help-inline">@Html.ValidationMessageFor(m => m.Category)</span>
                 </div>
             </div>
 
             <div class="control-group">
                 <label class="control-label"><span class="required">*</span>客户年龄：</label>
                 <div class="controls">
-                @Html.RadioBoxList("AgeGroup")   
-                <span class="help-inline">@Html.ValidationMessageFor(m => m.AgeGroup)</span>
+                    @Html.RadioBoxList("AgeGroup")
+                    <span class="help-inline">@Html.ValidationMessageFor(m => m.AgeGroup)</span>
                 </div>
             </div>
 
+        </div>
     </div>
-</div>
 }
 
