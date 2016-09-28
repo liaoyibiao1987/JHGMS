@@ -16,6 +16,8 @@ namespace GMS.Crm.Contract
         [Required(ErrorMessage = "客户名不能为空")]
         public string Name { get; set; }
 
+        public string Contacter { get; set; }
+
         [StringLength(50, ErrorMessage = "电话不能超过50个字")]
         public string Tel { get; set; }
 
@@ -145,19 +147,13 @@ namespace GMS.Crm.Contract
         [EnumTitle("无", IsDisplay = false)]
         None = 0,
 
-        [EnumTitle("单身")]
+        [EnumTitle("商业")]
         Single = 1,
 
-        [EnumTitle("已婚无小孩")]
+        [EnumTitle("连锁")]
         Married = 2,
 
-        [EnumTitle("已婚有小孩")]
-        MarriedButChild = 3,
-
-        [EnumTitle("三代同堂")]
-        ExtendedFamily = 4,
-
-        [EnumTitle("其他结构")]
-        Others = 5
+        [EnumTitle("其他")]
+        MarriedButChild = 3
     }
 }
