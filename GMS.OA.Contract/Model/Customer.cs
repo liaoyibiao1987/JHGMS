@@ -144,13 +144,17 @@ namespace GMS.Crm.Contract
     /// </summary>
     public enum EnumCategory
     {
-        [EnumTitle("其他")]
+        [EnumTitle("未设置")]
         None = 0,
 
         [EnumTitle("连锁")]
         Single = 1,
 
         [EnumTitle("商业")]
-        Married = 2
+        Married = 2,
+
+        [EnumTitle("其他")]
+        Others = 3
+
     }
 }
