@@ -22,9 +22,9 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
             this.TryUpdateModel<Customer>(request.Customer);
 
             this.ModelState.Clear();
-            
+
             this.RenderMyViewData(request.Customer, true);
-            
+
             var result = this.CrmService.GetCustomerList(request);
             return View(result);
         }
@@ -60,7 +60,7 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
                 this.RenderMyViewData(model);
                 return View("Edit", model);
             }
-            
+
 
             return this.RefreshParent();
         }
@@ -103,7 +103,10 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
         [HttpPost]
         public ActionResult Delete(List<int> ids)
         {
-            this.CrmService.DeleteCustomer(ids);
+            if (ids != null && ids.Count > 0)
+            {
+                this.CrmService.DeleteCustomer(ids);
+            }
             return RedirectToAction("Index");
         }
 

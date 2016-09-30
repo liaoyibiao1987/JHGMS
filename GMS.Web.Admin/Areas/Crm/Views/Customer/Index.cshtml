@@ -18,16 +18,16 @@
 <div class="row-fluid">
     <div class="span1">
         <div>
-            <a class="btn blue thickbox" title='添加新客户' href="@Url.Action("Create")?TB_iframe=true&height=600&width=600"><i class="icon-plus icon-white"></i> 新增</a>
+            <a class="btn blue thickbox" title='添加新客户' href="@Url.Action("Create")?TB_iframe=true&height=600&width=600"><i class="icon-plus icon-white"></i>新增</a>
             <br />
-            <a class="btn red" id="delete" href="javascript:;"><i class="icon-trash icon-white"></i> 删除</a>
+            <a class="btn red" id="delete" href="javascript:;"><i class="icon-trash icon-white"></i>删除</a>
         </div>
     </div>
     <div class="span11">
         @using (Html.BeginForm(null, null, null, FormMethod.Get, new { id = "search", @class = "form-inline" }))
         {
             <div>
-                置业顾问：@Html.TextBox("username", Request["username"], new { @class = "m-wrap small" })&nbsp;
+                业务员：@Html.TextBox("username", Request["username"], new { @class = "m-wrap small" })&nbsp;
                 客户名：@Html.TextBox("name", Request["name"], new { @class = "m-wrap small" })&nbsp;
                 客户电话：@Html.TextBox("tel", Request["tel"], new { @class = "m-wrap small" })&nbsp;
             </div>

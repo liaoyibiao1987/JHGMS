@@ -85,10 +85,17 @@ $("#checkall").click(function () {
 
 $("#delete").click(function () {
     var message = "你确定要删除勾选的记录吗?";
-    if ($(this).attr("message"))
+    if ($(this).attr("message")) {
         message = $(this).attr("message") + "，" + message;
-    if (confirm(message))
-        $("#mainForm").submit();
+    }
+    if ($("input:checkbox[name='ids'][checked]").length > 0) {
+        if (confirm(message) == true) {
+            $("#mainForm").submit();
+        }
+    } else {
+        alert("必须勾选记录。");
+    }
+
 });
 
 
