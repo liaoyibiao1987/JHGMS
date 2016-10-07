@@ -1,0 +1,13 @@
+﻿@model IEnumerable<SelectListItem>
+
+@foreach (SelectListItem item in Model)
+{
+    var ischecked = "";
+    if (item.Selected)
+    {
+        ischecked = "checked='checked'";
+    }
+    <input name="@ViewData["ListName"]" type="checkbox" value="@item.Value" @ischecked />
+    @item.Text
+
+}
