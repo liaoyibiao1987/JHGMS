@@ -9,14 +9,55 @@ using System.Text;
 
 namespace GMS.Crm.Contract
 {
-    [Table("Customer")]
+    [Table("Business")]
     public class Business : ModelBase
     {
         public int? StaffID { get; set; }
+        public virtual Staff Staff { get; set; }
         public int? CustomerID { get; set; }
+        public virtual Customer Customer { get; set; }
+
         [StringLength(200, ErrorMessage = "细节不能超过200个字符")]
         public string Message { get; set; }
         public string Log { get; set; }
-        public virtual Staff Staff { get; set; }
+    }
+
+    public class BusinessVM
+    {
+        private Customer customer;
+        public Customer Customer
+        {
+            get
+            {
+                return customer;
+            }
+            set
+            {
+                customer = value;
+            }
+        }
+
+        private IEnumerable<Business> business;
+        public IEnumerable<Business> Business
+        {
+            get
+            {
+                return business;
+            }
+            set
+            {
+                business = value;
+            }
+        }
+        public BusinessVM()
+        {
+
+        }
+        public BusinessVM(Customer cust, IEnumerable<Business> bis)
+        {
+            this.customer = cust;
+            this.business = bis;
+        }
+        //public IEnumerable<Business> 
     }
 }

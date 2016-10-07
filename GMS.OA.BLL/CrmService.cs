@@ -225,6 +225,44 @@ namespace GMS.Crm.BLL
         }
         #endregion
 
+        public IEnumerable<BusinessVM> GetBusinessList(BusinessRequest request, List<int> staffIDs)
+        {
+            if (request == null || request.StartDate == null || request.EndDate == null) return null;
+            using (var dbContext = new CrmDbContext())
+            {
+                //IQueryable<Customer> queryList = dbContext.Customers.Include("Staff").Include("Business");
+                //return queryList.Where(p => (staffIDs.Contains(p.StaffID ?? 0) && p.Business.Count > 0)).ToList();
+
+                //var list = from t1 in dbContext.Businesies
+                //           join t2 in dbContext.Customers on new { Cus = t1.CustomerID == null ? 0 : t1.CustomerID.Value, Stf = t1.StaffID } equals new { Cus = t2.ID, Stf = t2.StaffId } //into left
+                //           //from c in left.DefaultIfEmpty()
+                //           where staffIDs.Contains(t2.StaffId == null ? -1 : t2.StaffId.Value)
+                //                    && t1.CreateTime > request.StartDate.Value
+                //                    && t1.CreateTime < request.EndDate.Value
+                //           select new BusinessVM { Customer = t2, Business = t1 };
+                var query = from a in dbContext.Customers
+                            join b in dbContext.Business
+                            on new { Cus = a.ID, Stf = a.StaffID } equals new { Cus = b.CustomerID == null ? 0 : b.CustomerID.Value, Stf = b.StaffID } into t
+                            where staffIDs.Contains(a.StaffID == null ? -1 : a.StaffID.Value)
+                            select new BusinessVM
+                            {
+                                Customer = a,
+                                Business = t.Where(p => (p.CreateTime > request.StartDate.Value && p.CreateTime < request.EndDate.Value))
+                            };
+                return query.ToList();
+                //return list.OrderByDescending(u => u.Customer.ID).ToList();
+                //var query=dbContext.Customers.GroupJoin(dbContext.Business,
+                //                                        a=>new { Cus = a.ID , Stf = a.StaffId },
+                //                                        b=>new { Cus = b.CustomerID == null ? 0 : b.CustomerID.Value, Stf = b.StaffID },
+                //                                        (a,t)=>new 
+                //                                            {
+                //                                                ID=a.ID,
+                //                                                Content=a.Name,
+                //                                                UserIDs=t
+                //                                            }).Where(p=>p.ID);
+
+            }
+        }
         public IEnumerable<City> GetCityList(Request request = null)
         {
             request = request ?? new Request();

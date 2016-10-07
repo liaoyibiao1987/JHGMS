@@ -26,7 +26,7 @@
     <div class="span11">
         @using (Html.BeginForm(null, null, null, FormMethod.Get, new { id = "search", @class = "form-inline" }))
         {
-            <div>
+            <div class="controls">
                 业务员：@Html.TextBox("username", Request["username"], new { @class = "m-wrap small" })&nbsp;
                 客户名：@Html.TextBox("name", Request["name"], new { @class = "m-wrap small" })&nbsp;
                 客户电话：@Html.TextBox("tel", Request["tel"], new { @class = "m-wrap small" })&nbsp;

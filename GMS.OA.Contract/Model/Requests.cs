@@ -57,6 +57,7 @@ namespace GMS.Cms.Contract
         Hits = 1
     }
 }
+
 namespace GMS.Crm.Contract
 {
     public class ProjectRequest : Request
@@ -72,6 +73,16 @@ namespace GMS.Crm.Contract
         }
 
         public Customer Customer { get; set; }
+    }
+
+    public class BusinessRequest : Request
+    {
+        public BusinessRequest()
+        {
+        }
+
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
     }
 
     public class VisitRecordRequest : Request
@@ -103,4 +114,6 @@ namespace GMS.Crm.Contract
         public int VisitCount { get; set; }
         public int TelCount { get; set; }
     }
+
+
 }

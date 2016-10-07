@@ -32,9 +32,19 @@ namespace GMS.Crm.Contract
         public int Category { get; set; }
         public virtual ICollection<VisitRecord> VisitRecords { get; set; }
         public int AgeGroup { get; set; }
+        public int? ContacterType { get; set; }
+        public int? CooperationOrNot { get; set; }
+        public string CooperationKinds { get; set; }
+        public float? AvePayment { get; set; }
+        public float? PredictPayment { get; set; }
+        public float? CurrentPayment { get; set; }
+        public string Channel { get; set; }
+        public string BusinessType { get; set; }
+        public int? ChainCount { get; set; }
+        public int? ChainType { get; set; }
 
         private int? staffId;
-        public int? StaffId
+        public int? StaffID
         {
             get
             {
@@ -50,7 +60,10 @@ namespace GMS.Crm.Contract
             }
         }
         public virtual Staff Staff { get; set; }
+
+        //public virtual ICollection<Business> Business { get; set; }
     }
+
 
     public enum EnumAgeGroup
     {
