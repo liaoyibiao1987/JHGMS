@@ -268,5 +268,5 @@ __pycache__/
 # tools/
 *.pdb
 *.dll
-GMS.Web.Admin/Config/DaoConfig.xml
+GMS.v12.suo
 GMS.Web.Admin/Config/DaoConfig.xml

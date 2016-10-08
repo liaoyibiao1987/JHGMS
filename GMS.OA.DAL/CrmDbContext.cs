@@ -25,6 +25,7 @@ namespace GMS.Crm.DAL
         public DbSet<Staff> Staffs { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<VisitRecord> VisitRecords { get; set; }
+        public DbSet<Business> Business { get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<City> Citys { get; set; }
         public DbSet<Area> Areas { get; set; }

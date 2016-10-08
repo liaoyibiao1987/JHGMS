@@ -51,6 +51,7 @@
     <Compile Include="Model\Article.cs" />
     <Compile Include="Model\Channel.cs" />
     <Compile Include="Model\City.cs" />
+    <Compile Include="Model\Business.cs" />
     <Compile Include="Model\Customer.cs" />
     <Compile Include="Model\EnumBusinessPermission.cs" />
     <Compile Include="Model\LoginInfo.cs" />

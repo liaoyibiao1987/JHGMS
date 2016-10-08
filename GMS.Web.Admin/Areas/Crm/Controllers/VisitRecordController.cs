@@ -149,7 +149,7 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
             ViewData.Add("AreaId", new SelectList(areas, "Id", "Name", model.AreaId));
 
             var request = new CustomerRequest();
-            request.Customer.StaffId = this.UserContext.LoginInfo.StaffID;
+            request.Customer.StaffID = this.UserContext.LoginInfo.StaffID;
             var customerList = this.CrmService.GetCustomerList(request).ToList();
             customerList.ForEach(c => c.Name = string.Format("{0}({1})", c.Name, c.Tel));
             ViewData.Add("CustomerId", new SelectList(customerList, "Id", "Name", model.CustomerId));
