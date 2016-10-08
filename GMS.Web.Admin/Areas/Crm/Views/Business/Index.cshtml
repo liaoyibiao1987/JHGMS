@@ -10,6 +10,10 @@
 }
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
+    DateTime endDate = (DateTime)ViewData["endDate"];
+    DateTime startDate = (DateTime)ViewData["startDate"];
+
+    double RANGE = ((DateTime)ViewData["endDate"] - (DateTime)ViewData["startDate"]).TotalDays;
 }
 
 @model IEnumerable<BusinessVM>
@@ -29,7 +33,7 @@
         #divData th {
             word-break: keep-all;
             word-wrap: inherit;
-            min-width: 50px;
+            min-width: 120px;
         }
     </style>
 }
@@ -78,13 +82,13 @@
         //});
         var range = 0;
         $(document).ready(function () {
-            var dates = $("#startDate, #endDate").datepicker({
+            var dates = $("#start, #end").datepicker({
                 dateFormat: "yy-mm-dd",
                 defaultDate: "-1w",
                 changeMonth: true,
                 numberOfMonths: 2,
                 onSelect: function (selectedDate) {
-                    var option = this.id == "startDate" ? "minDate" : "maxDate",
+                    var option = this.id == "start" ? "minDate" : "maxDate",
                     instance = $(this).data("datepicker"),
                     date = $.datepicker.parseDate(
                         instance.settings.dateFormat ||
@@ -118,9 +122,9 @@
                     var start = $("#startDate").datepicker("getDate");
                     var end = $("#endDate").datepicker("getDate");
                     $("th[b='bns'],td[b='bns']").detach();
-                    rendHead(start, end);
-                    //form.submit();
-                    getData(start.format("yyyy-MM-dd"), end.format("yyyy-MM-dd"));
+                    //rendHead(start, end);
+                    form.submit();
+                    //getData(start.format("yyyy-MM-dd"), end.format("yyyy-MM-dd"));
                 }
             });
             $("#tbbusiness").DataTable({
@@ -169,7 +173,7 @@
                 }
             });
 
-
+            $("#tbbusiness").wrap("<div class='wrap' style='overflow:auto; min-height:200px;'></div>");
         });
 
         function rendHead(start, end) {
@@ -250,25 +254,132 @@
     <div class="span11">
         @using (Html.BeginForm(null, null, null, FormMethod.Post, new { id = "search", @class = "form-inline" }))
         {
-            <div class="p5 ">
-                <label>开始时间：</label>@Html.TextBox("startDate", ((DateTime)ViewData["startDate"]).ToString("yyyy-MM-dd"), new { @class = "m-wrap small" })&nbsp;
-                <label>结束时间：</label>@Html.TextBox("endDate", ((DateTime)ViewData["endDate"]).ToString("yyyy-MM-dd"), new { @class = "m-wrap small" })&nbsp;
+            <div class="p5">
+                <label>开始时间：</label>@Html.TextBox("start", ((DateTime)ViewData["startDate"]).ToString("yyyy-MM-dd"), new { @class = "m-wrap small" })&nbsp;
+                <label>结束时间：</label>@Html.TextBox("end", ((DateTime)ViewData["endDate"]).ToString("yyyy-MM-dd"), new { @class = "m-wrap small" })&nbsp;
 
                 <button type="submit" class="btn">搜索<i class="icon-search"></i></button>
             </div>
         }
     </div>
 </div>
-
-<div id="divData" class="row-fluid" style="overflow:auto; min-height:200px;">
-    <table class="table table-striped table-hover " id="tbbusiness">
+<div id="divData" class="row-fluid">
+    <table class="table table-striped table-hover" id="tbbusiness">
         <thead>
             <tr id="tbhead">
                 <th>
-                    客户名
+                    <span style="width:200px;display:inline-block">客户名</span>
                 </th>
+                <th>
+                    类型
+                </th>
+                <th>
+                    联系人
+                </th>
+                <th>
+                    联系电话
+                </th>
+                <th>
+                    联系人性别
+                </th>
+                <th>
+                    年龄
+                </th>
+                <th>
+                    业务员
+                </th>
+                <th>
+                    业务统计<br />(此时间段)
+                </th>
+
+                @for (int x = 0; x <= RANGE; x++)
+                {
+                    <th>
+                        <span>@(((DateTime)ViewData["startDate"]).AddDays(x).ToString("yyyy-MM-dd")) </span>
+                    </th>
+                }
+
             </tr>
         </thead>
-        <tbody id="tbbody"></tbody>
+        <tbody id="tbbody">
+            @if (Model != null)
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        @if (item.Customer != null)
+                        {
+                            <td class="blue">
+                                <span>@item.Customer.Name</span>
+                            </td>
+                            <td>
+                                <span>@EnumHelper.GetEnumTitle((EnumCategory)item.Customer.Category)</span>
+                            </td>
+                            <td class="blue">
+                                <span>@item.Customer.Contacter</span>
+                            </td>
+                            <td>
+                                <span>@item.Customer.Tel</span>
+                            </td>
+                            <td>
+                                <span>@EnumHelper.GetEnumTitle((EnumGender)item.Customer.Gender)</span>
+                            </td>
+
+                            <td>
+                                <span>@EnumHelper.GetEnumTitle((EnumAgeGroup)item.Customer.AgeGroup)</span>
+                            </td>
+                            <td class="green">
+                                <span>@(item.Customer.Staff == null ? "没有分配" : item.Customer.Staff.Name)</span>
+                            </td>
+                            <td class="green">
+                                <span>@((item.Business == null || item.Business.Count() == 0) ? "没有业务" : item.Business.Count().ToString() + " 次业务")</span>
+                            </td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+
+                        @for (int x = 0; x <= RANGE; x++)
+                        {
+                            if (item.Business != null)
+                            {
+                                var msg = item.Business.FirstOrDefault(o => ((int)(o.CreateTime - startDate).TotalDays) == x);
+
+                                if (msg != null)
+                                {
+                                    <td>
+                                        <span>@msg.Message</span>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td></td>
+                                }
+                            }
+                            else
+                            {
+                                <td>
+                                    <span></span>
+                                </td>
+                            }
+
+                        }
+
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    @for (int x = 0; x <= RANGE; x++)
+                    {
+                        <td>
+                            <span></span>
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
     </table>
 </div>

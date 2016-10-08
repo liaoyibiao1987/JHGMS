@@ -25,21 +25,20 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
         }
 
         [HttpPost]
-        public JsonResult Index(DateTime start, DateTime end)
+        public ActionResult Index(DateTime start, DateTime end)
         {
             BusinessRequest req = new BusinessRequest();
             req.StartDate = start;
             req.EndDate = end;
             RenderMyViewData(req);
-
             IEnumerable<BusinessVM> list = CrmService.GetBusinessList(req, new List<int> { 1, 2 });
-            return Json(list, JsonRequestBehavior.AllowGet);
+            return View(list);
         }
 
         private void RenderMyViewData(BusinessRequest model)
         {
-            ViewData.Add("startDate", (model == null || model.StartDate == null) ? DateTime.Now.AddMonths(-1) : model.StartDate.Value);
-            ViewData.Add("endDate", (model == null || model.EndDate == null) ? DateTime.Now : model.EndDate.Value);
+            ViewData.Add("startDate", (model == null || model.StartDate == null) ? DateTime.Now.AddMonths(-1).Subtract(DateTime.Now.TimeOfDay) : model.StartDate.Value);
+            ViewData.Add("endDate", (model == null || model.EndDate == null) ? DateTime.Now.Subtract(DateTime.Now.TimeOfDay) : model.EndDate.Value);
         }
 
 

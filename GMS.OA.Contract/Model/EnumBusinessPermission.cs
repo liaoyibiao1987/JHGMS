@@ -24,11 +24,11 @@ namespace GMS.Account.Contract
 
 
 
-        [EnumTitle("CMS管理文章")]
-        CmsManage_Article = 201,
+        //[EnumTitle("CMS管理文章")]
+        //CmsManage_Article = 201,
 
-        [EnumTitle("CMS管理文章频道")]
-        CmsManage_Channel = 202,
+        //[EnumTitle("CMS管理文章频道")]
+        //CmsManage_Channel = 202,
 
 
         [EnumTitle("CRM管理来访来电")]
