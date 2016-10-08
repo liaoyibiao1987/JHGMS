@@ -263,6 +263,15 @@ namespace GMS.Crm.BLL
 
             }
         }
+
+        public IEnumerable<Business> GetBusinessList(BusinessRequest request, int customerid)
+        {
+            if (request == null || request.StartDate == null || request.EndDate == null) return null;
+            using (var dbContext = new CrmDbContext())
+            {
+                return dbContext.Business.Where(p => (p.CreateTime > request.StartDate && p.CreateTime < request.EndDate && p.CustomerID == customerid)).ToList();
+            }
+        }
         public IEnumerable<City> GetCityList(Request request = null)
         {
             request = request ?? new Request();

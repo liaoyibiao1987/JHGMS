@@ -30,9 +30,24 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
             BusinessRequest req = new BusinessRequest();
             req.StartDate = start;
             req.EndDate = end;
+            this.ModelState.Clear();
             RenderMyViewData(req);
             IEnumerable<BusinessVM> list = CrmService.GetBusinessList(req, new List<int> { 1, 2 });
             return View(list);
+        }
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public JsonResult GetBusiness(DateTime dstart, DateTime dend)
+        {
+            BusinessRequest rquester = new BusinessRequest();
+            rquester.StartDate = dstart;
+            rquester.EndDate = dend;
+            IEnumerable<Business> list = CrmService.GetBusinessList(rquester, 1);
+            return Json(list);
         }
 
         private void RenderMyViewData(BusinessRequest model)

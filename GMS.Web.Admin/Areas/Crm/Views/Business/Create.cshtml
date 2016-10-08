@@ -1,0 +1,455 @@
+﻿@using GMS.Framework.Contract
+@using GMS.Framework.Web.Controls
+@using GMS.Crm.Contract
+@using GMS.Web
+
+@{
+    ViewBag.Title = "添加跟单";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    //Layout = "~/Views/Shared/_Layout.Edit.cshtml";
+}
+@section PageSpecificStyleSheetIncludes{
+    <style type="text/css">
+        .controls label {
+            display: inline;
+        }
+
+        .ui-datepicker {
+            width: 23em;
+            padding: .2em .2em 0;
+            font-size: 70%;
+            display: none;
+        }
+
+        #calendar {
+            margin: 0 auto;
+        }
+
+        #loading {
+            top: 0px;
+            right: 0px;
+        }
+
+        .tooltip {
+            padding-bottom: 25px;
+            padding-left: 25px;
+            width: 100px !important;
+            padding-right: 25px;
+            display: none;
+            background: #999;
+            height: 70px;
+            color: red;
+            font-size: 12px;
+            padding-top: 25px;
+            z-order: 10;
+        }
+
+        .ui-timepicker-div .ui-widget-header {
+            margin-bottom: 8px;
+        }
+
+        .ui-timepicker-div dl {
+            text-align: left;
+        }
+
+            .ui-timepicker-div dl dt {
+                height: 25px;
+                margin-bottom: -25px;
+            }
+
+            .ui-timepicker-div dl dd {
+                margin: 0 10px 10px 65px;
+            }
+
+        .ui-timepicker-div td {
+            font-size: 90%;
+        }
+
+        .ui-tpicker-grid-label {
+            background: none;
+            border: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .ui-timepicker-rtl {
+            direction: rtl;
+        }
+
+            .ui-timepicker-rtl dl {
+                text-align: right;
+            }
+
+                .ui-timepicker-rtl dl dd {
+                    margin: 0 65px 10px 10px;
+                }
+    </style>
+    <link rel='stylesheet' type='text/css'
+          href='@Url.StaticFile("/assets/fullcalendar/fullcalendar/fullcalendar.css")' />
+    <link rel='stylesheet' type='text/css'
+          href='@Url.StaticFile("/assets/fullcalendar/fullcalendar/fullcalendar.print.css")' media='print' />
+}
+@section PageSpecificJavascriptIncludes{
+    <script src="@Url.StaticFile("/assets/fullcalendar/fullcalendar/fullcalendar.min.js")"></script>
+    <script type='text/javascript'>
+        Date.prototype.format = function (fmt) { //author: meizz
+            var o = {
+                "M+": this.getMonth() + 1,                 //月份
+                "d+": this.getDate(),                    //日
+                "h+": this.getHours(),                   //小时
+                "m+": this.getMinutes(),                 //分
+                "s+": this.getSeconds(),                 //秒
+                "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+                "S": this.getMilliseconds()             //毫秒
+            };
+            if (/(y+)/.test(fmt))
+                fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+            for (var k in o)
+                if (new RegExp("(" + k + ")").test(fmt))
+                    fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+            return fmt;
+        },
+        $(document).ready(function () {
+            var date = new Date();
+            var d = date.getDate();
+            var m = date.getMonth();
+            var y = date.getFullYear();
+
+            var calendar = $('#calendar').fullCalendar({
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month'
+                },
+                buttonText: {
+                    today: '本月',
+                    month: '月',
+                    week: '周',
+                    day: '日',
+                    prev: '上一月',
+                    next: '下一月'
+                },
+                loading: function (isloading, view) {
+                    if (isloading) {
+                        $('#loading').show();
+                    }
+                    else {
+                        alert(2);
+                        $('#loading').hide();
+                    }
+                },
+                selectable: true,
+                selectHelper: true,
+                select: function (start, end, allDay) {
+                    var title = prompt('Event Title:');
+                    if (title) {
+                        calendar.fullCalendar('renderEvent',
+                            {
+                                title: title,
+                                start: start,
+                                end: end,
+                                allDay: allDay
+                            },
+                            true // make the event "stick"
+                        );
+                    }
+                    calendar.fullCalendar('unselect');
+                },
+                titleFormat: "yyyy年-MM月-dd日",
+                editable: true,
+                dayNamesShort: ['星期天', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
+                //dayClick: function (date, allDay, jsEvent, view) {//日期点击后弹出的jq ui的框，添加日程记录
+                //    var selectdate = $.fullCalendar.formatDate(date, "yyyy-MM-dd");//选择当前日期的时间转换
+                //    $("#end").datetimepicker('setDate', selectdate);//给时间空间赋值
+                //    $("#reservebox").dialog({
+                //        autoOpen: false,
+                //        height: 450,
+                //        width: 400,
+                //        title: 'Reserve meeting room on ' + selectdate,
+                //        modal: true,
+                //        position: "center",
+                //        draggable: false,
+                //        beforeClose: function (event, ui) {
+                //            //$.validationEngine.closePrompt("#meeting");
+                //            //$.validationEngine.closePrompt("#start");
+                //            //$.validationEngine.closePrompt("#end");
+                //        },
+                //        timeFormat: 'HH:mm{ - HH:mm}',
+
+                //        buttons: {
+                //            "close": function () {
+                //                $(this).dialog("close");
+                //            },
+                //            "reserve": function () {
+
+                //                var startdatestr = $("#start").val(); //开始时间
+                //                var enddatestr = $("#end").val(); //结束时间
+                //                var confid = $("#title").val(); //标题
+                //                var det = $("#details").val(); //内容
+                //                var cd = $("#chengdu").val(); //重要程度
+                //                var id2;
+                //                var startdate = $.fullCalendar.parseDate(selectdate + "T" + startdatestr);//时间和日期拼接
+                //                var enddate = $.fullCalendar.parseDate(enddatestr);
+                //                var schdata = { title: confid, fullname: confid, description: det, confname: cd, confshortname: 'M1', start: selectdate + ' ' + startdatestr, end: enddatestr };
+                //                $.ajax({
+                //                    type: "POST", //使用post方法访问后台
+
+                //                    url: "http://www.cnblogs.com/sr/getallid.ashx", //要访问的后台地址
+                //                    data: schdata, //要发送的数据
+                //                    success: function (data) {
+                //                        //对话框里面的数据提交完成，data为操作结果
+                //                        id2 = data;
+                //                        var schdata2 = { title: confid, fullname: confid, description: det, confname: cd, confshortname: 'M1', start: selectdate + ' ' + startdatestr, end: enddatestr, id: id2 };
+                //                        $('#calendar').fullCalendar('renderEvent', schdata2, true);
+                //                        $("#start").val(''); //开始时间
+                //                        $("#end").val(''); //结束时间
+                //                        $("#title").val(''); //标题
+                //                        $("#details").val(''); //内容
+                //                        $("#chengdu").val(''); //重要程度
+
+                //                    }
+                //                });
+                //                $(this).dialog("close");
+                //            }
+
+                //        }
+                //    });
+                //    $("#reservebox").dialog("open");
+                //    return false;
+                //},
+
+                //eventAfterRender: function (event, element, view) {//数据绑定上去后添加相应信息在页面上
+                //    var fstart = $.fullCalendar.formatDate(event.start, "HH:mm");
+                //    var fend = $.fullCalendar.formatDate(event.end, "HH:mm");
+
+                //    var confbg = '';
+                //    if (event.confid == 1) {
+                //        confbg = confbg + '<span class="fc-event-bg"></span>';
+                //    } else if (event.confid == 2) {
+                //        confbg = confbg + '<span class="fc-event-bg"></span>';
+                //    } else if (event.confid == 3) {
+                //        confbg = confbg + '<span class="fc-event-bg"></span>';
+                //    } else if (event.confid == 4) {
+                //        confbg = confbg + '<span class="fc-event-bg"></span>';
+                //    } else if (event.confid == 5) {
+                //        confbg = confbg + '<span class="fc-event-bg"></span>';
+                //    } else if (event.confid == 6) {
+                //        confbg = confbg + '<span class="fc-event-bg"></span>';
+                //    } else {
+                //        confbg = confbg + '<span class="fc-event-bg"></span>';
+                //    }
+                //    if (view.name == "month") {//按月份
+                //        var evtcontent = '<div class="fc-event-vert"><a>';
+                //        evtcontent = evtcontent + confbg;
+                //        evtcontent = evtcontent + '<span class="fc-event-titlebg">' + fstart + " - " + fend + event.fullname + '</span>';
+
+                //        element.html(evtcontent);
+                //    } else if (view.name == "agendaWeek") {//按周
+                //        var evtcontent = '<a>';
+                //        evtcontent = evtcontent + confbg;
+                //        evtcontent = evtcontent + '<span class="fc-event-time">' + fstart + "-" + fend + '</span>';
+                //        evtcontent = evtcontent + '<span>' + event.fullname + '</span>';
+
+                //        element.html(evtcontent);
+                //    } else if (view.name == "agendaDay") {//按日
+                //        var evtcontent = '<a>';
+                //        evtcontent = evtcontent + confbg;
+                //        evtcontent = evtcontent + '<span class="fc-event-time">' + fstart + " - " + fend + '</span>';
+                //        element.html(evtcontent);
+                //    }
+                //},
+                eventMouseover: function (calEvent, jsEvent, view) {
+                    var fstart = $.fullCalendar.formatDate(calEvent.start, "yyyy/MM/dd HH:mm");
+                    var fend = $.fullCalendar.formatDate(calEvent.end, "yyyy/MM/dd HH:mm");
+                    $(this).attr('title', fstart + " - " + fend + " " + "标题" + " : " + calEvent.title);
+                    $(this).css('font-weight', 'normal');
+                    $(this).tooltip({
+                        effect: 'toggle',
+                        cancelDefault: true
+                    });
+                },
+                eventDrop: function (event, delta) {
+                    alert(event.title + ' 被移除 ' + delta + ' 时间\n' +
+                    '(可能需要更新数据库)');
+                },
+                //eventClick: function (event) {
+                //    var fstart = $.fullCalendar.formatDate(event.start, "HH:mm");
+                //    var fend = $.fullCalendar.formatDate(event.end, "HH:mm");
+                //    //  var schdata = { sid: event.sid, deleted: 1, uid: event.uid };
+                //    var selectdate = $.fullCalendar.formatDate(event.start, "yyyy-MM-dd");
+                //    $("#start").val(fstart);;
+                //    $("#end").datetimepicker('setDate', event.end);
+                //    $("#title").val(event.title); //标题
+                //    $("#details").val(event.description); //内容
+                //    $("#chengdu").val(event.confname); //重要程度
+                //    $("#reservebox").dialog({
+                //        autoOpen: false,
+                //        height: 450,
+                //        width: 400,
+                //        title: 'Reserve meeting room on ',
+                //        modal: true,
+                //        position: "center",
+                //        draggable: false,
+                //        beforeClose: function (event, ui) {
+                //            //$.validationEngine.closePrompt("#meeting");
+                //            //$.validationEngine.closePrompt("#start");
+                //            //$.validationEngine.closePrompt("#end");
+                //            $("#start").val(''); //开始时间
+                //            $("#end").val(''); //结束时间
+                //            $("#title").val(''); //标题
+                //            $("#details").val(''); //内容
+                //            $("#chengdu").val(''); //重要程度
+                //        },
+                //        timeFormat: 'HH:mm{ - HH:mm}',
+                //        buttons: {
+                //            "删除": function () {
+                //                var aa = window.confirm("警告：确定要删除记录，删除后无法恢复！");
+                //                if (aa) {
+                //                    var para = { id: event.id };
+                //                    $.ajax({
+                //                        type: "POST", //使用post方法访问后台
+
+                //                        url: "http://www.cnblogs.com/sr/removedate.ashx", //要访问的后台地址
+                //                        data: para, //要发送的数据
+                //                        success: function (data) {
+                //                            //对话框里面的数据提交完成，data为操作结果
+                //                            $('#calendar').fullCalendar('removeEvents', event.id);
+                //                        }
+                //                    });
+
+                //                }
+                //                $(this).dialog("close");
+                //            },
+                //            "reserve": function () {
+
+                //                var startdatestr = $("#start").val(); //开始时间
+                //                var enddatestr = $("#end").val(); //结束时间
+                //                var confid = $("#title").val(); //标题
+                //                var det = $("#details").val(); //内容
+                //                var cd = $("#chengdu").val(); //重要程度
+                //                var startdate = $.fullCalendar.parseDate(selectdate + "T" + startdatestr);
+                //                var enddate = $.fullCalendar.parseDate(enddatestr);
+
+                //                event.fullname = confid;
+                //                event.confname = cd;
+                //                event.start = startdate;
+                //                event.end = enddate;
+                //                event.description = det;
+                //                var id2;
+
+                //                var schdata = { title: confid, fullname: confid, description: det, confname: cd, confshortname: 'M1', start: selectdate + ' ' + startdatestr, end: enddatestr, id: event.id };
+                //                $.ajax({
+                //                    type: "POST", //使用post方法访问后台
+                //                    url: "http://www.cnblogs.com/sr/Updateinfo.ashx", //要访问的后台地址
+                //                    data: schdata, //要发送的数据
+                //                    success: function (data) {
+                //                        //对话框里面的数据提交完成，data为操作结果
+
+                //                        var schdata2 = { title: confid, fullname: confid, description: det, confname: cd, confshortname: 'M1', start: selectdate + ' ' + startdatestr, end: enddatestr, id: event.id };
+                //                        $('#calendar').fullCalendar('updateEvent', event);
+                //                    }
+                //                });
+                //                $(this).dialog("close");
+                //            }
+
+                //        }
+                //    });
+                //    $("#reservebox").dialog("open");
+                //    return false;
+                //},
+                events: function (start, end, callback) {
+                    $.ajax({
+                        type: "POST",
+                        cache: false,
+                        error: function (xhr, error, thrown) {
+                            alert(2);
+                            if (error == "parsererror") {
+                                alert(oSettings, 0, "DataTables warning: JSON data from " +
+                                    "server could not be parsed. This is caused by a JSON formatting error.");
+                            }
+                        },
+                        data: {
+                            dstart: start.format("yyyy-MM-dd"),
+                            dend: end.format("yyyy-MM-dd")
+                        },
+                        url: '@Url.Action("GetBusiness")',
+                        success: function (json) {
+                            $.each(json, function (i, item) {
+                                var myDate = new Date(Date.parse(item.Show_CreateDate));
+                                var obj = new Object();
+                                obj.title = item.Message;
+                                obj.start = myDate;
+                                obj.allDay = true;
+                                $("#calendar").fullCalendar('renderEvent', obj, true);
+                            });
+                            callback(events);
+                            $("#calendar").fullCalendar
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}
+
+<div class="portlet-body form-horizontal form-bordered form-row-stripped">
+    <div id='loading' style='display:none'>loading...</div>
+    <div class="row-fluid">
+        <div id='calendar'></div>
+    </div>
+    <div id="reserveinfo" title="Details">
+        <div id="revtitle">
+        </div>
+        <div id="revdesc">
+        </div>
+    </div>
+    <div style="display: none" id="reservebox" title="Reserve meeting room">
+        <form id="reserveformID" method="post">
+            <div class="sysdesc">
+                &nbsp;
+            </div>
+            <div class="rowElem">
+                <label>
+                    标题:
+                </label>
+                <input id="title" name="start">
+            </div>
+            <div class="rowElem">
+                <label>
+                    重要程度:
+                </label>
+                <input id="chengdu" name="start">
+            </div>
+            <div class="rowElem">
+                <label>
+                    开始时间:
+                </label>
+                <input id="start" name="start">
+            </div>
+            <div class="rowElem">
+                <label>
+                    结束时间:
+                </label>
+                <input id="end" name="end">
+            </div>
+            <div class="rowElem">
+                <label>
+                    备忘内容:
+                </label>
+                <textarea id="details" rows="3" cols="43" name="details"></textarea>
+            </div>
+            <div class="rowElem">
+            </div>
+            <div class="rowElem">
+            </div>
+            <div id="addhelper" class="ui-widget">
+                <div style="padding-bottom: 5px; padding-left: 5px; padding-right: 5px; padding-top: 5px"
+                     class="ui-state-error ui-corner-all">
+                    <div id="addresult">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+

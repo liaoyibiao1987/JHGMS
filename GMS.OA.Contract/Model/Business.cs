@@ -20,6 +20,15 @@ namespace GMS.Crm.Contract
         [StringLength(200, ErrorMessage = "细节不能超过200个字符")]
         public string Message { get; set; }
         public string Log { get; set; }
+
+        [NotMapped]
+        public string Show_CreateDate
+        {
+            get
+            {
+                return CreateTime.ToString("MM/dd/yyyy");
+            }
+        }
     }
 
     public class BusinessVM

@@ -1319,6 +1319,7 @@
     <Content Include="Areas\OA\Views\Staff\Index.cshtml" />
     <Content Include="Areas\OA\Views\Org\Index.cshtml" />
     <Content Include="Areas\Crm\Views\Business\Index.cshtml" />
+    <Content Include="Areas\Crm\Views\Business\Create.cshtml" />
     <None Include="Assets\bootstrap-colorpicker\less\colorpicker.less" />
     <None Include="Assets\bootstrap-datepicker\less\datepicker.less" />
     <None Include="Assets\bootstrap-daterangepicker\README.md" />

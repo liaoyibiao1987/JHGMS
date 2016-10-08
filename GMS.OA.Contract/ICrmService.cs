@@ -22,6 +22,7 @@ namespace GMS.Crm.Contract
         void DeleteVisitRecord(List<int> ids);
 
         IEnumerable<BusinessVM> GetBusinessList(BusinessRequest request, List<int> ids);
+        IEnumerable<Business> GetBusinessList(BusinessRequest request, int customerid);
         IEnumerable<City> GetCityList(Request request = null);
         IEnumerable<Area> GetAreaList(Request request = null);
 
