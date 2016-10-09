@@ -127,6 +127,7 @@
                     //getData(start.format("yyyy-MM-dd"), end.format("yyyy-MM-dd"));
                 }
             });
+            $('#tbbusiness').dataTable().fnDestroy();
             $("#tbbusiness").DataTable({
                 "bServerSide": false,//服务端处理分页
                 'bPaginate': true,  //是否分页。
@@ -151,6 +152,19 @@
                         "sLast": "最后一页"
                     }
                 },
+                "columnDefs": [{ //数据渲染
+                    "render": function (data, type, row) {
+                        alert(1);
+                        return '<div class="text-indentation-s" title="' + data + '">' + data + '</div>';
+                    },
+                    "targets": 0
+                }, {
+                    //"visible": false,
+                    "render": function (data, type, row) {
+                        return '<div class="text-indentation-b" title="' + data + '">' + data + '</div>';
+                    },
+                    "targets": [1]
+                }],
                 initComplete: function () {
                     this.api().columns().every(function () {
                         var column = this;

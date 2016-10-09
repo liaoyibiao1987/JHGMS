@@ -25,11 +25,11 @@ namespace GMS.Web.Admin.Areas.Account.Controllers
         [AuthorizeIgnore]
         public ActionResult Login(string username, string password, string verifycode)
         {
-            //if (!VerifyCodeHelper.CheckVerifyCode(verifycode, this.CookieContext.VerifyCodeGuid))
-            //{
-            //    ModelState.AddModelError("error", "验证码错误");
-            //    return View();
-            //}
+            if (!VerifyCodeHelper.CheckVerifyCode(verifycode, this.CookieContext.VerifyCodeGuid))
+            {
+                ModelState.AddModelError("error", "验证码错误");
+                return View();
+            }
             
             var loginInfo = this.AccountService.Login(username, password);
 

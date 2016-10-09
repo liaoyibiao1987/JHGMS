@@ -1524,6 +1524,7 @@
     <None Include="Content\Uploadify\uploadify.fla" />
     <Content Include="FileUpload.ashx" />
     <Content Include="packages.config" />
+    <None Include="Properties\PublishProfiles\publishPPL.pubxml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GMS.Core.Cache\GMS.Core.Cache.csproj">

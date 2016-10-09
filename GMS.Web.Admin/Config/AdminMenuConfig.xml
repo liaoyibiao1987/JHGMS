@@ -26,7 +26,7 @@
       </AdminMenuArray>
     </AdminMenuGroup>
 
-    <AdminMenuGroup name="CRM管理" icon="icon-phone-sign">
+    <AdminMenuGroup name="客户管理" icon="icon-phone-sign">
       <AdminMenuArray>
         <AdminMenu name="跟单输入" url="/Crm/Business/Create" info="输入跟单信息" permission="CrmManage_VisitRecord" />
         <!--<AdminMenu name="业务查询" url="/Crm/VisitRecord/Index" info="业务跟踪查询" permission="CrmManage_VisitRecord" />-->
