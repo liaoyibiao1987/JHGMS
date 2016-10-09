@@ -958,6 +958,7 @@
     <Content Include="Assets\js\demo.gmaps.js" />
     <Content Include="Assets\js\excanvas.js" />
     <Content Include="Assets\js\gmaps.js" />
+    <Content Include="Assets\js\GMS.js" />
     <Content Include="Assets\js\jquery-1.8.3.min.js" />
     <Content Include="Assets\js\jquery.blockui.js" />
     <Content Include="Assets\js\jquery.cookie.js" />
@@ -1320,6 +1321,7 @@
     <Content Include="Areas\OA\Views\Org\Index.cshtml" />
     <Content Include="Areas\Crm\Views\Business\Index.cshtml" />
     <Content Include="Areas\Crm\Views\Business\Create.cshtml" />
+    <Content Include="Areas\Crm\Views\Business\EditBusiness.cshtml" />
     <None Include="Assets\bootstrap-colorpicker\less\colorpicker.less" />
     <None Include="Assets\bootstrap-datepicker\less\datepicker.less" />
     <None Include="Assets\bootstrap-daterangepicker\README.md" />

@@ -91,24 +91,9 @@
 }
 @section PageSpecificJavascriptIncludes{
     <script src="@Url.StaticFile("/assets/fullcalendar/fullcalendar/fullcalendar.min.js")"></script>
+    <script type="text/javascript" src="@Url.StaticFile("/assets/js/GMS.js")"></script>
     <script type='text/javascript'>
-        Date.prototype.format = function (fmt) { //author: meizz
-            var o = {
-                "M+": this.getMonth() + 1,                 //月份
-                "d+": this.getDate(),                    //日
-                "h+": this.getHours(),                   //小时
-                "m+": this.getMinutes(),                 //分
-                "s+": this.getSeconds(),                 //秒
-                "q+": Math.floor((this.getMonth() + 3) / 3), //季度
-                "S": this.getMilliseconds()             //毫秒
-            };
-            if (/(y+)/.test(fmt))
-                fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
-            for (var k in o)
-                if (new RegExp("(" + k + ")").test(fmt))
-                    fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
-            return fmt;
-        },
+
         $(document).ready(function () {
             var date = new Date();
             var d = date.getDate();
@@ -131,33 +116,63 @@
                 },
                 loading: function (isloading, view) {
                     if (isloading) {
-                        $('#loading').show();
+                        //$("#loading").dialog({
+                        //    bgiframe: true,
+                        //    resizable: false,
+                        //    height: 140,
+                        //    modal: true,
+                        //    overlay: {
+                        //        backgroundColor: '#000',
+                        //        opacity: 0.5
+                        //    },
+                        //    buttons: {
+                        //        '确定': function () {
+                        //            $(this).dialog('close');
+                        //        },
+                        //       '取消': function () {
+                        //            $(this).dialog('close');
+                        //        }
+                        //    }
+                        //});
                     }
                     else {
-                        alert(2);
                         $('#loading').hide();
                     }
                 },
                 selectable: true,
                 selectHelper: true,
                 select: function (start, end, allDay) {
-                    var title = prompt('Event Title:');
-                    if (title) {
-                        calendar.fullCalendar('renderEvent',
-                            {
-                                title: title,
-                                start: start,
-                                end: end,
-                                allDay: allDay
-                            },
-                            true // make the event "stick"
-                        );
-                    }
+                    var t = "输入记录信息";
+                    var a = '@Url.Action("EditBusiness", new { id = 8 })?TB_iframe=true&height=480&width=600';
+                    var g = false;
+                    tb_show(t, a, g);
+                    this.blur();
+                    return false;
+                    //var title = prompt('Event Title:');
+                    //if (title) {
+                    //    calendar.fullCalendar('renderEvent',
+                    //        {
+                    //            title: title,
+                    //            start: start,
+                    //            end: end,
+                    //            allDay: allDay
+                    //        },
+                    //        true // make the event "stick"
+                    //    );
+                    //}
                     calendar.fullCalendar('unselect');
                 },
                 titleFormat: "yyyy年-MM月-dd日",
                 editable: true,
                 dayNamesShort: ['星期天', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
+                dayClick: function (date, allDay, jsEvent, view) {
+                    @*var t = "输入记录信息";
+                    var a = '@Url.Action("Edit", new { id = 8 })?TB_iframe=true&height=600&width=600';
+                    var g =  false;
+                    tb_show(t, a, g);
+                    this.blur();
+                    return false;*@
+                },
                 //dayClick: function (date, allDay, jsEvent, view) {//日期点击后弹出的jq ui的框，添加日程记录
                 //    var selectdate = $.fullCalendar.formatDate(date, "yyyy-MM-dd");//选择当前日期的时间转换
                 //    $("#end").datetimepicker('setDate', selectdate);//给时间空间赋值
@@ -218,46 +233,45 @@
                 //    return false;
                 //},
 
-                //eventAfterRender: function (event, element, view) {//数据绑定上去后添加相应信息在页面上
-                //    var fstart = $.fullCalendar.formatDate(event.start, "HH:mm");
-                //    var fend = $.fullCalendar.formatDate(event.end, "HH:mm");
+                eventAfterRender: function (event, element, view) {//数据绑定上去后添加相应信息在页面上
+                    var fstart = $.fullCalendar.formatDate(event.start, "HH:mm");
+                    var fend = $.fullCalendar.formatDate(event.end, "HH:mm");
+                    var confbg = '';
+                    if (event.confid == 1) {
+                        confbg = confbg + '<span class="fc-event-bg"></span>';
+                    } else if (event.confid == 2) {
+                        confbg = confbg + '<span class="fc-event-bg"></span>';
+                    } else if (event.confid == 3) {
+                        confbg = confbg + '<span class="fc-event-bg"></span>';
+                    } else if (event.confid == 4) {
+                        confbg = confbg + '<span class="fc-event-bg"></span>';
+                    } else if (event.confid == 5) {
+                        confbg = confbg + '<span class="fc-event-bg"></span>';
+                    } else if (event.confid == 6) {
+                        confbg = confbg + '<span class="fc-event-bg"></span>';
+                    } else {
+                        confbg = confbg + '<span class="red"></span>';
+                    }
+                    if (view.name == "month") {//按月份
+                        var evtcontent = '<div class="fc-event-vert"><a>';
+                        evtcontent = evtcontent + confbg;
+                        evtcontent = evtcontent + '<span class="fc-event-titlebg">' + fstart + " - " + fend + event.fullname + '</span>';
 
-                //    var confbg = '';
-                //    if (event.confid == 1) {
-                //        confbg = confbg + '<span class="fc-event-bg"></span>';
-                //    } else if (event.confid == 2) {
-                //        confbg = confbg + '<span class="fc-event-bg"></span>';
-                //    } else if (event.confid == 3) {
-                //        confbg = confbg + '<span class="fc-event-bg"></span>';
-                //    } else if (event.confid == 4) {
-                //        confbg = confbg + '<span class="fc-event-bg"></span>';
-                //    } else if (event.confid == 5) {
-                //        confbg = confbg + '<span class="fc-event-bg"></span>';
-                //    } else if (event.confid == 6) {
-                //        confbg = confbg + '<span class="fc-event-bg"></span>';
-                //    } else {
-                //        confbg = confbg + '<span class="fc-event-bg"></span>';
-                //    }
-                //    if (view.name == "month") {//按月份
-                //        var evtcontent = '<div class="fc-event-vert"><a>';
-                //        evtcontent = evtcontent + confbg;
-                //        evtcontent = evtcontent + '<span class="fc-event-titlebg">' + fstart + " - " + fend + event.fullname + '</span>';
+                        element.html(evtcontent);
+                    } else if (view.name == "agendaWeek") {//按周
+                        var evtcontent = '<a>';
+                        evtcontent = evtcontent + confbg;
+                        evtcontent = evtcontent + '<span class="fc-event-time">' + fstart + "-" + fend + '</span>';
+                        evtcontent = evtcontent + '<span>' + event.fullname + '</span>';
 
-                //        element.html(evtcontent);
-                //    } else if (view.name == "agendaWeek") {//按周
-                //        var evtcontent = '<a>';
-                //        evtcontent = evtcontent + confbg;
-                //        evtcontent = evtcontent + '<span class="fc-event-time">' + fstart + "-" + fend + '</span>';
-                //        evtcontent = evtcontent + '<span>' + event.fullname + '</span>';
-
-                //        element.html(evtcontent);
-                //    } else if (view.name == "agendaDay") {//按日
-                //        var evtcontent = '<a>';
-                //        evtcontent = evtcontent + confbg;
-                //        evtcontent = evtcontent + '<span class="fc-event-time">' + fstart + " - " + fend + '</span>';
-                //        element.html(evtcontent);
-                //    }
-                //},
+                        element.html(evtcontent);
+                    } else if (view.name == "agendaDay") {//按日
+                        var evtcontent = '<a>';
+                        evtcontent = evtcontent + confbg;
+                        evtcontent = evtcontent + '<span class="fc-event-time">' + fstart + " - " + fend + '</span>';
+                        element.html(evtcontent);
+                    }
+                },
                 eventMouseover: function (calEvent, jsEvent, view) {
                     var fstart = $.fullCalendar.formatDate(calEvent.start, "yyyy/MM/dd HH:mm");
                     var fend = $.fullCalendar.formatDate(calEvent.end, "yyyy/MM/dd HH:mm");
@@ -362,7 +376,7 @@
                         type: "POST",
                         cache: false,
                         error: function (xhr, error, thrown) {
-                            alert(2);
+                            alert('获取事件错误。');
                             if (error == "parsererror") {
                                 alert(oSettings, 0, "DataTables warning: JSON data from " +
                                     "server could not be parsed. This is caused by a JSON formatting error.");
@@ -374,6 +388,7 @@
                         },
                         url: '@Url.Action("GetBusiness")',
                         success: function (json) {
+                            $("#calendar").fullCalendar('refresh');
                             $.each(json, function (i, item) {
                                 var myDate = new Date(Date.parse(item.Show_CreateDate));
                                 var obj = new Object();
@@ -383,7 +398,6 @@
                                 $("#calendar").fullCalendar('renderEvent', obj, true);
                             });
                             callback(events);
-                            $("#calendar").fullCalendar
                         }
                     });
                 }

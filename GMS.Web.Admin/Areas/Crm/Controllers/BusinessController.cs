@@ -40,6 +40,13 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
             return View();
         }
 
+        public ActionResult EditBusiness()
+        {
+            return View();
+        }
+
+
+
         [HttpPost]
         public JsonResult GetBusiness(DateTime dstart, DateTime dend)
         {
