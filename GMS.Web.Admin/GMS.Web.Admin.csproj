@@ -958,7 +958,6 @@
     <Content Include="Assets\js\demo.gmaps.js" />
     <Content Include="Assets\js\excanvas.js" />
     <Content Include="Assets\js\gmaps.js" />
-    <Content Include="Assets\js\GMS.js" />
     <Content Include="Assets\js\jquery-1.8.3.min.js" />
     <Content Include="Assets\js\jquery.blockui.js" />
     <Content Include="Assets\js\jquery.cookie.js" />

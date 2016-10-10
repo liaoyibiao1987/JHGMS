@@ -71,28 +71,28 @@
             });
             $("#search").validate({
                 rules: {
-                    startDate: {
+                    start: {
                         required: true,
                         dateISO: true
                     },
-                    endDate: {
+                    end: {
                         required: true,
                         dateISO: true
                     }
                 },
                 messages: {
-                    startDate: {
+                    start: {
                         required: "请输入开始时间",
                         dateISO: "请输入正确的时间格式"
                     },
-                    endDate: {
+                    end: {
                         required: "请输入结束时间",
                         dateISO: "请输入正确的时间格式"
                     }
                 },
                 submitHandler: function (form) {
-                    var start = $("#startDate").datepicker("getDate");
-                    var end = $("#endDate").datepicker("getDate");
+                    var start = $("#start").datepicker("getDate");
+                    var end = $("#end").datepicker("getDate");
                     $("th[b='bns'],td[b='bns']").detach();
                     //rendHead(start, end);
                     form.submit();

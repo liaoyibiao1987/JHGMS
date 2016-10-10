@@ -17,6 +17,7 @@ namespace GMS.Crm.Contract
         public int? CustomerID { get; set; }
         public virtual Customer Customer { get; set; }
 
+        [DataType(DataType.MultilineText)]
         [StringLength(200, ErrorMessage = "细节不能超过200个字符")]
         public string Message { get; set; }
         public string Log { get; set; }
