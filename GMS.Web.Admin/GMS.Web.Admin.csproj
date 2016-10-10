@@ -127,6 +127,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Areas\Crm\Views\Business\Create.cshtml">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="Assets\bootstrap-colorpicker\css\colorpicker.css" />
     <Content Include="Assets\bootstrap-colorpicker\img\alpha.png" />
     <Content Include="Assets\bootstrap-colorpicker\img\hue.png" />
@@ -958,6 +961,7 @@
     <Content Include="Assets\js\demo.gmaps.js" />
     <Content Include="Assets\js\excanvas.js" />
     <Content Include="Assets\js\gmaps.js" />
+    <Content Include="Assets\js\GMS.js" />
     <Content Include="Assets\js\jquery-1.8.3.min.js" />
     <Content Include="Assets\js\jquery.blockui.js" />
     <Content Include="Assets\js\jquery.cookie.js" />
@@ -1319,8 +1323,7 @@
     <Content Include="Areas\OA\Views\Staff\Index.cshtml" />
     <Content Include="Areas\OA\Views\Org\Index.cshtml" />
     <Content Include="Areas\Crm\Views\Business\Index.cshtml" />
-    <Content Include="Areas\Crm\Views\Business\Create.cshtml" />
-    <Content Include="Areas\Crm\Views\Business\EditBusiness.cshtml" />
+    <Content Include="Areas\Crm\Views\Business\Edit.cshtml" />
     <None Include="Assets\bootstrap-colorpicker\less\colorpicker.less" />
     <None Include="Assets\bootstrap-datepicker\less\datepicker.less" />
     <None Include="Assets\bootstrap-daterangepicker\README.md" />

@@ -1,0 +1,108 @@
+﻿@using GMS.Framework.Contract
+@using GMS.Framework.Web.Controls
+@using GMS.Crm.Contract
+@using GMS.Web
+
+@model Business
+
+@{
+    ViewBag.Title = "添加跟单";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_Layout.Edit.cshtml";
+}
+@section PageSpecificStyleSheetIncludes{
+    <style>
+        .controls label {
+            display: inline;
+        }
+
+        .custom-combobox input {
+            height: 28px;
+            margin: 1px;
+        }
+
+        .custom-combobox a {
+            height: 30px;
+        }
+    </style>
+
+}
+@section PageSpecificJavascriptIncludes{
+    <script type="text/javascript" src="@Url.StaticFile("/content/scripts/jquery-ui.combobox.js")"></script>
+    <script type="text/javascript" src="@Url.StaticFile("/content/scripts/jquery.powerFloat.js")"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var dates = $("#start").datepicker({
+                dateFormat: "yy-mm-dd",
+                defaultDate: "w",
+                changeMonth: true,
+                numberOfMonths: 2,
+                onSelect: function (selectedDate) {
+                    var option = this.id == "start" ? "minDate" : "maxDate",
+                    instance = $(this).data("datepicker"),
+                    date = $.datepicker.parseDate(
+                        instance.settings.dateFormat ||
+                        $.datepicker._defaults.dateFormat,
+                        selectedDate, instance.settings);
+                    dates.not(this).datepicker("option", option, date);
+                }
+            });
+            $("#mainForm").validate({
+                rules: {
+                    start: {
+                        required: true,
+                        dateISO: true
+                    }
+                },
+                messages: {
+                    start: {
+                        required: "请输入开始时间",
+                        dateISO: "请输入正确的时间格式"
+                    }
+                },
+                submitHandler: function (form) {
+                    var start = $("#startDate").datepicker("getDate");
+                    form.submit();
+                }
+            });
+
+            $("#CustomerId").combobox();
+        });
+    </script>
+
+}
+
+@section MainContent{
+    <div class="portlet-body form-horizontal form-bordered form-row-stripped">
+        <div class="row-fluid">
+            <div class="alert alert-info">
+                <button class="close" data-dismiss="alert"></button>
+                <strong>注意：</strong>
+                如果还没添加任何客户，请先转到客户管理频道，添加新的客户！
+            </div>
+            <div class="control-group">
+                <label class="control-label"><span class="required">*</span>我的客户：</label>
+                <div class="controls">
+                    @Html.DropDownList("CustomerId")
+                    <span class="help-inline">@Html.ValidationMessageFor(m => m.CustomerID)</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label"><span class="required">*</span>洽谈时间：</label>
+                <div class="controls">
+                    @Html.TextBox("start", Html.ViewContext.RouteData.Values["start"], new { @class = "m-wrap small" })
+                    <span class="help-inline">@Html.ValidationMessageFor(m => m.CreateTime)</span>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label"><span class="required">*</span>填写信息：</label>
+                <div class="controls">
+                    @Html.TextAreaFor(m => m.Message, 10, 60, new { @class = "m-wrap input-xlarge", @placeholder = "输入详细信息" })
+                    <span class="help-inline">@Html.ValidationMessageFor(m => m.Message)</span>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+

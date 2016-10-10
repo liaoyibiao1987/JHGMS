@@ -35,14 +35,46 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
             IEnumerable<BusinessVM> list = CrmService.GetBusinessList(req, new List<int> { 1, 2 });
             return View(list);
         }
+        /// <summary>
+        /// 日历菜单
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Create()
         {
             return View();
         }
 
-        public ActionResult EditBusiness()
+        public ActionResult Edit(DateTime start)
         {
+            ViewData.Add("start", start.ToString("yyyy-MM-dd"));
+
+            var request = new CustomerRequest();
+            request.Customer.StaffID = this.UserContext.LoginInfo.StaffID;
+            var customerList = this.CrmService.GetCustomerList(request).ToList();
+            customerList.ForEach(c => c.Name = string.Format("{0}({1})", c.Name, c.Tel));
+            ViewData.Add("CustomerId", new SelectList(customerList, "Id", "Name", ""));
+
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult Edit(FormCollection collection)
+        {
+            //var model = this.CrmService.GetCustomer(id);
+            //this.TryUpdateModel<Customer>(model);
+
+            //try
+            //{
+            //    this.CrmService.SaveCustomer(model);
+            //}
+            //catch (BusinessException e)
+            //{
+            //    this.ModelState.AddModelError(e.Name, e.Message);
+            //    this.RenderMyViewData(model);
+            //    return View("Edit", model);
+            //}
+
+            return this.RefreshParent();
         }
 
 
@@ -61,9 +93,13 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
         {
             ViewData.Add("startDate", (model == null || model.StartDate == null) ? DateTime.Now.AddMonths(-1).Subtract(DateTime.Now.TimeOfDay) : model.StartDate.Value);
             ViewData.Add("endDate", (model == null || model.EndDate == null) ? DateTime.Now.Subtract(DateTime.Now.TimeOfDay) : model.EndDate.Value);
+
         }
 
+        private void RenderMyViewData()
+        {
 
+        }
 
 
         public Dictionary<int, City> CityDic

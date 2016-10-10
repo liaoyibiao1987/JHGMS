@@ -269,7 +269,7 @@ namespace GMS.Crm.BLL
             if (request == null || request.StartDate == null || request.EndDate == null) return null;
             using (var dbContext = new CrmDbContext())
             {
-                return dbContext.Business.Where(p => (p.CreateTime > request.StartDate && p.CreateTime < request.EndDate && p.CustomerID == customerid)).ToList();
+                return dbContext.Business.Include("Customer").Where(p => (p.CreateTime > request.StartDate && p.CreateTime < request.EndDate && p.CustomerID == customerid)).ToList();
             }
         }
         public IEnumerable<City> GetCityList(Request request = null)

@@ -95,6 +95,13 @@
     <script type='text/javascript'>
 
         $(document).ready(function () {
+            @*$("#Customer_Name").autocomplete({
+                source: '@Url.Action("GetCustomerNames", "Ajax")',
+                minLength: 1,
+                select: function (event, ui) {
+                }
+            });*@
+
             var date = new Date();
             var d = date.getDate();
             var m = date.getMonth();
@@ -143,7 +150,7 @@
                 selectHelper: true,
                 select: function (start, end, allDay) {
                     var t = "输入记录信息";
-                    var a = '@Url.Action("EditBusiness", new { id = 8 })?TB_iframe=true&height=480&width=600';
+                    var a = '@Url.Action("Edit")' + "?start=" + start.format("yyyy-MM-dd") + '&TB_iframe=true&height=480&width=600';
                     var g = false;
                     tb_show(t, a, g);
                     this.blur();
@@ -234,35 +241,35 @@
                 //},
 
                 eventAfterRender: function (event, element, view) {//数据绑定上去后添加相应信息在页面上
-                    var fstart = $.fullCalendar.formatDate(event.start, "HH:mm");
-                    var fend = $.fullCalendar.formatDate(event.end, "HH:mm");
+                    var fstart = $.fullCalendar.formatDate(event.start, "yyyy-MM-dd");
+                    var fend = $.fullCalendar.formatDate(event.end, "yyyy-MM-dd");
                     var confbg = '';
                     if (event.confid == 1) {
-                        confbg = confbg + '<span class="fc-event-bg"></span>';
+                        confbg = confbg + '<span class=""></span>';
                     } else if (event.confid == 2) {
-                        confbg = confbg + '<span class="fc-event-bg"></span>';
+                        confbg = confbg + '<span class=""></span>';
                     } else if (event.confid == 3) {
-                        confbg = confbg + '<span class="fc-event-bg"></span>';
+                        confbg = confbg + '<span class=""></span>';
                     } else if (event.confid == 4) {
-                        confbg = confbg + '<span class="fc-event-bg"></span>';
+                        confbg = confbg + '<span class=""></span>';
                     } else if (event.confid == 5) {
-                        confbg = confbg + '<span class="fc-event-bg"></span>';
+                        confbg = confbg + '<span class=""></span>';
                     } else if (event.confid == 6) {
-                        confbg = confbg + '<span class="fc-event-bg"></span>';
+                        confbg = confbg + '<span class=""></span>';
                     } else {
-                        confbg = confbg + '<span class="red"></span>';
+                        confbg = confbg + '<span class=""></span>';
                     }
                     if (view.name == "month") {//按月份
                         var evtcontent = '<div class="fc-event-vert"><a>';
                         evtcontent = evtcontent + confbg;
-                        evtcontent = evtcontent + '<span class="fc-event-titlebg">' + fstart + " - " + fend + event.fullname + '</span>';
-
+                        //evtcontent = evtcontent + fstart + " - " + fend + "客户" + " : " + event.title;
+                        evtcontent = evtcontent + '<span style="color:#ffffff">' + "&emsp;客户" + " : " + event.title + '</span>';
                         element.html(evtcontent);
                     } else if (view.name == "agendaWeek") {//按周
                         var evtcontent = '<a>';
                         evtcontent = evtcontent + confbg;
                         evtcontent = evtcontent + '<span class="fc-event-time">' + fstart + "-" + fend + '</span>';
-                        evtcontent = evtcontent + '<span>' + event.fullname + '</span>';
+                        evtcontent = evtcontent + '<span>' + "客户" + " : " + event.title + '<br/>' + event.fullname + '</span>';
 
                         element.html(evtcontent);
                     } else if (view.name == "agendaDay") {//按日
@@ -275,7 +282,7 @@
                 eventMouseover: function (calEvent, jsEvent, view) {
                     var fstart = $.fullCalendar.formatDate(calEvent.start, "yyyy/MM/dd HH:mm");
                     var fend = $.fullCalendar.formatDate(calEvent.end, "yyyy/MM/dd HH:mm");
-                    $(this).attr('title', fstart + " - " + fend + " " + "标题" + " : " + calEvent.title);
+                    $(this).attr('title', fstart + " - " + fend + " " + "客户" + " : " + calEvent.title + " - " + calEvent.message);
                     $(this).css('font-weight', 'normal');
                     $(this).tooltip({
                         effect: 'toggle',
@@ -283,8 +290,8 @@
                     });
                 },
                 eventDrop: function (event, delta) {
-                    alert(event.title + ' 被移除 ' + delta + ' 时间\n' +
-                    '(可能需要更新数据库)');
+                    //alert(event.title + ' 被移除 ' + delta + ' 时间\n' +
+                    //'(可能需要更新数据库)');
                 },
                 //eventClick: function (event) {
                 //    var fstart = $.fullCalendar.formatDate(event.start, "HH:mm");
@@ -392,7 +399,9 @@
                             $.each(json, function (i, item) {
                                 var myDate = new Date(Date.parse(item.Show_CreateDate));
                                 var obj = new Object();
-                                obj.title = item.Message;
+                                obj.title = item.Customer.Name;
+                                obj.message = item.Message;
+                                obj.textColor = "#ff0000"
                                 obj.start = myDate;
                                 obj.allDay = true;
                                 $("#calendar").fullCalendar('renderEvent', obj, true);
