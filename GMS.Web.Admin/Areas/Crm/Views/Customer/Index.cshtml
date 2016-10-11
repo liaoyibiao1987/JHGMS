@@ -90,7 +90,8 @@
                         <input type="checkbox" class="checkboxes" name='ids' value='@p.ID' />
                     </td>
                     <td class="blue">
-                        <span>@p.Name</span>
+                        <a class="blue thickbox" style="cursor:pointer" title="点击开始录入跟单信息" 
+                           href="@Url.Action("EditByID", "Business", new { id = p.ID })?TB_iframe=true&height=480&width=600"><span>@p.Name</span></a>
                     </td>
                     <td>
                         <span>@EnumHelper.GetEnumTitle((EnumCategory)p.Category)</span>

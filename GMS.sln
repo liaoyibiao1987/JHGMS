@@ -46,6 +46,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DB", "DB", "{A4E33E83-7517-4BA3-852B-B2CFAA734126}"
 	ProjectSection(SolutionItems) = preProject
 		2016-10-02.sql = 2016-10-02.sql
+		2016-10-11.sql = 2016-10-11.sql
 		2016-9-27.sql = 2016-9-27.sql
 		Business.sql = Business.sql
 		数据库.txt = 数据库.txt

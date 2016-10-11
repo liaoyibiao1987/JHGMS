@@ -264,14 +264,29 @@ namespace GMS.Crm.BLL
             }
         }
 
-        public IEnumerable<Business> GetBusinessList(BusinessRequest request, int customerid)
+        public IEnumerable<Business> GetBusinessList(BusinessRequest request, int staffID)
         {
             if (request == null || request.StartDate == null || request.EndDate == null) return null;
             using (var dbContext = new CrmDbContext())
             {
-                return dbContext.Business.Include("Customer").Where(p => (p.CreateTime > request.StartDate && p.CreateTime < request.EndDate && p.CustomerID == customerid)).ToList();
+                return dbContext.Business.Include("Customer").Where(p => (p.CreateTime > request.StartDate && p.CreateTime < request.EndDate && p.StaffID == staffID)).ToList();
             }
         }
+        public void CreateBusiness(CreateBusinessEntity entity)
+        {
+            using (var dbContext = new CrmDbContext())
+            {
+                Business business = new Business { CreateTime = entity.CreateDate, StaffID = entity.StaffID, CustomerID = entity.CustomerID, Message = entity.Message };
+                dbContext.Business.Where(p =>
+                    (p.CreateTime == entity.CreateDate
+                    && p.StaffID == entity.StaffID
+                    && p.CustomerID == entity.CustomerID)).Delete();
+
+                dbContext.Insert<Business>(business);
+                dbContext.SaveChanges();
+            }
+        }
+
         public IEnumerable<City> GetCityList(Request request = null)
         {
             request = request ?? new Request();

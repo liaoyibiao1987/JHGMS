@@ -12,13 +12,16 @@ namespace GMS.Crm.Contract
     [Table("Business")]
     public class Business : ModelBase
     {
+        [Required]
         public int? StaffID { get; set; }
+
         public virtual Staff Staff { get; set; }
+        [Required]
         public int? CustomerID { get; set; }
         public virtual Customer Customer { get; set; }
 
-        [DataType(DataType.MultilineText)]
-        [StringLength(200, ErrorMessage = "细节不能超过200个字符")]
+        [Required]
+        [StringLength(2000, ErrorMessage = "细节不能超过2000个字符")]
         public string Message { get; set; }
         public string Log { get; set; }
 
@@ -69,5 +72,14 @@ namespace GMS.Crm.Contract
             this.business = bis;
         }
         //public IEnumerable<Business> 
+    }
+
+    public class CreateBusinessEntity
+    {
+        public int? CustomerID { get; set; }
+        public int? StaffID { get; set; }
+        public string Message { get; set; }
+        public DateTime CreateDate { get; set; }
+
     }
 }

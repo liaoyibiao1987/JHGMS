@@ -3337,7 +3337,7 @@ var App = function () {
         blockUI: function (el, loaderOnTop) {
             lastBlockedUI = el;
             jQuery(el).block({
-                message: '<img src="./assets/img/loading.gif" align="absmiddle">',
+                message: '<img src="../../Assets/img/loading.gif" align="absmiddle">',
                 css: {
                     border: 'none',
                     padding: '2px',

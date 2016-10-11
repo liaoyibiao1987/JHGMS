@@ -1,5 +1,6 @@
 ﻿using GMS.Account.Contract;
 using GMS.Crm.Contract;
+using GMS.Framework.Contract;
 using GMS.Web.Admin.Common;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,8 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
             RenderMyViewData(rquester);
             rquester.StartDate = DateTime.Now.AddMonths(-1);
             rquester.EndDate = DateTime.Now.AddMonths(1);
-            IEnumerable<BusinessVM> list = CrmService.GetBusinessList(rquester, new List<int> { 1, 2 });
+            int currentstaffid = this.UserContext.LoginInfo.StaffID.Value;
+            IEnumerable<BusinessVM> list = CrmService.GetBusinessList(rquester, new List<int> { 1, 2, currentstaffid });
             return View(list);
         }
 
@@ -32,7 +34,8 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
             req.EndDate = end;
             this.ModelState.Clear();
             RenderMyViewData(req);
-            IEnumerable<BusinessVM> list = CrmService.GetBusinessList(req, new List<int> { 1, 2 });
+            int currentstaffid = this.UserContext.LoginInfo.StaffID.Value;
+            IEnumerable<BusinessVM> list = CrmService.GetBusinessList(req, new List<int> { 1, 2, currentstaffid });
             return View(list);
         }
         /// <summary>
@@ -43,37 +46,74 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
         {
             return View();
         }
-
-        public ActionResult Edit(DateTime start)
+        public ActionResult EditByID(int id)
         {
-            ViewData.Add("start", start.ToString("yyyy-MM-dd"));
+            ModelState.Clear();
+            ViewData.Add("CreateDate", DateTime.Now.ToString("yyyy-MM-dd"));
+            RenderMyViewData(-1);
 
-            var request = new CustomerRequest();
-            request.Customer.StaffID = this.UserContext.LoginInfo.StaffID;
-            var customerList = this.CrmService.GetCustomerList(request).ToList();
-            customerList.ForEach(c => c.Name = string.Format("{0}({1})", c.Name, c.Tel));
-            ViewData.Add("CustomerId", new SelectList(customerList, "Id", "Name", ""));
+            return View("Edit");
+        }
 
-            return View();
+        public ActionResult AddByDate(DateTime CreateDate)
+        {
+            ViewData.Add("CreateDate", CreateDate.ToString("yyyy-MM-dd"));
+            RenderMyViewData(-1);
+
+            return View("Edit");
+        }
+        public ActionResult AddByCustomerId(int CustomerId)
+        {
+            ViewData.Add("CreateDate", DateTime.Now.ToString("yyyy-MM-dd"));
+            RenderMyViewData(CustomerId);
+            return View("Edit");
         }
 
         [HttpPost]
-        public ActionResult Edit(FormCollection collection)
+        public ActionResult AddByDate(FormCollection collection)
         {
-            //var model = this.CrmService.GetCustomer(id);
-            //this.TryUpdateModel<Customer>(model);
+            if (ModelState.IsValid)
+            {
+                CreateBusinessEntity entity = new CreateBusinessEntity();
+                this.TryUpdateModel<CreateBusinessEntity>(entity);
+                entity.StaffID = this.UserContext.LoginInfo.StaffID;
+                try
+                {
+                    this.CrmService.CreateBusiness(entity);
+                }
+                catch (BusinessException e)
+                {
+                    this.ModelState.AddModelError(e.Name, e.Message);
+                    ViewData.Add("CreateDate", entity.CreateDate.ToString("yyyy-MM-dd"));
+                    RenderMyViewData(-1);
+                    return View("Edit");
+                    //this.RenderMyViewData(model);
+                }
+            }
+            return this.RefreshParent();
+        }
 
-            //try
-            //{
-            //    this.CrmService.SaveCustomer(model);
-            //}
-            //catch (BusinessException e)
-            //{
-            //    this.ModelState.AddModelError(e.Name, e.Message);
-            //    this.RenderMyViewData(model);
-            //    return View("Edit", model);
-            //}
-
+        [HttpPost]
+        public ActionResult EditByID(FormCollection collection)
+        {
+            if (ModelState.IsValid)
+            {
+                CreateBusinessEntity entity = new CreateBusinessEntity();
+                this.TryUpdateModel<CreateBusinessEntity>(entity);
+                entity.StaffID = this.UserContext.LoginInfo.StaffID;
+                try
+                {
+                    this.CrmService.CreateBusiness(entity);
+                }
+                catch (BusinessException e)
+                {
+                    this.ModelState.AddModelError(e.Name, e.Message);
+                    ViewData.Add("CreateDate", entity.CreateDate.ToString("yyyy-MM-dd"));
+                    RenderMyViewData(-1);
+                    return View("Edit");
+                    //this.RenderMyViewData(model);
+                }
+            }
             return this.RefreshParent();
         }
 
@@ -85,7 +125,7 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
             BusinessRequest rquester = new BusinessRequest();
             rquester.StartDate = dstart;
             rquester.EndDate = dend;
-            IEnumerable<Business> list = CrmService.GetBusinessList(rquester, 1);
+            IEnumerable<Business> list = CrmService.GetBusinessList(rquester, UserContext.LoginInfo.StaffID.Value);
             return Json(list);
         }
 
@@ -96,9 +136,13 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
 
         }
 
-        private void RenderMyViewData()
+        private void RenderMyViewData(int customid)
         {
-
+            var request = new CustomerRequest();
+            request.Customer.StaffID = this.UserContext.LoginInfo.StaffID;
+            var customerList = this.CrmService.GetCustomerList(request).ToList();
+            customerList.ForEach(c => c.Name = string.Format("{0}({1})", c.Name, c.Tel));
+            ViewData.Add("CustomerId", new SelectList(customerList, "Id", "Name", customid));
         }
 
 

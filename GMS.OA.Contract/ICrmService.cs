@@ -21,12 +21,16 @@ namespace GMS.Crm.Contract
         void SaveVisitRecord(VisitRecord visitRecord);
         void DeleteVisitRecord(List<int> ids);
 
-        IEnumerable<BusinessVM> GetBusinessList(BusinessRequest request, List<int> ids);
-        IEnumerable<Business> GetBusinessList(BusinessRequest request, int customerid);
+        IEnumerable<BusinessVM> GetBusinessList(BusinessRequest request, List<int> staffIDs);
+        IEnumerable<Business> GetBusinessList(BusinessRequest request, int staffID);
+
+        void CreateBusiness(CreateBusinessEntity entity);
+
         IEnumerable<City> GetCityList(Request request = null);
         IEnumerable<Area> GetAreaList(Request request = null);
 
         IEnumerable<UserAnalysis> GetUserAnalysis(DateTime startDate, DateTime endDate);
         IEnumerable<VisitStatistics> GetVisitStatistics(DateTime startDate, DateTime endDate);
+
     }
 }
