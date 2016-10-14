@@ -279,7 +279,7 @@ namespace GMS.Crm.BLL
         {
             using (var dbContext = new CrmDbContext())
             {
-                Business business = new Business { CreateTime = entity.CreateTime, StaffID = entity.StaffID, CustomerID = entity.CustomerID, Message = entity.Message };
+                Business business = new Business { CreateTime = entity.CreateTime, StaffID = entity.StaffID, CustomerID = entity.CustomerID, Message = entity.Message, IsSpecial = entity.IsSpecial };
                 dbContext.Business.Where(p =>
                     (p.CreateTime == entity.CreateTime
                     && p.StaffID == entity.StaffID

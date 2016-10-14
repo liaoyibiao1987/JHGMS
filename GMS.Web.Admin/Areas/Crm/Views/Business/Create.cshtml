@@ -72,6 +72,15 @@
             padding: 0;
         }
 
+        .specialEvent,
+        .specialEvent div,
+        .specialEvent span {
+            background-color: #dd4b39 !important; /* background color */
+            border-color: skyblue; /* border color */
+            border-width: 1px;
+            color: white; /* text color */
+        }
+
         .ui-timepicker-rtl {
             direction: rtl;
         }
@@ -374,6 +383,7 @@
                                 obj.ID = item.ID;
                                 obj.start = myDate;
                                 obj.allDay = true;
+                                obj.className = item.IsSpecial == true ? "specialEvent" : "";
                                 $("#calendar").fullCalendar('renderEvent', obj, false);
                             });
                             callback(json);

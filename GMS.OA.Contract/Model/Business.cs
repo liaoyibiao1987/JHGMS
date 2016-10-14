@@ -18,6 +18,7 @@ namespace GMS.Crm.Contract
         public virtual Staff Staff { get; set; }
         [Required]
         public int? CustomerID { get; set; }
+        public bool? IsSpecial { get; set; }
         public virtual Customer Customer { get; set; }
 
         [Required]
@@ -80,6 +81,7 @@ namespace GMS.Crm.Contract
         public int? StaffID { get; set; }
         public string Message { get; set; }
         public DateTime CreateTime { get; set; }
+        public bool? IsSpecial { get; set; }
 
     }
 }

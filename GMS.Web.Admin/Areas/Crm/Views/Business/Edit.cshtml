@@ -93,6 +93,8 @@
                     @*@Html.TextBoxFor(m => m.CreateTime, new { @class = "m-wrap small", Value = Model.CreateTime.ToString("yyyy-MM-dd") })*@
                     @Html.TextBoxFor(m => m.CreateTime, "{0:yyyy-MM-dd}", new { @class = "m-wrap small" })
                     <span class="help-inline">@Html.ValidationMessageFor(m => m.CreateTime)</span>
+                    <span class="help-inline">重要：</span>
+                    @Html.CheckBox("IsSpecial", new { @class = "checkboxes", style = "width:16px;height:16px;" })
                 </div>
             </div>
 

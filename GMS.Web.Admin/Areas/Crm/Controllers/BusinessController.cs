@@ -126,6 +126,30 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
         }
 
         [HttpPost]
+        public ActionResult AddByCustomerId(int CustomerId, FormCollection collection)
+        {
+            Customer customer = CrmService.GetCustomer(CustomerId);
+
+            if (ModelState.IsValid && customer != null)
+            {
+                CreateBusinessEntity business = new CreateBusinessEntity();
+                this.TryUpdateModel<CreateBusinessEntity>(business);
+                business.StaffID = UserContext.LoginInfo.StaffID.HasValue ? UserContext.LoginInfo.StaffID.Value : -1;
+                try
+                {
+                    this.CrmService.CreateBusiness(business);
+                }
+                catch (BusinessException e)
+                {
+                    this.ModelState.AddModelError(e.Name, e.Message);
+                    RenderMyViewData(-1);
+                    return View("Edit");
+                }
+            }
+
+            return this.RefreshParent();
+        }
+        [HttpPost]
         public ActionResult MoveEvent(int ID, DateTime to)
         {
             Business business = CrmService.GetBusinessById(ID);

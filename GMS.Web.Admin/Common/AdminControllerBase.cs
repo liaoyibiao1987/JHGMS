@@ -200,7 +200,7 @@ namespace GMS.Web.Admin.Common
             }
             else
             {
-                belongs = new List<int>(staffid);
+                belongs = new List<int> { staffid };
             }
             return belongs;
         }

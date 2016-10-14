@@ -102,6 +102,7 @@
     <Compile Include="Areas\Account\Controllers\CommonController.cs" />
     <Compile Include="Areas\Account\Controllers\CustomerFilterAttribute.cs" />
     <Compile Include="Areas\Account\Controllers\RoleController.cs" />
+    <Compile Include="Areas\Account\Controllers\SettingsController.cs" />
     <Compile Include="Areas\Account\Controllers\UserController.cs" />
     <Compile Include="Areas\Crm\Controllers\BusinessController.cs" />
     <Compile Include="Areas\Crm\Controllers\CustomerController.cs" />
@@ -1324,6 +1325,7 @@
     <Content Include="Areas\OA\Views\Org\Index.cshtml" />
     <Content Include="Areas\Crm\Views\Business\Index.cshtml" />
     <Content Include="Areas\Crm\Views\Business\Edit.cshtml" />
+    <Content Include="Areas\Account\Views\Settings\Index.cshtml" />
     <None Include="Assets\bootstrap-colorpicker\less\colorpicker.less" />
     <None Include="Assets\bootstrap-datepicker\less\datepicker.less" />
     <None Include="Assets\bootstrap-daterangepicker\README.md" />
