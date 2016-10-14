@@ -55,22 +55,26 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
             {
                 RenderMyViewData(business.CustomerID.Value);
             }
+            else
+            {
+                RenderMyViewData(-1);
+            }
             return View("Edit", business);
         }
 
         public ActionResult AddByDate(DateTime CreateDate)
         {
             Business business = new Business();
-            business.CreateTime = DateTime.Now;
+            business.CreateTime = CreateDate;
             RenderMyViewData(-1);
-            return View("Edit");
+            return View("Edit", business);
         }
         public ActionResult AddByCustomerId(int CustomerId)
         {
             Business business = new Business();
             business.CreateTime = DateTime.Now;
             RenderMyViewData(CustomerId);
-            return View("Edit");
+            return View("Edit", business);
         }
 
         [HttpPost]
@@ -90,37 +94,45 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
                     this.ModelState.AddModelError(e.Name, e.Message);
                     RenderMyViewData(-1);
                     return View("Edit");
-                    //this.RenderMyViewData(model);
                 }
             }
             return this.RefreshParent();
         }
 
         [HttpPost]
-        public ActionResult EditByID(FormCollection collection)
+        public ActionResult EditByID(int ID, FormCollection collection)
         {
             if (ModelState.IsValid)
             {
-                CreateBusinessEntity entity = new CreateBusinessEntity();
-                this.TryUpdateModel<CreateBusinessEntity>(entity);
-                entity.StaffID = UserContext.LoginInfo.StaffID.HasValue ? UserContext.LoginInfo.StaffID.Value : -1;
-                try
+                Business business = CrmService.GetBusinessById(ID);
+                if (business != null)
                 {
-                    this.CrmService.CreateBusiness(entity);
+                    this.TryUpdateModel<Business>(business);
+                    business.StaffID = UserContext.LoginInfo.StaffID.HasValue ? UserContext.LoginInfo.StaffID.Value : -1;
+                    try
+                    {
+                        this.CrmService.UpdateBusiness(business);
+                    }
+                    catch (BusinessException e)
+                    {
+                        this.ModelState.AddModelError(e.Name, e.Message);
+                        RenderMyViewData(-1);
+                        return View("Edit", business);
+                    }
                 }
-                catch (BusinessException e)
-                {
-                    this.ModelState.AddModelError(e.Name, e.Message);
-                    ViewData.Add("CreateDate", entity.CreateDate.ToString("yyyy-MM-dd"));
-                    RenderMyViewData(-1);
-                    return View("Edit");
-                    //this.RenderMyViewData(model);
-                }
+
             }
             return this.RefreshParent();
         }
 
-
+        [HttpPost]
+        public ActionResult MoveEvent(int ID, DateTime to)
+        {
+            Business business = CrmService.GetBusinessById(ID);
+            business.CreateTime = to;
+            CrmService.UpdateBusiness(business);
+            return new EmptyResult();
+        }
 
         [HttpPost]
         public JsonResult GetBusiness(DateTime dstart, DateTime dend)
@@ -148,6 +160,8 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
             var customerList = this.CrmService.GetCustomerList(GetCurrentUserStaffs(currentstaffid), request).ToList();
 
             customerList.ForEach(c => c.Name = string.Format("{0}({1})", c.Name, c.Tel));
+            customid = customerList.Exists(p => p.ID == customid) ? customid : -1;
+
             ViewData.Add("CustomerId", new SelectList(customerList, "Id", "Name", customid));
         }
 

@@ -279,9 +279,9 @@ namespace GMS.Crm.BLL
         {
             using (var dbContext = new CrmDbContext())
             {
-                Business business = new Business { CreateTime = entity.CreateDate, StaffID = entity.StaffID, CustomerID = entity.CustomerID, Message = entity.Message };
+                Business business = new Business { CreateTime = entity.CreateTime, StaffID = entity.StaffID, CustomerID = entity.CustomerID, Message = entity.Message };
                 dbContext.Business.Where(p =>
-                    (p.CreateTime == entity.CreateDate
+                    (p.CreateTime == entity.CreateTime
                     && p.StaffID == entity.StaffID
                     && p.CustomerID == entity.CustomerID)).Delete();
 
@@ -289,7 +289,16 @@ namespace GMS.Crm.BLL
                 dbContext.SaveChanges();
             }
         }
-
+        public bool UpdateBusiness(Business entity)
+        {
+            bool ret = false;
+            using (var dbContext = new CrmDbContext())
+            {
+                dbContext.Update<Business>(entity);
+                ret = dbContext.SaveChanges() > 0;
+            }
+            return ret;
+        }
         public Business GetBusinessById(int businessID)
         {
             if (businessID > 0)

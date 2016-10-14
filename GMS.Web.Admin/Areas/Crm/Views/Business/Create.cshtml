@@ -177,7 +177,7 @@
                 dayNamesShort: ['星期天', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
                 dayClick: function (date, allDay, jsEvent, view) {
                     var t = "输入记录信息";
-                    var a = '@Url.Action("AddByDate")' + "?CreateDate=" + start.format("yyyy-MM-dd") + '&TB_iframe=true&height=480&width=600';
+                    var a = '@Url.Action("AddByDate")' + "?CreateDate=" + date.format("yyyy-MM-dd") + '&TB_iframe=true&height=480&width=600';
                     var g = false;
                     tb_show(t, a, g);
                     this.blur();
@@ -185,7 +185,7 @@
                 },
                 eventClick: function (calEvent, jsEvent, view) {
                     var t = "输入记录信息";
-                    var a = '@Url.Action("EditByID")' + "?id=" + calEvent.CustomerID + '&TB_iframe=true&height=480&width=600';
+                    var a = '@Url.Action("EditByID")' + "/" + calEvent.ID + '?TB_iframe=true&height=480&width=600';
                     var g = false;
                     tb_show(t, a, g);
                     this.blur();
@@ -240,9 +240,26 @@
                         cancelDefault: true
                     });
                 },
-                eventDrop: function (event, delta) {
-                    //alert(event.title + ' 被移除 ' + delta + ' 时间\n' +
-                    //'(可能需要更新数据库)');
+                eventDrop: function (event, dayDelta, minuteDelta, allDay, revertFunc) {
+                    //var todate = event.start.dateAdd("d", dayDelta);
+                    $.ajax({
+                        type: "POST",
+                        cache: false,
+                        error: function (xhr, error, thrown) {
+                            alert('获取事件错误。');
+                            if (error == "parsererror") {
+                                alert(oSettings, 0, "DataTables warning: JSON data from " +
+                                    "server could not be parsed. This is caused by a JSON formatting error.");
+                            }
+                        },
+                        data: {
+                            ID: event.ID,
+                            to: event.start.format("yyyy-MM-dd")
+                        },
+                        url: '@Url.Action("MoveEvent")',
+                        success: function () {
+                        }
+                    });
                 },
                 //eventClick: function (event) {
                 //    var fstart = $.fullCalendar.formatDate(event.start, "HH:mm");
@@ -354,6 +371,7 @@
                                 obj.message = item.Message;
                                 obj.textColor = "#ff0000";
                                 obj.CustomerID = item.Customer.ID;
+                                obj.ID = item.ID;
                                 obj.start = myDate;
                                 obj.allDay = true;
                                 $("#calendar").fullCalendar('renderEvent', obj, false);
