@@ -115,12 +115,12 @@ namespace GMS.Web.Admin.Common
             var noAuthorizeAttributes = filterContext.ActionDescriptor.GetCustomAttributes(typeof(AuthorizeIgnoreAttribute), false);
             if (noAuthorizeAttributes.Length > 0)
                 return;
-            
+
             base.OnActionExecuting(filterContext);
 
             if (this.LoginInfo == null)
             {
-                filterContext.Result = RedirectToAction("Login", "Auth", new { Area = "Account"});
+                filterContext.Result = RedirectToAction("Login", "Auth", new { Area = "Account" });
                 return;
             }
 
@@ -158,7 +158,7 @@ namespace GMS.Web.Admin.Common
         /// </summary>
         /// <param name="filterContext">filter context</param>
         protected override void OnActionExecuted(ActionExecutedContext filterContext)
-        {   
+        {
             if (filterContext.ActionDescriptor.ActionName.Contains("Edit") ||
                 filterContext.ActionDescriptor.ActionName.Contains("Add"))
                 return;
@@ -190,6 +190,19 @@ namespace GMS.Web.Admin.Common
         {
             //var permissions = string.Join(",", this.PermissionList);
             //this.ViewData["permissions"] = permissions;
+        }
+        protected List<int> GetCurrentUserStaffs(int staffid)
+        {
+            List<int> belongs;
+            if (UserContext.LoginInfo.BusinessPermissionList.Contains(EnumBusinessPermission.CrmManage_Belongs))
+            {
+                belongs = this.OAService.GetBelongsStaff(staffid);
+            }
+            else
+            {
+                belongs = new List<int>(staffid);
+            }
+            return belongs;
         }
 
         #endregion

@@ -25,7 +25,8 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
 
             this.RenderMyViewData(request.Customer, true);
 
-            var result = this.CrmService.GetCustomerList(request);
+            int currentstaffid = UserContext.LoginInfo.StaffID.HasValue ? UserContext.LoginInfo.StaffID.Value : -1;
+            var result = this.CrmService.GetCustomerList(GetCurrentUserStaffs(currentstaffid), request);
             return View(result);
         }
 
@@ -49,7 +50,7 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
         {
             var model = new Customer();
             this.TryUpdateModel<Customer>(model);
-
+            model.StaffID = UserContext.LoginInfo.StaffID.HasValue ? UserContext.LoginInfo.StaffID.Value : -1;
             try
             {
                 this.CrmService.SaveCustomer(model);

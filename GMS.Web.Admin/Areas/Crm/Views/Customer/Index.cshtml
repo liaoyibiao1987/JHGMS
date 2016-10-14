@@ -74,9 +74,9 @@
                 <th>
                     添加时间
                 </th>
-                <th>
-                    来电数
-                </th>
+                @*<th>
+                        来电数
+                    </th>*@
                 <th>
                     操作
                 </th>
@@ -90,7 +90,7 @@
                         <input type="checkbox" class="checkboxes" name='ids' value='@p.ID' />
                     </td>
                     <td class="blue">
-                        <a class="blue thickbox" style="cursor:pointer" title="点击开始录入跟单信息" 
+                        <a class="blue thickbox" style="cursor:pointer" title="点击开始录入跟单信息"
                            href="@Url.Action("EditByID", "Business", new { id = p.ID })?TB_iframe=true&height=480&width=600"><span>@p.Name</span></a>
                     </td>
                     <td>
@@ -115,9 +115,9 @@
                     <td>
                         <span>@p.CreateTime.ToCnDataString()</span>
                     </td>
-                    <td class="toolbar">
+                    @*<td class="toolbar">
                         @p.VisitRecords.Count <a href="@Url.Action("Index", "VisitRecord")?Customer.Tel=@p.Tel" target="_blank">查看来电</a>
-                    </td>
+                                        </td>*@
                     <td>
                         <a class="btn mini purple thickbox" title='编辑客户内容' href="@Url.Action("Edit", new { id = p.ID })?TB_iframe=true&height=600&width=600">
                             <i class="icon-edit"></i>

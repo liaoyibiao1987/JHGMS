@@ -149,12 +149,15 @@
                 selectable: true,
                 selectHelper: true,
                 select: function (start, end, allDay) {
-                    var t = "输入记录信息";
-                    var a = '@Url.Action("AddByDate")' + "?CreateDate=" + start.format("yyyy-MM-dd") + '&TB_iframe=true&height=480&width=600';
+                    //选中一段时间
+                    @*var t = "输入记录信息";
+                    var a = '@Url.Action("EditByID")' + "?id=" + date.CustomerID + '&TB_iframe=true&height=480&width=600';
+                    var a = '@Url.Action("Edit", new { id = 8 })?TB_iframe=true&height=600&width=600';
                     var g = false;
                     tb_show(t, a, g);
                     this.blur();
-                    return false;
+                    return false;*@
+
                     //var title = prompt('Event Title:');
                     //if (title) {
                     //    calendar.fullCalendar('renderEvent',
@@ -173,12 +176,20 @@
                 editable: true,
                 dayNamesShort: ['星期天', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
                 dayClick: function (date, allDay, jsEvent, view) {
-                    @*var t = "输入记录信息";
-                    var a = '@Url.Action("Edit", new { id = 8 })?TB_iframe=true&height=600&width=600';
-                    var g =  false;
+                    var t = "输入记录信息";
+                    var a = '@Url.Action("AddByDate")' + "?CreateDate=" + start.format("yyyy-MM-dd") + '&TB_iframe=true&height=480&width=600';
+                    var g = false;
                     tb_show(t, a, g);
                     this.blur();
-                    return false;*@
+                    return false;
+                },
+                eventClick: function (calEvent, jsEvent, view) {
+                    var t = "输入记录信息";
+                    var a = '@Url.Action("EditByID")' + "?id=" + calEvent.CustomerID + '&TB_iframe=true&height=480&width=600';
+                    var g = false;
+                    tb_show(t, a, g);
+                    this.blur();
+                    return false;
                 },
                 eventAfterRender: function (event, element, view) {//数据绑定上去后添加相应信息在页面上
                     var fstart = $.fullCalendar.formatDate(event.start, "yyyy-MM-dd");
@@ -200,13 +211,13 @@
                         confbg = confbg + '<span class=""></span>';
                     }
                     if (view.name == "month") {//按月份
-                        var evtcontent = '<div class="fc-event-vert"><a class="thickbox" >';
+                        var evtcontent = '<div class="fc-event-vert"><a>';
                         evtcontent = evtcontent + confbg;
                         //evtcontent = evtcontent + fstart + " - " + fend + "客户" + " : " + event.title;
                         evtcontent = evtcontent + '<span style="color:#ffffff">' + "&emsp;客户" + " : " + event.title + '</span>';
                         element.html(evtcontent);
                     } else if (view.name == "agendaWeek") {//按周
-                        var evtcontent = '<a class="thickbox">';
+                        var evtcontent = '<a>';
                         evtcontent = evtcontent + confbg;
                         evtcontent = evtcontent + '<span class="fc-event-time">' + fstart + "-" + fend + '</span>';
                         evtcontent = evtcontent + '<span>' + "客户" + " : " + event.title + '<br/>' + event.fullname + '</span>';
@@ -341,12 +352,12 @@
                                 var obj = new Object();
                                 obj.title = item.Customer.Name;
                                 obj.message = item.Message;
-                                obj.textColor = "#ff0000"
-                                obj.url = '@Url.Action("EditByID")' + "?id=" + item.Customer.ID + '&TB_iframe=true&height=480&width=600';
+                                obj.textColor = "#ff0000";
+                                obj.CustomerID = item.Customer.ID;
                                 obj.start = myDate;
                                 obj.allDay = true;
                                 $("#calendar").fullCalendar('renderEvent', obj, false);
-                            });                            
+                            });
                             callback(json);
                         }
                     });

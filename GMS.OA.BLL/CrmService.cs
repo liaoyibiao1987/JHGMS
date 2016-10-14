@@ -70,12 +70,13 @@ namespace GMS.Crm.BLL
             }
         }
 
-        public IEnumerable<Customer> GetCustomerList(CustomerRequest request = null)
+        public IEnumerable<Customer> GetCustomerList(List<int> staffids, CustomerRequest request = null)
         {
             request = request ?? new CustomerRequest();
             using (var dbContext = new CrmDbContext())
             {
-                IQueryable<Customer> queryList = dbContext.Customers.Include("VisitRecords").Include("Staff");
+                //IQueryable<Customer> queryList = dbContext.Customers.Include("VisitRecords").Include("Staff");
+                IQueryable<Customer> queryList = dbContext.Customers.Include("Staff").Where(p => staffids.Contains(p.StaffID.Value));
 
                 if (!string.IsNullOrEmpty(request.Customer.Name))
                     queryList = queryList.Where(d => d.Name.Contains(request.Customer.Name));
@@ -225,9 +226,11 @@ namespace GMS.Crm.BLL
         }
         #endregion
 
+        #region Business
+
         public IEnumerable<BusinessVM> GetBusinessList(BusinessRequest request, List<int> staffIDs)
         {
-            if (request == null || request.StartDate == null || request.EndDate == null) return null;
+            if (request == null || request.StartDate == null || request.EndDate == null || staffIDs == null) return null;
             using (var dbContext = new CrmDbContext())
             {
                 //IQueryable<Customer> queryList = dbContext.Customers.Include("Staff").Include("Business");
@@ -266,7 +269,7 @@ namespace GMS.Crm.BLL
 
         public IEnumerable<Business> GetBusinessList(BusinessRequest request, int staffID)
         {
-            if (request == null || request.StartDate == null || request.EndDate == null) return null;
+            if (request == null || request.StartDate == null || request.EndDate == null || staffID < 0) return null;
             using (var dbContext = new CrmDbContext())
             {
                 return dbContext.Business.Include("Customer").Where(p => (p.CreateTime > request.StartDate && p.CreateTime < request.EndDate && p.StaffID == staffID)).ToList();
@@ -286,6 +289,24 @@ namespace GMS.Crm.BLL
                 dbContext.SaveChanges();
             }
         }
+
+        public Business GetBusinessById(int businessID)
+        {
+            if (businessID > 0)
+            {
+                using (var dbContext = new CrmDbContext())
+                {
+                    Business business = dbContext.Business.Where(p => p.ID == businessID).FirstOrDefault();
+                    return business;
+                }
+            }
+            else
+            {
+                return null;
+            }
+        }
+        #endregion
+
 
         public IEnumerable<City> GetCityList(Request request = null)
         {

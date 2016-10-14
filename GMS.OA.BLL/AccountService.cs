@@ -145,9 +145,10 @@ namespace GMS.Account.BLL
             using (var dbContext = new AccountDbContext())
             {
                 IQueryable<User> users;
-                users = dbContext.Users.Include("Roles");
+                users = dbContext.Users;
 
-                return users.Where(p => (p.IsActive == true && (p.StaffID.HasValue == false || p.StaffID == staffid))).OrderByDescending(u => u.ID).ToList();
+                var query = users.Where(p => (p.IsActive == true && (p.StaffID.HasValue == false || p.StaffID == staffid))).OrderByDescending(u => u.ID);
+                return query.ToList();
             }
             // return ret;
         }

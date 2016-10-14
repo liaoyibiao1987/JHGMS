@@ -31,7 +31,7 @@ namespace GMS.Account.Contract
         //CmsManage_Channel = 202,
 
 
-        [EnumTitle("CRM管理来访来电")]
+        [EnumTitle("CRM填写访问信息")]
         CrmManage_VisitRecord = 301,
 
         [EnumTitle("CRM客户管理")]
@@ -42,6 +42,9 @@ namespace GMS.Account.Contract
 
         [EnumTitle("CRM查看统计信息")]
         CrmManage_Analysis = 304,
+
+        [EnumTitle("CRM查看下属")]
+        CrmManage_Belongs = 305,
 
 
         [EnumTitle("OA管理员工")]

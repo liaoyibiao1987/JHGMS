@@ -99,8 +99,57 @@ namespace GMS.OA.BLL
                 //    Direction = ParameterDirection.Output
                 //};
                 //dbContext.Database.ExecuteSqlCommand("update User set StaffID = @StaffID on ID IN @IDS",,string.Join(",", ids));
-                dbContext.Users.Update(p => ids.Contains(p.ID), u => new User { StaffID = null });
+                dbContext.Users.Update(p => ids.Contains(p.StaffID.Value), u => new User { StaffID = null });
                 dbContext.Staffs.Where(u => ids.Contains(u.ID)).Delete();
+            }
+        }
+
+
+        public List<int> GetBelongsStaff(int id)
+        {
+            using (var dbContext = new OADbContext())
+            {
+                var staff = dbContext.Staffs.FirstOrDefault(a => a.ID == id);
+
+                if (staff != null && staff.BranchId.HasValue)
+                {
+                    List<int> branchs = GetALLBranch(staff.BranchId.Value);
+                    if (branchs != null && branchs.Count > 0)
+                    {
+                        return dbContext.Staffs.Where(p => branchs.Contains(p.BranchId.Value)).Select(x => x.ID).ToList();
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
+        private List<int> GetALLBranch(int BranchID)
+        {
+            List<int> ret = new List<int> { BranchID };
+            IEnumerable<Branch> sonBranch = GetSonBranch(BranchID);
+            if (sonBranch.Count() > 0)
+            {
+                ret.AddRange(sonBranch.Select(p => p.ID));
+            }
+
+            return ret;
+        }
+
+        private IEnumerable<Branch> GetSonBranch(int BranchID)
+        {
+            using (var dbContext = new OADbContext())
+            {
+                var query = from c in dbContext.Branchs
+                            where c.ParentId.Equals(BranchID)
+                            select c;
+                return query.ToList().Concat(query.ToList().SelectMany(t => GetSonBranch(t.ID)));
             }
         }
         #endregion

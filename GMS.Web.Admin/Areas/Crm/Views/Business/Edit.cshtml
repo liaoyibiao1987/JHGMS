@@ -74,6 +74,7 @@
 
 @section MainContent{
     <div class="portlet-body form-horizontal form-bordered form-row-stripped">
+        @Html.HiddenFor(p => p.ID)
         <div class="row-fluid">
             <div class="alert alert-info">
                 <button class="close" data-dismiss="alert"></button>
@@ -90,7 +91,7 @@
             <div class="control-group">
                 <label class="control-label"><span class="required">*</span>洽谈时间：</label>
                 <div class="controls">
-                    @Html.TextBox("CreateDate", Html.ViewContext.RouteData.Values["CreateDate"], new { @class = "m-wrap small" })
+                    @Html.TextBoxFor(m => m.CreateTime, "yyyy-MM-dd", new { @class = "m-wrap small" })
                     <span class="help-inline">@Html.ValidationMessageFor(m => m.CreateTime)</span>
                 </div>
             </div>

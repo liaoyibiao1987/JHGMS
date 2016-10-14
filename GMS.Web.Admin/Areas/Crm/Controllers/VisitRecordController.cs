@@ -150,7 +150,8 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
 
             var request = new CustomerRequest();
             request.Customer.StaffID = this.UserContext.LoginInfo.StaffID;
-            var customerList = this.CrmService.GetCustomerList(request).ToList();
+            int currentstaffid = UserContext.LoginInfo.StaffID.HasValue ? UserContext.LoginInfo.StaffID.Value : -1;
+            var customerList = this.CrmService.GetCustomerList(GetCurrentUserStaffs(currentstaffid), request).ToList();
             customerList.ForEach(c => c.Name = string.Format("{0}({1})", c.Name, c.Tel));
             ViewData.Add("CustomerId", new SelectList(customerList, "Id", "Name", model.CustomerId));
 

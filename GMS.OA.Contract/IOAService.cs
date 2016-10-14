@@ -9,7 +9,7 @@ namespace GMS.OA.Contract
         IEnumerable<Staff> GetStaffList(StaffRequest request = null);
         void SaveStaff(Staff staff);
         void DeleteStaff(List<int> ids);
-
+        List<int> GetBelongsStaff(int id);
         Branch GetBranch(int id);
         IEnumerable<Branch> GetBranchList(BranchRequest request = null);
         void SaveBranch(Branch branch);
