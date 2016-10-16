@@ -58,7 +58,7 @@
                 messages: {
                     CreateTime: {
                         required: "请输入时间",
-                        dateISO:"请输入正确的时间格式"
+                        dateISO: "请输入正确的时间格式"
                     },
                     CurrentPayment: {
                         required: "请输入本月回款"
@@ -139,11 +139,11 @@
                 <div class="controls">
                     <div style="width:48%;display:inline-block">
                         <label>本月回款:</label>
-                        @Html.TextBox("CurrentPayment", "", new { style = "width:50%;", @class = "m-wrap small" })
+                        @Html.TextBoxFor(m => m.CurrentPayment, "{0:###,#.00}", new { style = "width:50%;", @class = "m-wrap small" })
                     </div>
                     <div style="width:48%;display:inline-block">
                         <label>本月预计回款:</label>
-                        @Html.TextBox("PredictPayment", "", new { style = "width:50%;", @class = "m-wrap small" })
+                        @Html.TextBoxFor(m => m.PredictPayment, "{0:###,#.00}", new { style = "width:50%;", @class = "m-wrap small" })
                     </div>
                 </div>
                 <!-- /.form-group -->

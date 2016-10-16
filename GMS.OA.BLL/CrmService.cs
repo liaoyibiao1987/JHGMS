@@ -283,14 +283,32 @@ namespace GMS.Crm.BLL
         {
             using (var dbContext = new CrmDbContext())
             {
-                Business business = new Business { CreateTime = entity.CreateTime, StaffID = entity.StaffID, CustomerID = entity.CustomerID, Message = entity.Message, IsSpecial = entity.IsSpecial };
+                Business business = new Business { CreateTime = entity.CreateTime, StaffID = entity.StaffID, CustomerID = entity.CustomerID, Message = entity.Message, IsSpecial = entity.IsSpecial, PredictPayment = entity.PredictPayment, CurrentPayment = entity.PredictPayment };
                 dbContext.Business.Where(p =>
                     (p.CreateTime == entity.CreateTime
                     && p.StaffID == entity.StaffID
                     && p.CustomerID == entity.CustomerID)).Delete();
-
+                UpdateOrCreatePayment(-1, business.CreateTime.ToString("yyyyMM"), entity.CurrentPayment, entity.PredictPayment);
                 dbContext.Insert<Business>(business);
-                dbContext.SaveChanges();
+            }
+        }
+
+        private void UpdateOrCreatePayment(int customerid, string during, double? curt, double? predict)
+        {
+            using (var dbContext = new CrmDbContext())
+            {
+                if (dbContext.Payments.Where(p => (p.CustomerID == customerid && p.Durring == during)).Count() > 0)
+                {
+                    Payment old = dbContext.Payments.FirstOrDefault(p => (p.CustomerID == customerid && p.Durring == during));
+                    old.PredictPayment = predict;
+                    old.CurrentPayment = curt;
+
+                    dbContext.Update<Payment>(old);
+                }
+                else
+                {
+                    dbContext.Insert<Payment>(new Payment { Durring = during, CustomerID = customerid, CurrentPayment = curt, PredictPayment = predict });
+                }
             }
         }
         public bool UpdateBusiness(Business entity)
@@ -298,8 +316,9 @@ namespace GMS.Crm.BLL
             bool ret = false;
             using (var dbContext = new CrmDbContext())
             {
-                dbContext.Update<Business>(entity);
-                ret = dbContext.SaveChanges() > 0;
+                Business bss = dbContext.Update<Business>(entity);
+                UpdateOrCreatePayment(bss.CustomerID.Value, bss.CreateTime.ToString("yyyyMM"), bss.CurrentPayment, bss.PredictPayment);
+                ret = bss != null;
             }
             return ret;
         }
@@ -310,6 +329,11 @@ namespace GMS.Crm.BLL
                 using (var dbContext = new CrmDbContext())
                 {
                     Business business = dbContext.Business.Where(p => p.ID == businessID).FirstOrDefault();
+                    if (business != null)
+                    {
+                        Payment pay = GetPayment(business.CustomerID.Value, business.CreateTime.ToString("yyyyMM"));
+                        business.UpatePayment(pay);
+                    }
                     return business;
                 }
             }
@@ -320,18 +344,14 @@ namespace GMS.Crm.BLL
         }
         #endregion
 
-
-        public IEnumerable<Cooperations> GetCooperationsList()
+        public Payment GetPayment(int customerid, string durring)
         {
-            using (var dbContext = new AccountDbContext())
+            using (var dbContext = new CrmDbContext())
             {
-
-                IEnumerable<Cooperations> cooperations = dbContext.FindAll<Cooperations>().ToList();
-                return cooperations;
+                IEnumerable<Payment> cooperations = dbContext.FindAll<Payment>().ToList();
+                return cooperations.FirstOrDefault(p => (p.CustomerID == customerid && p.Durring == durring));
             }
         }
-
-
         public IEnumerable<City> GetCityList(Request request = null)
         {
             request = request ?? new Request();

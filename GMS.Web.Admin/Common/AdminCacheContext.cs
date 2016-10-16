@@ -29,6 +29,7 @@ namespace GMS.Web.Admin.Common
             }
         }
 
+
         public Dictionary<int, Area> AreaDic
         {
             get
@@ -47,6 +48,17 @@ namespace GMS.Web.Admin.Common
                 return CacheHelper.Get<Dictionary<int, Province>>("ProvinceDic", () =>
                 {
                     return ServiceContext.Current.CrmService.GetProvinceList().ToDictionary(a => a.ID);
+                });
+            }
+        }
+
+        public IEnumerable<Cooperations> Cooperations
+        {
+            get
+            {
+                return CacheHelper.Get<IEnumerable<Cooperations>>("Cooperations", () =>
+                {
+                    return ServiceContext.Current.AccountService.GetCooperationsList().ToList();
                 });
             }
         }

@@ -34,6 +34,21 @@ namespace GMS.Crm.Contract
                 return CreateTime.ToString("MM/dd/yyyy");
             }
         }
+
+        [NotMapped]
+        public double? CurrentPayment { get; set; }
+
+        [NotMapped]
+        public double? PredictPayment { get; set; }
+
+        public void UpatePayment(Payment pment)
+        {
+            if (pment != null)
+            {
+                this.PredictPayment = pment.PredictPayment;
+                this.CurrentPayment = pment.CurrentPayment;
+            }
+        }
     }
 
     public class BusinessVM
@@ -82,6 +97,8 @@ namespace GMS.Crm.Contract
         public string Message { get; set; }
         public DateTime CreateTime { get; set; }
         public bool? IsSpecial { get; set; }
+        public float? CurrentPayment { get; set; }
+        public float? PredictPayment { get; set; }
 
     }
 }

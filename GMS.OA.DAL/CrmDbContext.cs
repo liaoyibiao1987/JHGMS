@@ -42,5 +42,7 @@ namespace GMS.Crm.DAL
         public DbSet<Area> Areas { get; set; }
         public DbSet<Province> Provinces { get; set; }
         public DbSet<Cooperations> Cooperations { get; set; }
+        public DbSet<Payment> Payments { get; set; }
+        
     }
 }
