@@ -336,7 +336,15 @@ namespace GMS.Crm.BLL
                 return areas.OrderByDescending(u => u.ID).ToPagedList(request.PageIndex, request.PageSize);
             }
         }
-
+        public IEnumerable<Province> GetProvinceList(Request request = null)
+        {
+            request = request ?? new Request();
+            using (var dbContext = new CrmDbContext())
+            {
+                IQueryable<Province> areas = dbContext.Provinces;
+                return areas.OrderByDescending(u => u.ID).ToPagedList(request.PageIndex, request.PageSize);
+            }
+        }
         public IEnumerable<UserAnalysis> GetUserAnalysis(DateTime startDate, DateTime endDate)
         {
             using (var dbContext = new CrmDbContext())

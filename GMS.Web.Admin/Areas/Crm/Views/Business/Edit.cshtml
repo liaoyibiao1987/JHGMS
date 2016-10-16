@@ -29,7 +29,7 @@
         .error {
             font-size: 7px;
             color: red;
-            word-break:keep-all;
+            word-break: keep-all;
         }
     </style>
 
@@ -44,6 +44,10 @@
 
             $("#mainForm").validate({
                 rules: {
+                    CreateTime: {
+                        required: true,
+                        dateISO: true
+                    },
                     CurrentPayment: {
                         required: true
                     },
@@ -52,6 +56,10 @@
                     }
                 },
                 messages: {
+                    CreateTime: {
+                        required: "请输入时间",
+                        dateISO:"请输入正确的时间格式"
+                    },
                     CurrentPayment: {
                         required: "请输入本月回款"
                     },

@@ -1494,6 +1494,8 @@
     <Content Include="Areas\Crm\Views\Business\Index.cshtml" />
     <Content Include="Areas\Crm\Views\Business\Edit.cshtml" />
     <Content Include="Areas\Account\Views\Settings\Index.cshtml" />
+    <Content Include="Areas\Account\Views\Settings\CitySelect.cshtml" />
+    <Content Include="Areas\Account\Views\Settings\ProvinceSelect.cshtml" />
     <None Include="Assets\bootstrap-colorpicker\less\colorpicker.less" />
     <None Include="Assets\bootstrap-datepicker\less\datepicker.less" />
     <None Include="Assets\bootstrap-daterangepicker\README.md" />

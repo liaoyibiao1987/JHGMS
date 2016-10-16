@@ -29,5 +29,7 @@ namespace GMS.Crm.DAL
         public DbSet<Project> Projects { get; set; }
         public DbSet<City> Citys { get; set; }
         public DbSet<Area> Areas { get; set; }
+        public DbSet<Province> Provinces { get; set; }
+        
     }
 }

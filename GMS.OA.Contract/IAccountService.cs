@@ -1,4 +1,6 @@
-﻿using System;
+﻿using GMS.Crm.Contract;
+using GMS.Framework.Contract;
+using System;
 using System.Collections.Generic;
 
 namespace GMS.Account.Contract
@@ -25,5 +27,18 @@ namespace GMS.Account.Contract
         bool CheckVerifyCode(string verifyCodeText, Guid guid);
 
 
+        bool AddProvinceByName(string name);
+        bool AddCityByName(int provinceId, string name);
+        bool AddAreaByName(int cityId, string name);
+
+        IEnumerable<City> GetCityList(Request request = null);
+        IEnumerable<Area> GetAreaList(Request request = null);
+        IEnumerable<Province> GetProvinceList(Request request = null);
+
+
+        IEnumerable<Cooperations> GetCooperationsList(Request request = null);
+
+        bool DeleteCooperations(List<int> ids);
+        bool AddOrEidtCooperation(int id, string name);
     }
 }

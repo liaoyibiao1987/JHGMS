@@ -5,6 +5,7 @@ using System.Data.Entity.Infrastructure;
 using System.Data.Entity;
 using GMS.Account.Contract;
 using GMS.Core.Log;
+using GMS.Crm.Contract;
 
 namespace GMS.Account.DAL
 {
@@ -36,5 +37,12 @@ namespace GMS.Account.DAL
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<VerifyCode> VerifyCodes { get; set; }
+
+        public DbSet<City> Citys { get; set; }
+        public DbSet<Area> Areas { get; set; }
+        public DbSet<Province> Provinces { get; set; }
+        public DbSet<Cooperations> Cooperations { get; set; }
+        
+
     }
 }
