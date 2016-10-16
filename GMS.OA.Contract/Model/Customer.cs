@@ -6,12 +6,18 @@ using System.ComponentModel.DataAnnotations.Schema;
 using GMS.Framework.Contract;
 using GMS.Framework.Utility;
 using GMS.OA.Contract;
+using System.Linq;
 
 namespace GMS.Crm.Contract
 {
     [Table("Customer")]
     public class Customer : ModelBase
     {
+        public Customer()
+        {
+            this.Cooperations = new List<Cooperations>();
+            this.CustomerCooperationsIds = new List<int>();
+        }
         [StringLength(50, ErrorMessage = "客户名不能超过50个字")]
         [Required(ErrorMessage = "客户名不能为空")]
         public string Name { get; set; }
@@ -34,9 +40,14 @@ namespace GMS.Crm.Contract
         public int AgeGroup { get; set; }
         public int? ContacterType { get; set; }
         public int? CooperationOrNot { get; set; }
-        public string CooperationKinds { get; set; }
+
+        [NotMapped]
         public float? AvePayment { get; set; }
+
+        [NotMapped]
         public float? PredictPayment { get; set; }
+
+        [NotMapped]
         public float? CurrentPayment { get; set; }
         public string Channel { get; set; }
         public string BusinessType { get; set; }
@@ -60,6 +71,30 @@ namespace GMS.Crm.Contract
             }
         }
         public virtual Staff Staff { get; set; }
+
+        [NotMapped]
+        public List<int> CustomerCooperationsIds { get; set; }
+        [NotMapped]
+        public string CustomerCooperShow
+        {
+            get
+            {
+                if (Cooperations == null || Cooperations.Count > 0)
+                {
+                    return string.Join(",", Cooperations.Select(p => p.Name));
+                }
+                else
+                {
+                    return "没有";
+                }
+            }
+        }
+
+        /// <summary>
+        /// 角色列表
+        /// </summary>
+        public virtual List<Cooperations> Cooperations { get; set; }
+
 
         //public virtual ICollection<Business> Business { get; set; }
     }

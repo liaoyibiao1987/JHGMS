@@ -118,7 +118,8 @@ namespace GMS.Account.BLL
         {
             using (var dbContext = new AccountDbContext())
             {
-                return dbContext.Users.Include("Roles").Where(u => u.ID == id).SingleOrDefault();
+                var p = dbContext.Users.Include("Roles").Where(u => u.ID == id).SingleOrDefault();
+                return p;
             }
         }
 

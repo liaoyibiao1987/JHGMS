@@ -20,7 +20,7 @@ namespace GMS.Crm.Contract
         IEnumerable<VisitRecord> GetVisitRecordList(VisitRecordRequest request = null);
         void SaveVisitRecord(VisitRecord visitRecord);
         void DeleteVisitRecord(List<int> ids);
-        
+
 
         IEnumerable<BusinessVM> GetBusinessList(BusinessRequest request, List<int> staffIDs);
         IEnumerable<Business> GetBusinessList(BusinessRequest request, int staffID);
@@ -29,7 +29,7 @@ namespace GMS.Crm.Contract
         bool UpdateBusiness(Business entity);
         Business GetBusinessById(int businessID);
 
-
+        IEnumerable<Cooperations> GetCooperationsList();
         IEnumerable<City> GetCityList(Request request = null);
         IEnumerable<Area> GetAreaList(Request request = null);
         IEnumerable<Province> GetProvinceList(Request request = null);

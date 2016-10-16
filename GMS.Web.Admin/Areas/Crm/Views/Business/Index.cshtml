@@ -260,6 +260,9 @@
                     类型
                 </th>
                 <th>
+                    合作种类
+                </th>
+                <th>
                     联系人
                 </th>
                 <th>
@@ -297,10 +300,13 @@
                         {
                             <td class="blue">
                                 <a class="blue thickbox" style="cursor:pointer" title="点击开始录入跟单信息"
-                           href="@Url.Action("AddByCustomerId", "Business", new { CustomerId = item.Customer.ID })&TB_iframe=true&height=480&width=600"><span>@item.Customer.Name</span></a>
+                                   href="@Url.Action("AddByCustomerId", "Business", new { CustomerId = item.Customer.ID })&TB_iframe=true&height=480&width=600"><span>@item.Customer.Name</span></a>
                             </td>
                             <td>
                                 <span>@EnumHelper.GetEnumTitle((EnumCategory)item.Customer.Category)</span>
+                            </td>
+                            <td>
+                                <span>@item.Customer.CustomerCooperShow</span>
                             </td>
                             <td class="blue">
                                 <span>@item.Customer.Contacter</span>

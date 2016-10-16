@@ -9,6 +9,7 @@ using System.Data.Objects;
 using GMS.Framework.Contract;
 using EntityFramework.Extensions;
 using GMS.Core.Cache;
+using GMS.Account.DAL;
 
 namespace GMS.Crm.BLL
 {
@@ -66,7 +67,7 @@ namespace GMS.Crm.BLL
         {
             using (var dbContext = new CrmDbContext())
             {
-                return dbContext.Find<Customer>(id);
+                return dbContext.Customers.Include("Cooperations").FirstOrDefault(p => p.ID == id);
             }
         }
 
@@ -76,7 +77,7 @@ namespace GMS.Crm.BLL
             using (var dbContext = new CrmDbContext())
             {
                 //IQueryable<Customer> queryList = dbContext.Customers.Include("VisitRecords").Include("Staff");
-                IQueryable<Customer> queryList = dbContext.Customers.Include("Staff").Where(p => staffids.Contains(p.StaffID.Value));
+                IQueryable<Customer> queryList = dbContext.Customers.Include("Cooperations").Include("Staff").Where(p => staffids.Contains(p.StaffID.Value));
 
                 if (!string.IsNullOrEmpty(request.Customer.Name))
                     queryList = queryList.Where(d => d.Name.Contains(request.Customer.Name));
@@ -107,13 +108,16 @@ namespace GMS.Crm.BLL
 
 
                     dbContext.Update<Customer>(customer);
+                    List<Cooperations> customercooperations = dbContext.Cooperations.Where(r => customer.CustomerCooperationsIds.Contains(r.ID)).ToList();
+                    customer.Cooperations = customercooperations;
+                    dbContext.SaveChanges();
                 }
                 else
                 {
                     if (dbContext.Customers.Any(c => c.Tel == customer.Tel))
                         throw new BusinessException("Tel", "已存在此电话的客户！");
 
-                    dbContext.Insert<Customer>(customer);
+                    customer = dbContext.Insert<Customer>(customer);
                 }
             }
         }
@@ -243,7 +247,7 @@ namespace GMS.Crm.BLL
                 //                    && t1.CreateTime > request.StartDate.Value
                 //                    && t1.CreateTime < request.EndDate.Value
                 //           select new BusinessVM { Customer = t2, Business = t1 };
-                var query = from a in dbContext.Customers
+                var query = from a in dbContext.Customers.Include("Cooperations").ToList()
                             join b in dbContext.Business
                             on new { Cus = a.ID, Stf = a.StaffID } equals new { Cus = b.CustomerID == null ? 0 : b.CustomerID.Value, Stf = b.StaffID } into t
                             where staffIDs.Contains(a.StaffID == null ? -1 : a.StaffID.Value)
@@ -315,6 +319,17 @@ namespace GMS.Crm.BLL
             }
         }
         #endregion
+
+
+        public IEnumerable<Cooperations> GetCooperationsList()
+        {
+            using (var dbContext = new AccountDbContext())
+            {
+
+                IEnumerable<Cooperations> cooperations = dbContext.FindAll<Cooperations>().ToList();
+                return cooperations;
+            }
+        }
 
 
         public IEnumerable<City> GetCityList(Request request = null)

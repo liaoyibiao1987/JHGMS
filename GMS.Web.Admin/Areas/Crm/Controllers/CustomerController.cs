@@ -72,6 +72,10 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
         public ActionResult Edit(int id)
         {
             var model = this.CrmService.GetCustomer(id);
+
+            var cooperations = this.CrmService.GetCooperationsList();
+            //string custcoop = model.Cooperations == null ? "" : );
+            this.ViewBag.CustomerCooperationsIds = new SelectList(cooperations, "ID", "Name", string.Join(",", model.Cooperations.Select(p => p.ID)));
             this.RenderMyViewData(model);
             return View(model);
         }

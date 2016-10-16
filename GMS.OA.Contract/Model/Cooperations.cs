@@ -12,6 +12,8 @@ namespace GMS.Crm.Contract
         [Required(ErrorMessage = "名称不能为空")]
         [StringLength(50)]
         public string Name { get; set; }
+
+        public virtual ICollection<Customer> Customers { get; set; }
     }
 
 }

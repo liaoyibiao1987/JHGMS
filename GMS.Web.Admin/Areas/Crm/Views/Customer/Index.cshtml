@@ -57,6 +57,12 @@
                     类型
                 </th>
                 <th>
+                    连锁店数量
+                </th>
+                <th>
+                    合作产品
+                </th>
+                <th>
                     联系人
                 </th>
                 <th>
@@ -95,6 +101,12 @@
                     </td>
                     <td>
                         <span>@EnumHelper.GetEnumTitle((EnumCategory)p.Category)</span>
+                    </td>
+                    <td>
+                        <span>@((p.ChainCount.HasValue == true && (EnumCategory)p.Category == EnumCategory.Married) ? p.ChainCount.Value.ToString() : "...")</span>
+                    </td>
+                    <td>
+                        <span>@p.CustomerCooperShow</span>
                     </td>
                     <td class="blue">
                         <span>@p.Contacter</span>

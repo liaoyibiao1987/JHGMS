@@ -19,6 +19,17 @@ namespace GMS.Crm.DAL
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             Database.SetInitializer<CrmDbContext>(null);
+
+            modelBuilder.Entity<Customer>()
+                .HasMany(e => e.Cooperations)
+                .WithMany(e => e.Customers)
+                .Map(m =>
+                {
+                    m.ToTable("CustomerCooperations");
+                    m.MapLeftKey("CustomerID");
+                    m.MapRightKey("CooperationsID");
+                });
+
             base.OnModelCreating(modelBuilder);
         }
 
@@ -30,6 +41,6 @@ namespace GMS.Crm.DAL
         public DbSet<City> Citys { get; set; }
         public DbSet<Area> Areas { get; set; }
         public DbSet<Province> Provinces { get; set; }
-        
+        public DbSet<Cooperations> Cooperations { get; set; }
     }
 }

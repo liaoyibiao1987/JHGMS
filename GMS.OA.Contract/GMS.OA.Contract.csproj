@@ -53,6 +53,7 @@
     <Compile Include="Model\Cooperations.cs" />
     <Compile Include="Model\City.cs" />
     <Compile Include="Model\Business.cs" />
+    <Compile Include="Model\CustomerCooperations.cs" />
     <Compile Include="Model\Customer.cs" />
     <Compile Include="Model\EnumBusinessPermission.cs" />
     <Compile Include="Model\LoginInfo.cs" />
