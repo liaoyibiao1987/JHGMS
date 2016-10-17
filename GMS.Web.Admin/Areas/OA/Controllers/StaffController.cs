@@ -81,6 +81,7 @@ namespace GMS.Web.Admin.Areas.OA.Controllers
                     User newuser = this.AccountService.GetUser(model.UserID.Value);
                     newuser.StaffID = model.ID;
                     AccountService.SaveUser(newuser);
+                    model.User = newuser;
                 }
 
             }

@@ -56,6 +56,8 @@ namespace GMS.OA.Contract
                 userID = value;
             }
         }
+
+        [ForeignKey("UserID")]
         public virtual User User { get; set; }
 
         public int? BranchId { get; set; }

@@ -14,7 +14,7 @@ namespace GMS.OA.Contract
     {
         public Branch()
         {
- 
+            ParentId = 1;
         }
 
         [StringLength(100)]
@@ -29,6 +29,7 @@ namespace GMS.OA.Contract
         public int ParentId { get; set; }
 
         public virtual Branch ParentBranch { get; set; }
+
         [ForeignKey("ParentId")]
         public virtual List<Branch> Embranchment { get; set; }
     }
