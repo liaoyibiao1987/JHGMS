@@ -10,6 +10,7 @@ using GMS.Framework.Contract;
 using EntityFramework.Extensions;
 using GMS.Core.Cache;
 using GMS.Core.Config;
+using GMS.Crm.Contract;
 
 namespace GMS.Account.BLL
 {
@@ -117,7 +118,8 @@ namespace GMS.Account.BLL
         {
             using (var dbContext = new AccountDbContext())
             {
-                return dbContext.Users.Include("Roles").Where(u => u.ID == id).SingleOrDefault();
+                var p = dbContext.Users.Include("Roles").Where(u => u.ID == id).SingleOrDefault();
+                return p;
             }
         }
 
@@ -273,6 +275,156 @@ namespace GMS.Account.BLL
                 else
                 {
                     return false;
+                }
+            }
+        }
+
+        public bool AddProvinceByName(string name)
+        {
+            using (var dbContext = new AccountDbContext())
+            {
+                if (string.IsNullOrEmpty(name) == false)
+                {
+                    var exist = dbContext.FindAll<Province>(u => u.Name == name);
+                    if (exist.Count > 0)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        Province p = new Province { Name = name, CreateTime = DateTime.Now };
+                        //dbContext.Entry<Province>(p);
+                        Province insert = dbContext.Insert<Province>(p);
+                        return (insert == null || insert.ID < 1) ? false : true;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        public bool AddCityByName(int provinceId, string name)
+        {
+            using (var dbContext = new AccountDbContext())
+            {
+                if (string.IsNullOrEmpty(name) == false)
+                {
+                    var exist = dbContext.FindAll<City>(u => (u.Name == name && u.ProvinceID == provinceId));
+                    if (exist.Count > 0)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        City p = new City { Name = name, CreateTime = DateTime.Now, ProvinceID = provinceId };
+                        City insert = dbContext.Insert<City>(p);
+                        return (insert == null || insert.ID < 1) ? false : true;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        public bool AddAreaByName(int cityId, string name)
+        {
+            using (var dbContext = new AccountDbContext())
+            {
+                if (string.IsNullOrEmpty(name) == false)
+                {
+                    var exist = dbContext.FindAll<Area>(u => (u.Name == name && u.CityId == cityId));
+                    if (exist.Count > 0)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        Area p = new Area { Name = name, CreateTime = DateTime.Now, CityId = cityId };
+                        Area insert = dbContext.Insert<Area>(p);
+                        return (insert == null || insert.ID < 1) ? false : true;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        public IEnumerable<City> GetCityList(Request request = null)
+        {
+            request = request ?? new Request();
+            using (var dbContext = new AccountDbContext())
+            {
+                IQueryable<City> citys = dbContext.Citys;
+                return citys.OrderByDescending(u => u.ID).ToList();
+            }
+        }
+
+        public IEnumerable<Area> GetAreaList(Request request = null)
+        {
+            request = request ?? new Request();
+            using (var dbContext = new AccountDbContext())
+            {
+                IQueryable<Area> areas = dbContext.Areas;
+                return areas.OrderByDescending(u => u.ID).ToList();
+            }
+        }
+        public IEnumerable<Province> GetProvinceList(Request request = null)
+        {
+            request = request ?? new Request();
+            using (var dbContext = new AccountDbContext())
+            {
+                IQueryable<Province> areas = dbContext.Provinces;
+                return areas.OrderByDescending(u => u.ID).ToList();
+            }
+        }
+        public IEnumerable<Cooperations> GetCooperationsList(Request request = null)
+        {
+            request = request ?? new Request();
+            using (var dbContext = new AccountDbContext())
+            {
+                IQueryable<Cooperations> cooperationsKinds = dbContext.Cooperations;
+                return cooperationsKinds.OrderByDescending(u => u.ID).ToList();
+            }
+        }
+        public bool DeleteCooperations(List<int> ids)
+        {
+            if (ids == null || ids.Count < 1) return false;
+            using (var dbContext = new AccountDbContext())
+            {
+                IQueryable<Cooperations> cooperationsKinds = dbContext.Cooperations;
+                int ret = cooperationsKinds.Delete(p => ids.Contains(p.ID));
+                dbContext.SaveChanges();
+                return ret > 0;
+            }
+        }
+
+        public bool AddOrEidtCooperation(int id, string name)
+        {
+            using (var dbContext = new AccountDbContext())
+            {
+                if (id > 0)
+                {
+                    Cooperations cop = dbContext.FindAll<Cooperations>(l => l.ID == id).FirstOrDefault();
+                    if (cop != null)
+                    {
+                        dbContext.Update<Cooperations>(cop);
+                        dbContext.SaveChanges();
+                        return true;
+                    }
+                    return false;
+                }
+                else
+                {
+                    Cooperations cop = new Cooperations() { Name = name };
+                    Cooperations insert = dbContext.Insert<Cooperations>(cop);
+                    return (insert == null || insert.ID < 1) ? false : true;
+
                 }
             }
         }

@@ -11,6 +11,7 @@
     Layout = "~/Views/Shared/_Layout.Edit.cshtml";
 }
 @section PageSpecificStyleSheetIncludes{
+    <link rel="stylesheet" href="@Url.StaticFile("/Assets/iCheck/all.css")">
     <style>
         .controls label {
             display: inline;
@@ -24,14 +25,54 @@
         .custom-combobox a {
             height: 30px;
         }
+
+        .error {
+            font-size: 7px;
+            color: red;
+            word-break: keep-all;
+        }
     </style>
 
 }
 @section PageSpecificJavascriptIncludes{
     <script type="text/javascript" src="@Url.StaticFile("/content/scripts/jquery-ui.combobox.js")"></script>
     <script type="text/javascript" src="@Url.StaticFile("/content/scripts/jquery.powerFloat.js")"></script>
+    <script type="text/javascript" src="@Url.StaticFile("/Assets/iCheck/icheck.min.js")"></script>
+
     <script type="text/javascript">
         $(document).ready(function () {
+
+            $("#mainForm").validate({
+                rules: {
+                    CreateTime: {
+                        required: true,
+                        dateISO: true
+                    },
+                    CurrentPayment: {
+                        required: true
+                    },
+                    PredictPayment: {
+                        required: true
+                    }
+                },
+                messages: {
+                    CreateTime: {
+                        required: "请输入时间",
+                        dateISO: "请输入正确的时间格式"
+                    },
+                    CurrentPayment: {
+                        required: "请输入本月回款"
+                    },
+                    PredictPayment: {
+                        required: "请输入预计回款"
+                    }
+                },
+                submitHandler: function (form) {
+                    form.submit();
+
+                    //getData(start.format("yyyy-MM-dd"), end.format("yyyy-MM-dd"));
+                }
+            });
             var dates = $("#CreateTime").datepicker({
                 dateFormat: "yy-mm-dd",
                 defaultDate: "w",
@@ -47,26 +88,15 @@
                     dates.not(this).datepicker("option", option, date);
                 }
             });
-            $("#mainForm").validate({
-                rules: {
-                    start: {
-                        required: true,
-                        dateISO: true
-                    }
-                },
-                messages: {
-                    start: {
-                        required: "请输入开始时间",
-                        dateISO: "请输入正确的时间格式"
-                    }
-                },
-                submitHandler: function (form) {
-                    //var start = $("#CreateDate").datepicker("getDate");
-                    form.submit();
-                }
-            });
 
+            $('input').iCheck({
+                checkboxClass: 'icheckbox_square-red',  // 注意square和blue的对应关系
+                radioClass: 'iradio_square-red',
+                increaseArea: '20%' // optional
+
+            });
             $("#CustomerId").combobox();
+
         });
     </script>
 
@@ -93,15 +123,30 @@
                     @*@Html.TextBoxFor(m => m.CreateTime, new { @class = "m-wrap small", Value = Model.CreateTime.ToString("yyyy-MM-dd") })*@
                     @Html.TextBoxFor(m => m.CreateTime, "{0:yyyy-MM-dd}", new { @class = "m-wrap small" })
                     <span class="help-inline">@Html.ValidationMessageFor(m => m.CreateTime)</span>
+                    <span class="help-inline">重要：</span>
+                    @Html.CheckBox("IsSpecial")
                 </div>
             </div>
 
             <div class="control-group">
                 <label class="control-label"><span class="required">*</span>填写信息：</label>
                 <div class="controls">
-                    @Html.TextAreaFor(m => m.Message, 10, 60, new { @class = "m-wrap input-xlarge", @placeholder = "输入详细信息" })
+                    @Html.TextAreaFor(m => m.Message, 8, 40, new { @class = "m-wrap input-xlarge", @placeholder = "输入详细信息" })
                     <span class="help-inline">@Html.ValidationMessageFor(m => m.Message)</span>
                 </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <div style="width:48%;display:inline-block">
+                        <label>本月回款:</label>
+                        @Html.TextBoxFor(m => m.CurrentPayment, "{0:###,#.00}", new { style = "width:50%;", @class = "m-wrap small" })
+                    </div>
+                    <div style="width:48%;display:inline-block">
+                        <label>本月预计回款:</label>
+                        @Html.TextBoxFor(m => m.PredictPayment, "{0:###,#.00}", new { style = "width:50%;", @class = "m-wrap small" })
+                    </div>
+                </div>
+                <!-- /.form-group -->
             </div>
         </div>
     </div>

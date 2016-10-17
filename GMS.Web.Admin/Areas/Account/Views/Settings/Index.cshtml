@@ -1,0 +1,336 @@
+﻿@using GMS.Framework.Contract
+@using GMS.Framework.Utility
+@using GMS.Framework.Web.Controls
+@using GMS.Framework.Contract
+@using GMS.Framework.Web.Controls
+@using GMS.Crm.Contract
+@using GMS.Web
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section PageSpecificStyleSheetIncludes{
+    <link rel="stylesheet" href="@Url.StaticFile("/Assets/select2/select2.min.css")">
+    <style type="text/css">
+        .select2 {
+            width: 100% !important;
+        }
+    </style>
+}
+@section PageSpecificJavascriptIncludes{
+    <script type="text/javascript" src="@Url.StaticFile("/Assets/select2/select2.full.min.js")"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("select").select2();
+            var type = "";
+            $("#btAddProvince").live("click", function () {
+                $("#divProvince").hide(200);
+                $("#divCity").hide(200);
+                type = "AddProvince";
+            });
+
+            $("#btAddCity").live("click", function () {
+                $("#ProvinceId").load("@Url.Action("GetProvince")");
+                if ($("#divProvince").is(":hidden") == true) {
+                    $("#divProvince").show(200);
+                }
+                $("#divCity").hide(200);
+                type = "AddCity";
+            });
+
+            $("#btAddArea").live("click", function () {
+                $("#ProvinceId").load("@Url.Action("GetProvince")");
+                if ($("#divProvince").is(":hidden") == true) {
+                    $("#divProvince").show(200);
+                }
+                if ($("#divCity").is(":hidden") == true) {
+                    $("#divCity").show(200);
+                }
+                type = "AddCounty";
+            });
+            $("#btResetRegion").live("click", function () {
+                $("#ProvinceId").load("@Url.Action("GetProvince")");
+                $("#ProvinceId").val(-1);
+                $("#CityId").load("@Url.Action("GetCity")?ProvinceId=0");
+                $("#CityId").val(-1);
+                $("#iptValue").val("");
+            });
+
+            $("#btAddRegion").live("click", function () {
+                switch (type) {
+                    case "AddProvince":
+                        $.ajax({
+                            "url": "@Url.Action("AddProvinceByPost")",
+                            "data":
+                                {
+                                    //Name:$("#ProvinceId").find("option:selected").text()
+                                    Name: $("#iptValue").val()
+                                },
+                            "success": function (json) {
+                                $("#btResetRegion").click();
+                                alert("添加省成功");
+                            },
+                            "cache": false,
+                            "type": "POST",
+                            "error": function (xhr, error, thrown) {
+                                if (error == "parsererror") {
+                                    alert(oSettings, 0, "DataTables warning: JSON data from " +
+                                        "server could not be parsed. This is caused by a JSON formatting error.");
+                                }
+                            }
+                        });
+                        break;
+                    case "AddCity":
+                        $.ajax({
+                            "url": "@Url.Action("AddCityByPost")",
+                            "data":
+                         {
+                             ProvinceId: $("#ProvinceId").val(),
+                             Name: $("#iptValue").val()
+                         },
+                            "success": function (json) {
+                                $("#btResetRegion").click();
+                                alert("添加城市成功");
+                            },
+                            "cache": false,
+                            "type": "POST",
+                            "error": function (xhr, error, thrown) {
+                                if (error == "parsererror") {
+                                    alert(oSettings, 0, "DataTables warning: JSON data from " +
+                                        "server could not be parsed. This is caused by a JSON formatting error.");
+                                }
+                            }
+                        });
+                        break;
+                    case "AddCounty":
+                        $.ajax({
+                            "url": "@Url.Action("AddAreaByPost")",
+                            "data":
+                        {
+                            CityId: $("#CityId").val(),
+                            Name: $("#iptValue").val()
+                        },
+                            "success": function (json) {
+                                $("#btResetRegion").click();
+                                alert("添加县/区成功");
+                            },
+                            "cache": false,
+                            "type": "POST",
+                            "error": function (xhr, error, thrown) {
+                                if (error == "parsererror") {
+                                    alert(oSettings, 0, "DataTables warning: JSON data from " +
+                                        "server could not be parsed. This is caused by a JSON formatting error.");
+                                }
+                            }
+                        });
+                        break;
+                    default: break;
+                }
+            });
+
+            $("#ProvinceId").change(function () {
+                $("#CityId").load("@Url.Action("GetCity")?ProvinceId=" + this.value);
+            });
+            $("#createCooperation").live("click", function () {
+                $.ajax({
+                    "url": "@Url.Action("AddOrEidtCooperation")",
+                    "data":
+                         {
+                             Id: editid,
+                             Name: $("#iptCooperationValue").val()
+                         },
+                    "success": function (json) {
+                        $("#iptCooperationValue").val("");
+                        editid = -1;
+                        $("#createCooperation").text("新增");
+                        window.location.reload();
+                    },
+                    "cache": false,
+                    "type": "POST",
+                    "error": function (xhr, error, thrown) {
+                        if (error == "parsererror") {
+                            alert(oSettings, 0, "DataTables warning: JSON data from " +
+                                "server could not be parsed. This is caused by a JSON formatting error.");
+                        }
+                    }
+                });
+            });
+
+
+            $("#tbcooperations").DataTable({
+                "bServerSide": false,//服务端处理分页
+                'bPaginate': true,  //是否分页。
+                'bFilter': true,  //是否使用内置的过滤功能
+                'bLengthChange': true, //是否允许自定义每页显示条数.
+                "bProcessing": true, //DataTables载入数据时，是否显示‘进度’提示
+                "bFilter": true, //是否启动过滤、搜索功能
+                "oLanguage": { //国际化配置
+                    "sProcessing": "正在获取数据，请稍后...",
+                    "sLengthMenu": "显示 _MENU_ 条",
+                    "sZeroRecords": "没有您要搜索的内容",
+                    "sInfo": "从 _START_ 到  _END_ 条记录 总记录数为 _TOTAL_ 条",
+                    "sInfoEmpty": "记录数为0",
+                    "sInfoFiltered": "(全部记录数 _MAX_ 条)",
+                    "sInfoPostFix": "",
+                    "sSearch": "搜索",
+                    "sUrl": "",
+                    "oPaginate": {
+                        "sFirst": "第一页",
+                        "sPrevious": "上一页",
+                        "sNext": "下一页",
+                        "sLast": "最后一页"
+                    }
+                },
+                "columnDefs": [{ //数据渲染
+                    "render": function (data, type, row) {
+                        return '<div class="text-indentation-s" title="' + data + '">' + data + '</div>';
+                    },
+                    "targets": 0
+                }, {
+                    //"visible": false,
+                    "render": function (data, type, row) {
+                        return '<div class="text-indentation-b" title="' + data + '">' + data + '</div>';
+                    },
+                    "targets": [1]
+                }],
+                initComplete: function () {
+                    this.api().columns().every(function () {
+                        var column = this;
+                        var select = $('<select><option value=""></option></select>')
+                            .appendTo($(column.footer()).empty())
+                            .on('change', function () {
+                                var val = $.fn.dataTable.util.escapeRegex(
+                                    $(this).val()
+                                );
+
+                                column
+                                    .search(val ? '^' + val + '$' : '', true, false)
+                                    .draw();
+                            });
+
+                        column.data().unique().sort().each(function (d, j) {
+                            select.append('<option value="' + d + '">' + d + '</option>')
+                        });
+                    });
+                }
+            });
+        });
+        var editid = -1;
+        function editCooperation(id, name) {
+            editid = id;
+            $("#iptCooperationValue").val(name);
+            $("#createCooperation").text("修改");
+        }
+    </script>
+}
+
+<div class="alert">
+    <button class="close" data-dismiss="alert"></button>
+    <strong>系统主要参数相关：</strong>
+    由管理员设置一些系统默认参数！
+</div>
+<div class="nav-tabs-custom">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#tab_1" data-toggle="tab">合作品种</a></li>
+        <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                区域设置 <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                <li role="presentation"><a id="btAddProvince" data-toggle="tab" href="#tab_2">添加省</a></li>
+                <li role="presentation"><a id="btAddCity" data-toggle="tab" href="#tab_2">添加市</a></li>
+                <li role="presentation"><a id="btAddArea" data-toggle="tab" href="#tab_2">添加县/区</a></li>
+                <li role="presentation" class="divider"></li>
+                <li role="presentation"><a data-toggle="tab" href="#">其他</a></li>
+            </ul>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active fade in" id="tab_1">
+
+
+            @using (Html.BeginForm("DeleteCooperations", "Settings", FormMethod.Post, new { id = "mainForm" }))
+            {
+                <table id="tbcooperations" class="table table-striped table-hover ">
+                    <thead>
+                        <tr>
+                            <th style="width: 8px;">
+                                <input type="checkbox" id="checkall" class="group-checkable" />
+                            </th>
+                            <th>
+                                名称
+                            </th>
+                            <th>
+                                操作
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var p in ViewBag.Cooperations)
+                        {
+                            <tr>
+                                <td>
+                                    <input type="checkbox" class="checkboxes" name='ids' value='@p.ID' />
+                                </td>
+                                <td>
+                                    <span>@p.Name</span>
+                                </td>
+
+                                <td>
+                                    <a class="btn mini purple" title='编辑客户内容'
+                                       onclick="editCooperation(@p.ID,'@p.Name')">
+                                        <i class="icon-edit"></i>编辑
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            <div style="display:inline-block;">
+                <div class="row-fluid">
+                    <a class="btn red" id="delete" href="javascript:;"><i class="icon-trash icon-white"></i>删除</a>
+                </div>
+                <input style="vertical-align:bottom;margin:0px;" id="iptCooperationValue" type="text">
+                <span style="vertical-align:bottom;">
+                    <a class="btn blue" id="createCooperation" href="javascript:;"><i class="icon-plus icon-white"></i>新增</a>
+                </span>
+            </div>
+        </div>
+        <div class="tab-pane fade in" id="tab_2">
+            <div class="form-inline" style="margin-left:20px">
+                <div id="divProvince" class="form-group" style="width:48%;display:inline-block;">
+                    <label>省:</label>
+                    @Html.DropDownList("ProvinceId", ViewData["ProvinceId"] as SelectList, new { @class = "select2" })
+                </div>
+                <!-- /.form-group -->
+                <div id="divCity" class="form-group" style="width:48%;display:inline-block;">
+                    <label>市:</label>
+                    @Html.DropDownList("CityId", ViewData["CityId"] as SelectList, new { @class = "select2" })
+
+                </div>
+                <br />
+                <br />
+                <div class="form-group" style="width:40%;display:inline-block;">
+                    <label>添加:</label>
+                    <div class="" style="display:inline-block;">
+                        <input id="iptValue" type="text">
+                        <span>
+                            <button type="button" id="btAddRegion" class="btn green btn-primary">添加</button>
+                            <button type="reset" id="btResetRegion" class="btn red btn-primary">重设</button>
+                        </span>
+                    </div>
+                </div>
+                <!-- /.form-group -->
+            </div>
+        </div>
+        <!-- /.tab-pane -->
+        @*<div class="tab-pane" id="tab_2">
+                @using (Html.BeginForm(null, null, null, FormMethod.Get, new { id = "CooperationSetting" }))
+                {
+
+                }
+            </div>*@
+    </div>
+    <!-- /.tab-content -->
+</div>

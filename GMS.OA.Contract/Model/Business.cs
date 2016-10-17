@@ -18,6 +18,7 @@ namespace GMS.Crm.Contract
         public virtual Staff Staff { get; set; }
         [Required]
         public int? CustomerID { get; set; }
+        public bool? IsSpecial { get; set; }
         public virtual Customer Customer { get; set; }
 
         [Required]
@@ -31,6 +32,21 @@ namespace GMS.Crm.Contract
             get
             {
                 return CreateTime.ToString("MM/dd/yyyy");
+            }
+        }
+
+        [NotMapped]
+        public double? CurrentPayment { get; set; }
+
+        [NotMapped]
+        public double? PredictPayment { get; set; }
+
+        public void UpatePayment(Payment pment)
+        {
+            if (pment != null)
+            {
+                this.PredictPayment = pment.PredictPayment;
+                this.CurrentPayment = pment.CurrentPayment;
             }
         }
     }
@@ -80,6 +96,9 @@ namespace GMS.Crm.Contract
         public int? StaffID { get; set; }
         public string Message { get; set; }
         public DateTime CreateTime { get; set; }
+        public bool? IsSpecial { get; set; }
+        public float? CurrentPayment { get; set; }
+        public float? PredictPayment { get; set; }
 
     }
 }

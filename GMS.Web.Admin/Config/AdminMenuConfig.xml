@@ -6,7 +6,7 @@
     <AdminMenuGroup name="系统管理" icon="icon-cog">
       <AdminMenuArray>
         <AdminMenu name="用户管理" url="/Account/User/Index" info="添加修改删除用户" permission="AccountManage_User" />
-        <AdminMenu name="参数设置" url="/Account/Role/Index" info="添加修改系统参数" permission="AccountManage_Role" />
+        <AdminMenu name="参数设置" url="/Account/Settings/Index" info="添加修改系统参数" permission="AccountManage_Role" />
         <AdminMenu name="角色管理" url="/Account/Role/Index" info="添加修改删除角色" permission="AccountManage_Role" />
       </AdminMenuArray>
     </AdminMenuGroup>
@@ -29,7 +29,7 @@
     <AdminMenuGroup name="客户管理" icon="icon-phone-sign">
       <AdminMenuArray>
         <AdminMenu name="跟单输入" url="/Crm/Business/Create" info="输入跟单信息" permission="CrmManage_VisitRecord" />
-        <!--<AdminMenu name="业务查询" url="/Crm/VisitRecord/Index" info="业务跟踪查询" permission="CrmManage_VisitRecord" />-->
+        <AdminMenu name="cesssss" url="/Crm/VisitRecord/Index" info="业务跟踪查询" permission="CrmManage_VisitRecord" />
         <AdminMenu name="企业管理" url="/Crm/Customer/Index" info="企业录入编辑" permission="CrmManage_Customer" />
         <AdminMenu name="跟单业务" url="/Crm/Business/Index" info="业务员跟单" permission="CrmManage_Customer" />
         <!--<AdminMenu name="业绩统计" url="/Crm/Analysis/Index" info="查看业绩统计" permission="CrmManage_Analysis" />-->

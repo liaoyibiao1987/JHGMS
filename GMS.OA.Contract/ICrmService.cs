@@ -29,9 +29,11 @@ namespace GMS.Crm.Contract
         bool UpdateBusiness(Business entity);
         Business GetBusinessById(int businessID);
 
+        Payment GetPayment(int customerid, string durring);
 
         IEnumerable<City> GetCityList(Request request = null);
         IEnumerable<Area> GetAreaList(Request request = null);
+        IEnumerable<Province> GetProvinceList(Request request = null);
 
         IEnumerable<UserAnalysis> GetUserAnalysis(DateTime startDate, DateTime endDate);
         IEnumerable<VisitStatistics> GetVisitStatistics(DateTime startDate, DateTime endDate);

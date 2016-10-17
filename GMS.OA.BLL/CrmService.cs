@@ -9,6 +9,7 @@ using System.Data.Objects;
 using GMS.Framework.Contract;
 using EntityFramework.Extensions;
 using GMS.Core.Cache;
+using GMS.Account.DAL;
 
 namespace GMS.Crm.BLL
 {
@@ -66,7 +67,7 @@ namespace GMS.Crm.BLL
         {
             using (var dbContext = new CrmDbContext())
             {
-                return dbContext.Find<Customer>(id);
+                return dbContext.Customers.Include("Cooperations").FirstOrDefault(p => p.ID == id);
             }
         }
 
@@ -76,7 +77,7 @@ namespace GMS.Crm.BLL
             using (var dbContext = new CrmDbContext())
             {
                 //IQueryable<Customer> queryList = dbContext.Customers.Include("VisitRecords").Include("Staff");
-                IQueryable<Customer> queryList = dbContext.Customers.Include("Staff").Where(p => staffids.Contains(p.StaffID.Value));
+                IQueryable<Customer> queryList = dbContext.Customers.Include("Cooperations").Include("Staff").Where(p => staffids.Contains(p.StaffID.Value));
 
                 if (!string.IsNullOrEmpty(request.Customer.Name))
                     queryList = queryList.Where(d => d.Name.Contains(request.Customer.Name));
@@ -107,13 +108,16 @@ namespace GMS.Crm.BLL
 
 
                     dbContext.Update<Customer>(customer);
+                    List<Cooperations> customercooperations = dbContext.Cooperations.Where(r => customer.CustomerCooperationsIds.Contains(r.ID)).ToList();
+                    customer.Cooperations = customercooperations;
+                    dbContext.SaveChanges();
                 }
                 else
                 {
                     if (dbContext.Customers.Any(c => c.Tel == customer.Tel))
                         throw new BusinessException("Tel", "已存在此电话的客户！");
 
-                    dbContext.Insert<Customer>(customer);
+                    customer = dbContext.Insert<Customer>(customer);
                 }
             }
         }
@@ -243,7 +247,7 @@ namespace GMS.Crm.BLL
                 //                    && t1.CreateTime > request.StartDate.Value
                 //                    && t1.CreateTime < request.EndDate.Value
                 //           select new BusinessVM { Customer = t2, Business = t1 };
-                var query = from a in dbContext.Customers
+                var query = from a in dbContext.Customers.Include("Cooperations").ToList()
                             join b in dbContext.Business
                             on new { Cus = a.ID, Stf = a.StaffID } equals new { Cus = b.CustomerID == null ? 0 : b.CustomerID.Value, Stf = b.StaffID } into t
                             where staffIDs.Contains(a.StaffID == null ? -1 : a.StaffID.Value)
@@ -279,14 +283,32 @@ namespace GMS.Crm.BLL
         {
             using (var dbContext = new CrmDbContext())
             {
-                Business business = new Business { CreateTime = entity.CreateTime, StaffID = entity.StaffID, CustomerID = entity.CustomerID, Message = entity.Message };
+                Business business = new Business { CreateTime = entity.CreateTime, StaffID = entity.StaffID, CustomerID = entity.CustomerID, Message = entity.Message, IsSpecial = entity.IsSpecial, PredictPayment = entity.PredictPayment, CurrentPayment = entity.PredictPayment };
                 dbContext.Business.Where(p =>
                     (p.CreateTime == entity.CreateTime
                     && p.StaffID == entity.StaffID
                     && p.CustomerID == entity.CustomerID)).Delete();
-
+                UpdateOrCreatePayment(-1, business.CreateTime.ToString("yyyyMM"), entity.CurrentPayment, entity.PredictPayment);
                 dbContext.Insert<Business>(business);
-                dbContext.SaveChanges();
+            }
+        }
+
+        private void UpdateOrCreatePayment(int customerid, string during, double? curt, double? predict)
+        {
+            using (var dbContext = new CrmDbContext())
+            {
+                if (dbContext.Payments.Where(p => (p.CustomerID == customerid && p.Durring == during)).Count() > 0)
+                {
+                    Payment old = dbContext.Payments.FirstOrDefault(p => (p.CustomerID == customerid && p.Durring == during));
+                    old.PredictPayment = predict;
+                    old.CurrentPayment = curt;
+
+                    dbContext.Update<Payment>(old);
+                }
+                else
+                {
+                    dbContext.Insert<Payment>(new Payment { Durring = during, CustomerID = customerid, CurrentPayment = curt, PredictPayment = predict });
+                }
             }
         }
         public bool UpdateBusiness(Business entity)
@@ -294,8 +316,9 @@ namespace GMS.Crm.BLL
             bool ret = false;
             using (var dbContext = new CrmDbContext())
             {
-                dbContext.Update<Business>(entity);
-                ret = dbContext.SaveChanges() > 0;
+                Business bss = dbContext.Update<Business>(entity);
+                UpdateOrCreatePayment(bss.CustomerID.Value, bss.CreateTime.ToString("yyyyMM"), bss.CurrentPayment, bss.PredictPayment);
+                ret = bss != null;
             }
             return ret;
         }
@@ -306,6 +329,11 @@ namespace GMS.Crm.BLL
                 using (var dbContext = new CrmDbContext())
                 {
                     Business business = dbContext.Business.Where(p => p.ID == businessID).FirstOrDefault();
+                    if (business != null)
+                    {
+                        Payment pay = GetPayment(business.CustomerID.Value, business.CreateTime.ToString("yyyyMM"));
+                        business.UpatePayment(pay);
+                    }
                     return business;
                 }
             }
@@ -316,7 +344,14 @@ namespace GMS.Crm.BLL
         }
         #endregion
 
-
+        public Payment GetPayment(int customerid, string durring)
+        {
+            using (var dbContext = new CrmDbContext())
+            {
+                IEnumerable<Payment> cooperations = dbContext.FindAll<Payment>().ToList();
+                return cooperations.FirstOrDefault(p => (p.CustomerID == customerid && p.Durring == durring));
+            }
+        }
         public IEnumerable<City> GetCityList(Request request = null)
         {
             request = request ?? new Request();
@@ -336,7 +371,15 @@ namespace GMS.Crm.BLL
                 return areas.OrderByDescending(u => u.ID).ToPagedList(request.PageIndex, request.PageSize);
             }
         }
-
+        public IEnumerable<Province> GetProvinceList(Request request = null)
+        {
+            request = request ?? new Request();
+            using (var dbContext = new CrmDbContext())
+            {
+                IQueryable<Province> areas = dbContext.Provinces;
+                return areas.OrderByDescending(u => u.ID).ToPagedList(request.PageIndex, request.PageSize);
+            }
+        }
         public IEnumerable<UserAnalysis> GetUserAnalysis(DateTime startDate, DateTime endDate)
         {
             using (var dbContext = new CrmDbContext())

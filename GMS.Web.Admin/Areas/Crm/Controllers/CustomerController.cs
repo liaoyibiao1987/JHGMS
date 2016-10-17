@@ -72,6 +72,8 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
         public ActionResult Edit(int id)
         {
             var model = this.CrmService.GetCustomer(id);
+
+            this.ViewBag.CustomerCooperationsIds = new SelectList(this.Cooperations, "ID", "Name", string.Join(",", model.Cooperations.Select(p => p.ID)));
             this.RenderMyViewData(model);
             return View(model);
         }
@@ -121,6 +123,22 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
                 return;
 
             //ViewData.Add("StaffId", new SelectList(this.AccountService.GetUserList(), "ID", "LoginName", model.UserId));
+        }
+
+        public Dictionary<int, City> CityDic
+        {
+            get
+            {
+                return AdminCacheContext.Current.CityDic;
+            }
+        }
+
+        public IEnumerable<Cooperations> Cooperations
+        {
+            get
+            {
+                return AdminCacheContext.Current.Cooperations;
+            }
         }
     }
 }
