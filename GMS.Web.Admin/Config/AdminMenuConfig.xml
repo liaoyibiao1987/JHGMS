@@ -31,7 +31,7 @@
         <AdminMenu name="跟单输入" url="/Crm/Business/Create" info="输入跟单信息" permission="CrmManage_VisitRecord" />
         <!--<AdminMenu name="业务查询" url="/Crm/VisitRecord/Index" info="业务跟踪查询" permission="CrmManage_VisitRecord" />-->
         <AdminMenu name="企业管理" url="/Crm/Customer/Index" info="企业录入编辑" permission="CrmManage_Customer" />
-        <AdminMenu name="跟单业务" url="/Crm/Business/Index" info="业务员跟单" permission="CrmManage_VisitRecord" />
+        <AdminMenu name="跟单业务" url="/Crm/Business/Index" info="业务员跟单" permission="CrmManage_Customer" />
         <!--<AdminMenu name="业绩统计" url="/Crm/Analysis/Index" info="查看业绩统计" permission="CrmManage_Analysis" />-->
         <AdminMenu name="业绩统计" url="/Crm/Analysis/VisitStatistics" info="查看来电统计" permission="CrmManage_Analysis" />
       </AdminMenuArray>
