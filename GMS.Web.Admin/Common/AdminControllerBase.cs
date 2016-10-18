@@ -9,6 +9,7 @@ using GMS.Framework.Contract;
 using GMS.Framework.Utility;
 using GMS.Account.Contract;
 using GMS.Framework.Web;
+using GMS.OA.Contract;
 
 namespace GMS.Web.Admin.Common
 {
@@ -201,6 +202,18 @@ namespace GMS.Web.Admin.Common
             else
             {
                 belongs = new List<int> { staffid };
+            }
+            return belongs;
+        }
+        protected List<Staff> GetCurrentUserStaffs()
+        {
+            List<Staff> belongs = new List<Staff>();
+            int currentstaffid = UserContext.LoginInfo.StaffID.HasValue ? UserContext.LoginInfo.StaffID.Value : -1;
+
+            if (UserContext.LoginInfo.BusinessPermissionList.Contains(EnumBusinessPermission.CrmManage_Belongs))
+            {
+                belongs = this.OAService.GetBelongsStaffEntity(currentstaffid);
+
             }
             return belongs;
         }

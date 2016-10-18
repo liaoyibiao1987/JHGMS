@@ -7,9 +7,11 @@ namespace GMS.OA.Contract
     {
         Staff GetStaff(int id);
         IEnumerable<Staff> GetStaffList(StaffRequest request = null);
+        IEnumerable<Staff> GetAllStaffList();
         void SaveStaff(Staff staff);
         void DeleteStaff(List<int> ids);
         List<int> GetBelongsStaff(int id);
+        List<Staff> GetBelongsStaffEntity(int id);
         Branch GetBranch(int id);
         IEnumerable<Branch> GetBranchList(BranchRequest request = null);
         void SaveBranch(Branch branch);

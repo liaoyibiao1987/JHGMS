@@ -8,6 +8,7 @@ using GMS.Account.Contract;
 using GMS.Web.Admin.Common;
 using GMS.Framework.Utility;
 using GMS.Framework.Contract;
+using GMS.OA.Contract;
 
 namespace GMS.Web.Admin.Areas.Crm.Controllers
 {
@@ -112,17 +113,43 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
             }
             return RedirectToAction("Index");
         }
+        private void RenderEditViewData(Customer model)
+        {
 
+
+        }
         private void RenderMyViewData(Customer model, bool isBasic = false)
         {
-            ViewData.Add("Gender", new SelectList(EnumHelper.GetItemValueList<EnumGender>(), "Key", "Value", model.Gender));
+            ViewData.Add("Gender", new SelectList(EnumHelper.GetItemValueList<GMS.Crm.Contract.EnumGender>(), "Key", "Value", model.Gender));
             ViewData.Add("Category", new SelectList(EnumHelper.GetItemValueList<EnumCategory>(), "Key", "Value", model.Category));
             ViewData.Add("AgeGroup", new SelectList(EnumHelper.GetItemValueList<EnumAgeGroup>(), "Key", "Value", model.AgeGroup));
 
             if (isBasic)
                 return;
 
-            //ViewData.Add("StaffId", new SelectList(this.AccountService.GetUserList(), "ID", "LoginName", model.UserId));
+            int province = -1;
+            if (model.CityId.HasValue == true)
+            {
+                var currencity = CityDic.FirstOrDefault(p => p.Value.ID == model.CityId.Value);
+                if (currencity.Value != null)
+                {
+                    province = currencity.Value.ProvinceID;
+                }
+            }
+
+            ViewData.Add("CityIds", new SelectList(CityDic.Values.Select(c => new { Id = c.ID, Name = c.Name }), "Id", "Name", model.CityId));
+            ViewData.Add("ProvinceIds", new SelectList(ProvinceDic.Values.Select(c => new { Id = c.ID, Name = c.Name }), "Id", "Name", province));
+
+            List<Staff> liststaff = GetCurrentUserStaffs();
+            ViewData.Add("Staffs", new SelectList(liststaff.Select(c => new { Id = c.ID, Name = c.Name }), "Id", "Name", model.StaffID));
+        }
+
+        public ActionResult GetCity(int ProvinceId)
+        {
+            var areas = this.CityDic.Values.Where(a => a.ProvinceID == ProvinceId);
+            ViewData.Add("CityIds", new SelectList(areas, "Id", "Name"));
+
+            return PartialView("CitySelect");
         }
 
         public Dictionary<int, City> CityDic
@@ -130,6 +157,13 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
             get
             {
                 return AdminCacheContext.Current.CityDic;
+            }
+        }
+        public Dictionary<int, Province> ProvinceDic
+        {
+            get
+            {
+                return AccountService.GetProvinceList().ToDictionary(a => a.ID);
             }
         }
 
@@ -140,5 +174,6 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
                 return AdminCacheContext.Current.Cooperations;
             }
         }
+        
     }
 }

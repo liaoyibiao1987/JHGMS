@@ -40,6 +40,15 @@ namespace GMS.OA.BLL
             }
         }
 
+        public IEnumerable<Staff> GetAllStaffList()
+        {
+            using (var dbContext = new OADbContext())
+            {
+                IEnumerable<Staff> staffs = dbContext.Staffs.Include("Branch").Include("User").ToList();
+                return staffs.OrderByDescending(u => u.ID);
+            }
+        }
+
         public void SaveStaff(Staff staff)
         {
             using (var dbContext = new OADbContext())
@@ -107,6 +116,18 @@ namespace GMS.OA.BLL
 
         public List<int> GetBelongsStaff(int id)
         {
+            List<Staff> staffs = GetBelongsStaffEntity(id);
+            if (staffs != null)
+            {
+                return staffs.Select(p => p.ID).ToList();
+            }
+            else
+            {
+                return null;
+            }
+        }
+        public List<Staff> GetBelongsStaffEntity(int id)
+        {
             using (var dbContext = new OADbContext())
             {
                 var staff = dbContext.Staffs.FirstOrDefault(a => a.ID == id);
@@ -116,7 +137,7 @@ namespace GMS.OA.BLL
                     List<int> branchs = GetALLBranch(staff.BranchId.Value);
                     if (branchs != null && branchs.Count > 0)
                     {
-                        return dbContext.Staffs.Where(p => branchs.Contains(p.BranchId.Value)).Select(x => x.ID).ToList();
+                        return dbContext.Staffs.Where(p => branchs.Contains(p.BranchId.Value)).ToList();
                     }
                     else
                     {

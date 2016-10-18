@@ -7,24 +7,22 @@ using System.Net;
 using Newtonsoft.Json;
 using GMS.Web.OrgChart.Models;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 
 
 namespace GMS.Web.OrgChart
 {
     public partial class MainPage : UserControl
     {
- 
+
         public MainPage()
         {
             InitializeComponent();
-
             this.Loaded += new RoutedEventHandler(MainPage_Loaded);
         }
-
         void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
-            Uri uri = new Uri(HtmlPage.Document.DocumentUri, "GetOrg");
-
+            Uri uri = new Uri(HtmlPage.Document.DocumentUri, "GetOrg?" + Guid.NewGuid().ToString("N"));
             var wc = new WebClient();
             wc.DownloadStringCompleted += new DownloadStringCompletedEventHandler(wc_DownloadStringCompleted);
 
@@ -33,7 +31,9 @@ namespace GMS.Web.OrgChart
 
         void wc_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
         {
+
             var branch = JsonConvert.DeserializeObject<Branch>(e.Result);
+            Debug.WriteLine("GMS sliverlight：" + e.Result);
 
             this.Dispatcher.BeginInvoke(() =>
             {

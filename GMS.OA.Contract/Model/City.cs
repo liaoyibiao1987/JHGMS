@@ -12,7 +12,9 @@ namespace GMS.Crm.Contract
         [Required(ErrorMessage = "名称不能为空")]
         [StringLength(50)]
         public string Name { get; set; }
-        public int? ProvinceID { get; set; }
+        public int ProvinceID { get; set; }
+
+        [ForeignKey("ProvinceID")]
         public virtual Province Province { get; set; }
     }
 

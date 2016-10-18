@@ -29,7 +29,16 @@ namespace GMS.Crm.DAL
                     m.MapLeftKey("CustomerID");
                     m.MapRightKey("CooperationsID");
                 });
+            //modelBuilder.Entity<City>().HasKey(e => e.ProvinceID).Map(m =>
+            //{
+            //    m.ToTable("Province");
+            //});
 
+            //       modelBuilder.Entity<City>()
+            //.HasMany(c => c.ProvinceID).WithMany(i => i.Courses)
+            //.Map(t => t.MapLeftKey("CourseID")
+            //    .MapRightKey("InstructorID")
+            //    .ToTable("CourseInstructor"));
             base.OnModelCreating(modelBuilder);
         }
 
@@ -43,6 +52,6 @@ namespace GMS.Crm.DAL
         public DbSet<Province> Provinces { get; set; }
         public DbSet<Cooperations> Cooperations { get; set; }
         public DbSet<Payment> Payments { get; set; }
-        
+
     }
 }

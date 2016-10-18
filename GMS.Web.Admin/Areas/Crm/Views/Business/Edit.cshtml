@@ -49,10 +49,12 @@
                         dateISO: true
                     },
                     CurrentPayment: {
-                        required: true
+                        required: true,
+                        number: true
                     },
                     PredictPayment: {
-                        required: true
+                        required: true,
+                        number: true
                     }
                 },
                 messages: {
@@ -61,10 +63,12 @@
                         dateISO: "请输入正确的时间格式"
                     },
                     CurrentPayment: {
-                        required: "请输入本月回款"
+                        required: "请输入本月回款",
+                        number: "请输入正确的数字"
                     },
                     PredictPayment: {
-                        required: "请输入预计回款"
+                        required: "请输入预计回款",
+                        number: "请输入正确的数字"
                     }
                 },
                 submitHandler: function (form) {

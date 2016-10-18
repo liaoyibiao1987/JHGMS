@@ -23,6 +23,9 @@ namespace GMS.Crm.Contract
         public string Name { get; set; }
 
         public string Contacter { get; set; }
+        public int? CityId { get; set; }
+
+        public virtual City City { get; set; }
 
         [StringLength(50, ErrorMessage = "电话不能超过50个字")]
         public string Tel { get; set; }
@@ -51,6 +54,8 @@ namespace GMS.Crm.Contract
         public float? CurrentPayment { get; set; }
         public string Channel { get; set; }
         public string BusinessType { get; set; }
+
+        [RegularExpression(@"[0-9]{1,4}", ErrorMessage = "输入0-1000的数字")]
         public int? ChainCount { get; set; }
         public int? ChainType { get; set; }
 
@@ -97,6 +102,7 @@ namespace GMS.Crm.Contract
 
 
         //public virtual ICollection<Business> Business { get; set; }
+
     }
 
 

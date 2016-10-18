@@ -77,7 +77,11 @@ namespace GMS.Crm.BLL
             using (var dbContext = new CrmDbContext())
             {
                 //IQueryable<Customer> queryList = dbContext.Customers.Include("VisitRecords").Include("Staff");
-                IQueryable<Customer> queryList = dbContext.Customers.Include("Cooperations").Include("Staff").Where(p => staffids.Contains(p.StaffID.Value));
+                IQueryable<Customer> queryList = dbContext.Customers.Include("Cooperations").Include("Staff").Include("City").Where(p => staffids.Contains(p.StaffID.Value));
+                //var rec = from a in queryList
+                //          join b in dbContext.Provinces on a.City.ProvinceID equals b.ID
+                //          select a;
+
 
                 if (!string.IsNullOrEmpty(request.Customer.Name))
                     queryList = queryList.Where(d => d.Name.Contains(request.Customer.Name));
@@ -247,7 +251,7 @@ namespace GMS.Crm.BLL
                 //                    && t1.CreateTime > request.StartDate.Value
                 //                    && t1.CreateTime < request.EndDate.Value
                 //           select new BusinessVM { Customer = t2, Business = t1 };
-                var query = from a in dbContext.Customers.Include("Cooperations").ToList()
+                var query = from a in dbContext.Customers.Include("Cooperations").Include("Staff").Include("City").ToList()
                             join b in dbContext.Business
                             on new { Cus = a.ID, Stf = a.StaffID } equals new { Cus = b.CustomerID == null ? 0 : b.CustomerID.Value, Stf = b.StaffID } into t
                             where staffIDs.Contains(a.StaffID == null ? -1 : a.StaffID.Value)

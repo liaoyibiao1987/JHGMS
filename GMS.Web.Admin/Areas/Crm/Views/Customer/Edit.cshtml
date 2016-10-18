@@ -7,13 +7,65 @@
     Layout = "~/Views/Shared/_Layout.Edit.cshtml";
 }
 @section PageSpecificStyleSheetIncludes{
+    <link rel="stylesheet" href="@Url.StaticFile("/Assets/select2/select2.min.css")">
     <style type="text/css">
         .controls label {
             display: inline;
         }
+
+        .error {
+            font-size: 7px;
+            color: red;
+            word-break: keep-all;
+        }
     </style>
 }
 @section PageSpecificJavascriptIncludes{
+    <script type="text/javascript" src="@Url.StaticFile("/Assets/select2/select2.full.min.js")"></script>
+    <script>
+        $(function () {
+            $(".select2").select2();
+
+            $("#ProvinceId").change(function () {
+                $("#CityId").load("@Url.Action("GetCity")?ProvinceId=" + this.value);
+            });
+
+            $("input[name='Category']").change(function () {
+                var val = $(this).val();
+                if (val == 2) {
+                    $('#ChainCount').removeAttr("disabled");
+                } else {
+                    $('#ChainCount').attr("disabled", "disabled");
+                    $('#ChainCount').val("");
+                }
+            });
+
+            $("#mainForm").validate({
+                rules: {
+                    Email: {
+                        email: true
+                    },
+                    ChainCount: {
+                        number: true
+                    }
+                },
+                messages: {
+                    Email: {
+                        email: "请输入正确的Email格式"
+                    },
+                    ChainCount: {
+                        number: "请输入正确的数字"
+                    }
+                },
+                submitHandler: function (form) {
+                    form.submit();
+
+                    //getData(start.format("yyyy-MM-dd"), end.format("yyyy-MM-dd"));
+                }
+            });
+        });
+
+    </script>
 }
 @section MainContent{
     <div class="portlet-body form-horizontal form-bordered form-row-stripped">
@@ -33,7 +85,13 @@
                     <span class="help-inline">@Html.ValidationMessageFor(m => m.Contacter)</span>
                 </div>
             </div>
-
+            <div class="control-group">
+                <label class="control-label"><span class="required">*</span>联系人：</label>
+                <div class="controls">
+                    @Html.DropDownListFor(m => m.StaffID, ViewData["Staffs"] as SelectList, "--请选择--", new { @class = "select2" })
+                    <span class="help-inline">@Html.ValidationMessageFor(m => m.Contacter)</span>
+                </div>
+            </div>j
             <div class="control-group">
                 <label class="control-label"><span class="required">*</span>客户电话：</label>
                 <div class="controls">
@@ -65,6 +123,15 @@
                     <span class="help-inline">@Html.ValidationMessageFor(m => m.Gender)</span>
                 </div>
             </div>
+            <div class="control-group">
+                <label class="control-label"><span class="required">*</span>省/市：</label>
+                <div class="controls">
+                    @Html.DropDownList("ProvinceId", ViewData["ProvinceIds"] as SelectList, "--请选择--", new { @class = "select2" })
+                </div>
+                <div class="controls">
+                    @Html.DropDownListFor(p => p.CityId, ViewData["CityIds"] as SelectList, "--请选择--", new { @class = "select2" })
+                </div>
+            </div>
 
             <div class="control-group">
                 <label class="control-label"><span class="required">*</span>客户类型：</label>
@@ -73,6 +140,22 @@
                     <span class="help-inline">@Html.ValidationMessageFor(m => m.Category)</span>
                 </div>
             </div>
+
+            <div class="control-group">
+                <label class="control-label"><span class="required">*</span>连锁店数量：</label>
+                <div class="controls">
+                    @if (Model.Category != 2)
+                    {
+                        @Html.TextBoxFor(m => m.ChainCount, new { @class = "m-wrap", disabled = true })
+                    }
+                    else
+                    {
+                        @Html.TextBoxFor(m => m.ChainCount, new { @class = "m-wrap" })
+                    }
+                    <span class="help-inline">@Html.ValidationMessageFor(m => m.ChainCount)</span>
+                </div>
+            </div>
+
             <div class="control-group">
                 <label class="control-label"><span class="required">*</span>合作品种：</label>
                 <div class="controls">

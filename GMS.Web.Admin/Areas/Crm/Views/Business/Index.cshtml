@@ -256,8 +256,12 @@
                 <th>
                     <span style="width:200px;display:inline-block">客户名</span>
                 </th>
+                <th>城市</th>
                 <th>
                     类型
+                </th>
+                <th>
+                    连锁店数量
                 </th>
                 <th>
                     合作种类
@@ -302,8 +306,19 @@
                                 <a class="blue thickbox" style="cursor:pointer" title="点击开始录入跟单信息"
                                    href="@Url.Action("AddByCustomerId", "Business", new { CustomerId = item.Customer.ID })&TB_iframe=true&height=480&width=600"><span>@item.Customer.Name</span></a>
                             </td>
+                            <td class="green">
+                                @if (item.Customer.City != null)
+                                {
+                                    <span>
+                                        @item.Customer.City.Name
+                                    </span>
+                                }
+                            </td>
                             <td>
                                 <span>@EnumHelper.GetEnumTitle((EnumCategory)item.Customer.Category)</span>
+                            </td>
+                            <td>
+                                <span>@((item.Customer.ChainCount.HasValue == true && (EnumCategory)item.Customer.Category == EnumCategory.Married) ? item.Customer.ChainCount.Value.ToString() : "...")</span>
                             </td>
                             <td>
                                 <span>@item.Customer.CustomerCooperShow</span>
