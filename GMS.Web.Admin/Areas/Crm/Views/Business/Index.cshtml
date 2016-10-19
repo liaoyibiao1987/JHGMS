@@ -279,6 +279,9 @@
                     业务员
                 </th>
                 <th>
+                    业务员类型
+                </th>
+                <th>
                     业务统计<br />(此时间段)
                 </th>
 
@@ -331,6 +334,9 @@
                             </td>
                             <td class="green">
                                 <span>@(item.Customer.Staff == null ? "没有分配" : item.Customer.Staff.Name)</span>
+                            </td>
+                            <td class="blue">
+                                <span>@(item.Customer.Staff == null ? "没有分配" : EnumHelper.GetEnumTitle((GMS.OA.Contract.EnumPosition)item.Customer.Staff.Position))</span>
                             </td>
                             <td class="green">
                                 <span>@((item.Business == null || item.Business.Count() == 0) ? "没有业务" : item.Business.Count().ToString() + " 次业务")</span>

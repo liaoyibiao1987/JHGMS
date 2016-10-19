@@ -24,7 +24,7 @@ namespace GMS.Framework.Utility
                 return (T)Enum.Parse(typeof(T), obj);
         }
 
-        public static T TryParse<T>(string obj,T defT = default(T))
+        public static T TryParse<T>(string obj, T defT = default(T))
         {
             try
             {
@@ -35,7 +35,7 @@ namespace GMS.Framework.Utility
                 return defT;
             }
         }
-        
+
         public static readonly string ENUM_TITLE_SEPARATOR = ",";
         /// <summary>
         /// 根据枚举值，返回描述字符串
@@ -65,8 +65,8 @@ namespace GMS.Framework.Utility
             }
             return ret.TrimEnd(ENUM_TITLE_SEPARATOR.ToArray());
         }
-		
-		/// <summary>
+
+        /// <summary>
         /// 根据枚举值，返回描述字符串
         /// 如果多选枚举，返回以","分割的字符串
         /// </summary>
@@ -138,7 +138,7 @@ namespace GMS.Framework.Utility
                 case DayOfWeek.Sunday:
                     return "周日";
                 default:
-                    return "";                    
+                    return "";
             }
         }
 
@@ -162,7 +162,7 @@ namespace GMS.Framework.Utility
                 }
 
                 EnumTitleAttribute[] arrEnumTitleAttr = fi.GetCustomAttributes(typeof(EnumTitleAttribute), false) as EnumTitleAttribute[];
-                if (arrEnumTitleAttr == null || arrEnumTitleAttr.Length<1 || !arrEnumTitleAttr[0].IsDisplay)
+                if (arrEnumTitleAttr == null || arrEnumTitleAttr.Length < 1 || !arrEnumTitleAttr[0].IsDisplay)
                 {
                     continue;
                 }
@@ -172,7 +172,7 @@ namespace GMS.Framework.Utility
                     ret.Add(arrEnumTitleAttr[0].Title, (T)enumValue);
                 }
 
-                if (arrEnumTitleAttr[0].Synonyms == null || arrEnumTitleAttr[0].Synonyms.Length<1)
+                if (arrEnumTitleAttr[0].Synonyms == null || arrEnumTitleAttr[0].Synonyms.Length < 1)
                 {
                     continue;
                 }
@@ -197,7 +197,7 @@ namespace GMS.Framework.Utility
             return GetItemValueList<T, T>(false, language);
         }
 
-		/// <summary>
+        /// <summary>
         /// 根据枚举获取包含所有所有值和描述的哈希表，其文本是由应用在枚举值上的EnumTitleAttribute设定
         /// </summary>
         /// <returns></returns>
@@ -205,7 +205,7 @@ namespace GMS.Framework.Utility
         {
             return GetItemValueList<T, T>(true, language);
         }
-		
+
         /// <summary>
         /// 获取枚举所有项的标题,其文本是由应用在枚举值上的EnumTitleAttribute设定
         /// </summary>
@@ -214,7 +214,7 @@ namespace GMS.Framework.Utility
         /// <returns></returns>
         public static Dictionary<int, string> GetItemValueList<T>(Enum language = null) where T : struct
         {
-            return GetItemValueList<T,int>(false,language);
+            return GetItemValueList<T, int>(false, language);
         }
 
         /// <summary>
@@ -275,14 +275,14 @@ namespace GMS.Framework.Utility
             foreach (object t in array)
             {
                 EnumTitleAttribute att = GetEnumTitleAttribute(t as Enum, language);
-                if (att!=null)
+                if (att != null)
                     ret.Add((T)t, att);
             }
 
             return ret;
         }
-		
-		/// <summary>
+
+        /// <summary>
         /// 获取枚举所有项的标题,其文本是由应用在枚举值上的EnumTitleAttribute设定
         /// </summary>
         /// <typeparam name="T">枚举类型</typeparam>
@@ -316,8 +316,6 @@ namespace GMS.Framework.Utility
             }
             return dicNew;
         }
-
-
     }
 
 

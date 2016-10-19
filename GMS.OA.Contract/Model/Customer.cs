@@ -51,7 +51,41 @@ namespace GMS.Crm.Contract
         [NotMapped]
         public float? CurrentPayment { get; set; }
         public string Channel { get; set; }
+
+        [NotMapped]
+        public string ShowChannel
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(BusinessType) == false)
+                {
+                    string[] strs = BusinessType.Split(",".ToCharArray());
+                    if (strs != null && strs.Count() > 0)
+                    {
+                        return string.Join(",", strs.Select(p => int.Parse(p)).Cast<EnumChannel>().Select(p => EnumHelper.GetEnumTitle(p)));
+                    }
+                }
+                return "";
+            }
+        }
+
         public string BusinessType { get; set; }
+        [NotMapped]
+        public string ShowBusinessType
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(BusinessType) == false)
+                {
+                    string[] strs = BusinessType.Split(",".ToCharArray());
+                    if (strs != null && strs.Count() > 0)
+                    {
+                        return string.Join(",", strs.Select(p => int.Parse(p)).Cast<EnumBusinessType>().Select(p => EnumHelper.GetEnumTitle(p)));
+                    }
+                }
+                return "";
+            }
+        }
 
         [RegularExpression(@"[0-9]{1,4}", ErrorMessage = "输入0-1000的数字")]
         public int? ChainCount { get; set; }
@@ -207,5 +241,55 @@ namespace GMS.Crm.Contract
 
         [EnumTitle("其他")]
         MarriedButChild = 3
+    }
+
+    /// <summary>
+    /// 渠道
+    /// </summary>
+    [Flags]
+    public enum EnumChannel
+    {
+        [EnumTitle("一终端")]
+        Channel1 = 1,
+
+        [EnumTitle("二终端")]
+        Channel2 = 2,
+
+        [EnumTitle("三终端")]
+        Channel = 3
+    }
+    /// <summary>
+    /// 商业类型
+    /// </summary>
+    [Flags]
+    public enum EnumBusinessType
+    {
+        [EnumTitle("配送型")]
+        Delivery = 1,
+
+        [EnumTitle("代理型")]
+        Agency = 2,
+
+        [EnumTitle("自由人")]
+        FreeMan = 3
+    }
+
+    /// <summary>
+    /// 连锁合作方式
+    /// </summary>
+    [Flags]
+    public enum EnumChainType
+    {
+        [EnumTitle("无", IsDisplay = false)]
+        None = 0,
+
+        [EnumTitle("公司直供")]
+        Direct = 1,
+
+        [EnumTitle("代理商供")]
+        Agent = 2,
+
+        [EnumTitle("业务员供")]
+        Salesman = 3
     }
 }

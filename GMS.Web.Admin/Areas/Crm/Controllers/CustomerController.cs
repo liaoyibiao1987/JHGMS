@@ -52,6 +52,8 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
             var model = new Customer();
             this.TryUpdateModel<Customer>(model);
             model.StaffID = UserContext.LoginInfo.StaffID.HasValue ? UserContext.LoginInfo.StaffID.Value : -1;
+            model.Channel = collection["Channel"];
+            model.BusinessType = collection["BusinessType"];
             try
             {
                 this.CrmService.SaveCustomer(model);
@@ -87,7 +89,16 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
         {
             var model = this.CrmService.GetCustomer(id);
             this.TryUpdateModel<Customer>(model);
-
+            model.Channel = collection["Channel"];
+            model.BusinessType = collection["BusinessType"];
+            if (collection["ChainType"] != null)
+            {
+                model.ChainType = int.Parse(collection["ChainType"]);
+            }
+            else
+            {
+                model.ChainType = null;
+            }
             try
             {
                 this.CrmService.SaveCustomer(model);
@@ -139,6 +150,11 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
             ViewData.Add("CityIds", new SelectList(CityDic.Values.Select(c => new { Id = c.ID, Name = c.Name }), "Id", "Name", model.CityId));
             ViewData.Add("ProvinceIds", new SelectList(ProvinceDic.Values.Select(c => new { Id = c.ID, Name = c.Name }), "Id", "Name", province));
 
+            ViewData.Add("Channel", new SelectList(EnumHelper.GetItemValueList<EnumChannel>(), "Key", "Value", model.Channel));
+            ViewData.Add("BusinessType", new SelectList(EnumHelper.GetItemValueList<EnumBusinessType>(), "Key", "Value", model.BusinessType));
+
+            ViewData.Add("ChainTypeIds", new SelectList(EnumHelper.GetItemValueList<EnumChainType>(), "Key", "Value", model.ChainType));
+
             List<Staff> liststaff = GetCurrentUserStaffs();
             ViewData.Add("Staffs", new SelectList(liststaff.Select(c => new { Id = c.ID, Name = c.Name }), "Id", "Name", model.StaffID));
         }
@@ -173,6 +189,6 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
                 return AdminCacheContext.Current.Cooperations;
             }
         }
-        
+
     }
 }

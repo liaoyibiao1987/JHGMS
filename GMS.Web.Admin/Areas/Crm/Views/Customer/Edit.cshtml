@@ -34,9 +34,14 @@
                 var val = $(this).val();
                 if (val == 2) {
                     $('#ChainCount').removeAttr("disabled");
+                    $('#ChainType').removeAttr("disabled");
                 } else {
                     $('#ChainCount').attr("disabled", "disabled");
                     $('#ChainCount').val("");
+
+                    $("#ChainType").val("0");
+                    $("#ChainType").change();
+                    $('#ChainType').attr("disabled", "disabled");
                 }
             });
 
@@ -86,45 +91,22 @@
                 </div>
             </div>
             <div class="control-group">
-                <label class="control-label"><span class="required">*</span>分配员工：</label>
-                <div class="controls">
-                    @Html.DropDownListFor(m => m.StaffID, ViewData["Staffs"] as SelectList, "--请选择--", new { @class = "select2" })
-                    <span class="help-inline">@Html.ValidationMessageFor(m => m.Contacter)</span>
-                </div>
-            </div>j
-            <div class="control-group">
-                <label class="control-label"><span class="required">*</span>客户电话：</label>
-                <div class="controls">
-                    @Html.TextBoxFor(m => m.Tel, new { @class = "m-wrap" })
-                    <span class="help-inline">@Html.ValidationMessageFor(m => m.Tel)</span>
-                </div>
-            </div>
-
-            <div class="control-group">
-                <label class="control-label"><span class="required">*</span>电子邮件：</label>
-                <div class="controls">
-                    @Html.TextBoxFor(m => m.Email, new { @class = "m-wrap" })
-                    <span class="help-inline">@Html.ValidationMessageFor(m => m.Email)</span>
-                </div>
-            </div>
-
-            <div class="control-group">
-                <label class="control-label"><span class="required">*</span>通讯地址：</label>
-                <div class="controls">
-                    @Html.TextBoxFor(m => m.Address, new { @class = "m-wrap" })
-                    <span class="help-inline">@Html.ValidationMessageFor(m => m.Address)</span>
-                </div>
-            </div>
-
-            <div class="control-group">
-                <label class="control-label"><span class="required">*</span>性别：</label>
+                <label class="control-label">联系人性别：</label>
                 <div class="controls">
                     @Html.RadioBoxList("Gender")
                     <span class="help-inline">@Html.ValidationMessageFor(m => m.Gender)</span>
                 </div>
             </div>
             <div class="control-group">
-                <label class="control-label"><span class="required">*</span>省/市：</label>
+                <label class="control-label">分配员工：</label>
+                <div class="controls">
+                    @Html.DropDownListFor(m => m.StaffID, ViewData["Staffs"] as SelectList, "--请选择--", new { @class = "select2" })
+                    <span class="help-inline">@Html.ValidationMessageFor(m => m.Contacter)</span>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">省/市：</label>
                 <div class="controls">
                     @Html.DropDownList("ProvinceId", ViewData["ProvinceIds"] as SelectList, "--请选择--", new { @class = "select2" })
                 </div>
@@ -134,15 +116,28 @@
             </div>
 
             <div class="control-group">
-                <label class="control-label"><span class="required">*</span>客户类型：</label>
+                <label class="control-label">客户类型：</label>
                 <div class="controls">
                     @Html.RadioBoxList("Category")
                     <span class="help-inline">@Html.ValidationMessageFor(m => m.Category)</span>
                 </div>
             </div>
-
             <div class="control-group">
-                <label class="control-label"><span class="required">*</span>连锁店数量：</label>
+                <label class="control-label">连锁合作方式：</label>
+                <div class="controls">
+                    @if (Model.Category != 2)
+                    {
+                        @Html.DropDownListFor(m => m.ChainType, ViewData["ChainTypeIds"] as SelectList, "--请选择--", new { @class = "select2", disabled = true })
+                    }
+                    else
+                    {
+                        @Html.DropDownListFor(m => m.ChainType, ViewData["ChainTypeIds"] as SelectList, "--请选择--", new { @class = "select2" })
+                    }
+                    <span class="help-inline">@Html.ValidationMessageFor(m => m.ChainType)</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">连锁店数量：</label>
                 <div class="controls">
                     @if (Model.Category != 2)
                     {
@@ -155,11 +150,45 @@
                     <span class="help-inline">@Html.ValidationMessageFor(m => m.ChainCount)</span>
                 </div>
             </div>
-
             <div class="control-group">
-                <label class="control-label"><span class="required">*</span>合作品种：</label>
+                <label class="control-label">渠道：</label>
+                <div class="controls">
+                    @Html.CheckBoxList("Channel")
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">商业类型：</label>
+                <div class="controls">
+                    @Html.CheckBoxList("BusinessType")
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">合作品种：</label>
                 <div class="controls">
                     @Html.CheckBoxList("CustomerCooperationsIds")
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">客户电话：</label>
+                <div class="controls">
+                    @Html.TextBoxFor(m => m.Tel, new { @class = "m-wrap" })
+                    <span class="help-inline">@Html.ValidationMessageFor(m => m.Tel)</span>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">电子邮件：</label>
+                <div class="controls">
+                    @Html.TextBoxFor(m => m.Email, new { @class = "m-wrap" })
+                    <span class="help-inline">@Html.ValidationMessageFor(m => m.Email)</span>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">通讯地址：</label>
+                <div class="controls">
+                    @Html.TextBoxFor(m => m.Address, new { @class = "m-wrap" })
+                    <span class="help-inline">@Html.ValidationMessageFor(m => m.Address)</span>
                 </div>
             </div>
         </div>

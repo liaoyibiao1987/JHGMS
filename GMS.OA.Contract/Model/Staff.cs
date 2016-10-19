@@ -64,17 +64,23 @@ namespace GMS.OA.Contract
         [EnumTitle("无", IsDisplay = false)]
         None = 0,
 
-        [EnumTitle("开发工程师")]
-        Development = 1,
+        [EnumTitle("兼职")]
+        PartTime = 1,
 
-        [EnumTitle("高级开发工程师")]
-        SDE = 2,
+        [EnumTitle("销售经理")]
+        SalesManager = 2,
 
-        [EnumTitle("测试工程师")]
-        Testing = 3,
+        [EnumTitle("销售经理兼临床")]
+        SMAndClinic = 3,
 
-        [EnumTitle("项目经理")]
-        PM = 4,
+        [EnumTitle("终端经理")]
+        Terminal = 4,
+
+        [EnumTitle("主任")]
+        Director = 5,
+
+        [EnumTitle("其他")]
+        Other = 6,
     }
 
 }

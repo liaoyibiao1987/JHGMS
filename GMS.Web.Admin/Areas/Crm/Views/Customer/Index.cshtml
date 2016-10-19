@@ -63,6 +63,15 @@
                     连锁店数量
                 </th>
                 <th>
+                    连锁合作方式
+                </th>
+                <th>
+                    合作渠道
+                </th>
+                <th>
+                    商业类型
+                </th>
+                <th>
                     合作品种
                 </th>
                 <th>
@@ -76,6 +85,9 @@
                 </th>
                 <th>
                     业务员
+                </th>
+                <th>
+                    业务员类型
                 </th>
                 <th>
                     添加时间
@@ -114,6 +126,19 @@
                         <span>@((p.ChainCount.HasValue == true && (EnumCategory)p.Category == EnumCategory.Married) ? p.ChainCount.Value.ToString() : "...")</span>
                     </td>
                     <td>
+                        <span>
+                            @((p.ChainType.HasValue == true) ? EnumHelper.GetEnumTitle((EnumChainType)p.ChainType) : "...")
+                        </span>
+                    </td>
+
+                    <td>
+                        <span>@p.ShowChannel</span>
+                    </td>
+                    <td>
+                        <span>@p.ShowBusinessType</span>
+                    </td>
+
+                    <td>
                         <span>@p.CustomerCooperShow</span>
                     </td>
                     <td class="blue">
@@ -128,6 +153,10 @@
                     <td class="green">
                         <span>@(p.Staff == null ? "没有分配" : p.Staff.Name)</span>
                     </td>
+                    <td class="blue">
+                        <span>@(p.Staff == null ? "没有分配" : EnumHelper.GetEnumTitle((GMS.OA.Contract.EnumPosition)p.Staff.Position))</span>
+                    </td>
+
                     <td>
                         <span>@p.CreateTime.ToCnDataString()</span>
                     </td>
