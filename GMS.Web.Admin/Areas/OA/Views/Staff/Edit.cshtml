@@ -50,42 +50,10 @@
                 </div>
             </div>
             <div class="control-group">
-                <label class="control-label">性别：</label>
-                <div class="controls">
-                    @Html.RadioBoxList("Gender")
-                    <span class="help-inline">@Html.ValidationMessageFor(m => m.Gender)</span>
-                </div>
-            </div>
-
-            <div class="control-group">
-                <label class="control-label">生日：</label>
-                <div class="controls">
-                    @Html.TextBox("BirthDate", Model.BirthDate.ToCnDataString(), new { @class = "m-wrap" })
-                    <span class="help-inline">@Html.ValidationMessageFor(m => m.BirthDate)</span>
-                </div>
-            </div>
-
-            <div class="control-group">
-                <label class="control-label">电子邮件：</label>
-                <div class="controls">
-                    @Html.TextBoxFor(m => m.Email, new { @class = "m-wrap" })
-                    <span class="help-inline">@Html.ValidationMessageFor(m => m.Email)</span>
-                </div>
-            </div>
-
-            <div class="control-group">
                 <label class="control-label">电话：</label>
                 <div class="controls">
                     @Html.TextBoxFor(m => m.Tel, new { @class = "m-wrap" })
                     <span class="help-inline">@Html.ValidationMessageFor(m => m.Tel)</span>
-                </div>
-            </div>
-
-            <div class="control-group">
-                <label class="control-label">联系地址：</label>
-                <div class="controls">
-                    @Html.TextBoxFor(m => m.Address, new { @class = "m-wrap" })
-                    <span class="help-inline">@Html.ValidationMessageFor(m => m.Address)</span>
                 </div>
             </div>
 

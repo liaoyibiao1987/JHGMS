@@ -25,20 +25,10 @@ namespace GMS.OA.Contract
         [StringLength(300)]
         public string CoverPicture { get; set; }
 
-        public int Gender { get; set; }
-
         public int Position { get; set; }
-
-        public DateTime? BirthDate { get; set; }
 
         [StringLength(50, ErrorMessage = "电话不能超过50个字")]
         public string Tel { get; set; }
-
-        [RegularExpression(@"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}", ErrorMessage = "电子邮件地址无效")]
-        public string Email { get; set; }
-
-        [StringLength(100, ErrorMessage = "地址不能超过100个字")]
-        public string Address { get; set; }
 
         private int? userID;
         public int? UserID
@@ -64,17 +54,6 @@ namespace GMS.OA.Contract
 
         public virtual Branch Branch { get; set; }
 
-    }
-    /// <summary>
-    /// 性别
-    /// </summary>
-    public enum EnumGender
-    {
-        [EnumTitle("男")]
-        Man = 1,
-
-        [EnumTitle("女")]
-        Woman = 2
     }
 
     /// <summary>

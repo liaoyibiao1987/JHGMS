@@ -122,7 +122,6 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
         {
             ViewData.Add("Gender", new SelectList(EnumHelper.GetItemValueList<GMS.Crm.Contract.EnumGender>(), "Key", "Value", model.Gender));
             ViewData.Add("Category", new SelectList(EnumHelper.GetItemValueList<EnumCategory>(), "Key", "Value", model.Category));
-            ViewData.Add("AgeGroup", new SelectList(EnumHelper.GetItemValueList<EnumAgeGroup>(), "Key", "Value", model.AgeGroup));
 
             if (isBasic)
                 return;

@@ -276,9 +276,6 @@
                     联系人性别
                 </th>
                 <th>
-                    年龄
-                </th>
-                <th>
                     业务员
                 </th>
                 <th>
@@ -331,10 +328,6 @@
                             </td>
                             <td>
                                 <span>@EnumHelper.GetEnumTitle((EnumGender)item.Customer.Gender)</span>
-                            </td>
-
-                            <td>
-                                <span>@EnumHelper.GetEnumTitle((EnumAgeGroup)item.Customer.AgeGroup)</span>
                             </td>
                             <td class="green">
                                 <span>@(item.Customer.Staff == null ? "没有分配" : item.Customer.Staff.Name)</span>

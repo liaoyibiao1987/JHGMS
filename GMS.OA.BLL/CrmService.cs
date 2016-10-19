@@ -93,10 +93,7 @@ namespace GMS.Crm.BLL
 
                 if (request.Customer.Category > 0)
                     queryList = queryList.Where(d => d.Category == request.Customer.Category);
-
-                if (request.Customer.AgeGroup > 0)
-                    queryList = queryList.Where(d => d.AgeGroup == request.Customer.AgeGroup);
-
+                
                 return queryList.OrderByDescending(u => u.ID).ToPagedList(request.PageIndex, request.PageSize);
             }
         }

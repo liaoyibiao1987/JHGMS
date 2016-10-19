@@ -37,7 +37,6 @@
             <div class="p10">
                 性别：@Html.DropDownList("Gender", "全部")&nbsp;
                 类型：@Html.DropDownList("Category", "全部")&nbsp;
-                年龄：@Html.DropDownList("AgeGroup", "全部")&nbsp;
                 <button type="submit" class="btn">搜索 <i class="icon-search"></i></button>
 
             </div>
@@ -74,9 +73,6 @@
                 </th>
                 <th>
                     联系人性别
-                </th>
-                <th>
-                    年龄
                 </th>
                 <th>
                     业务员
@@ -128,10 +124,6 @@
                     </td>
                     <td>
                         <span>@EnumHelper.GetEnumTitle((EnumGender)p.Gender)</span>
-                    </td>
-
-                    <td>
-                        <span>@EnumHelper.GetEnumTitle((EnumAgeGroup)p.AgeGroup)</span>
                     </td>
                     <td class="green">
                         <span>@(p.Staff == null ? "没有分配" : p.Staff.Name)</span>

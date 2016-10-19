@@ -109,7 +109,6 @@ namespace GMS.Web.Admin.Areas.OA.Controllers
         private void RenderMyViewData(Staff model)
         {
             ViewData.Add("Position", new SelectList(EnumHelper.GetItemValueList<EnumPosition>(), "Key", "Value", model.Position));
-            ViewData.Add("Gender", new SelectList(EnumHelper.GetItemValueList<EnumGender>(), "Key", "Value", model.Gender));
             //ViewData.Add("LoginIDs", new SelectList(this.AccountService.GetActivedUserList(), "ID", "LoginName", model.LoginID ?? -1));
             ViewData.Add("UserID", GetAllLoginID(model.ID, model.UserID ?? -1));
         }

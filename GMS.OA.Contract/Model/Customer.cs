@@ -39,8 +39,6 @@ namespace GMS.Crm.Contract
         public string Address { get; set; }
         public int Gender { get; set; }
         public int Category { get; set; }
-        //public virtual ICollection<VisitRecord> VisitRecords { get; set; }
-        public int AgeGroup { get; set; }
         public int? ContacterType { get; set; }
         public int? CooperationOrNot { get; set; }
 
