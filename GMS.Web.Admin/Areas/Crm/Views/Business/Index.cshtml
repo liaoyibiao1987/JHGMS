@@ -45,6 +45,7 @@
 @section PageSpecificJavascriptIncludes{
     <script type="text/javascript" src="@Url.StaticFile("/assets/jquery-validation/dist/jquery.validate.min.js")"></script>
     <script type="text/javascript" src="@Url.StaticFile("/assets/js/GMS.js")"></script>
+
     <script type="text/javascript">
 
         //$.validator.setDefaults({
@@ -101,6 +102,9 @@
             });
             $('#tbbusiness').dataTable().fnDestroy();
             $("#tbbusiness").DataTable({
+                "scrollX": true,
+                "scrollY": '50vh',
+                "scrollCollapse": true,
                 "bServerSide": false,//服务端处理分页
                 'bPaginate': true,  //是否分页。
                 'bFilter': true,  //是否使用内置的过滤功能
@@ -124,42 +128,37 @@
                         "sLast": "最后一页"
                     }
                 },
-                "columnDefs": [{ //数据渲染
-                    "render": function (data, type, row) {
-                        alert(1);
-                        return '<div class="text-indentation-s" title="' + data + '">' + data + '</div>';
-                    },
-                    "targets": 0
-                }, {
-                    //"visible": false,
-                    "render": function (data, type, row) {
-                        return '<div class="text-indentation-b" title="' + data + '">' + data + '</div>';
-                    },
-                    "targets": [1]
-                }],
+
                 initComplete: function () {
-                    this.api().columns().every(function () {
-                        var column = this;
-                        var select = $('<select><option value=""></option></select>')
-                            .appendTo($(column.footer()).empty())
-                            .on('change', function () {
-                                var val = $.fn.dataTable.util.escapeRegex(
-                                    $(this).val()
-                                );
+                    this.api().columns().every(function (i) {
+                        if (i < 15) {
+                            var column = this;
+                            var select = $('<select style="width:100px;" ><option value=""></option></select>')
+                                .appendTo($(column.footer()).empty())
+                                .on('change', function () {
+                                    var val = $.fn.dataTable.util.escapeRegex(
+                                       $(this).val()
+                                    ).trim();
+                                    if (i == 0) {
+                                        column.search(val ? val : '', false, true).draw();
+                                    }
+                                    else {
+                                        column.search(val ? '^' + val + '$' : '', true, false).draw();
+                                    }
+                                });
 
-                                column
-                                    .search(val ? '^' + val + '$' : '', true, false)
-                                    .draw();
+                            column.data().unique().sort().each(function (d, j) {
+                                var val = $(d).text() == "" ? d : $(d).text();
+                                if (column.search() === '^' + val + '$') {
+                                    select.append('<option value="' + val + '" selected="selected">' + val + '</option>')
+                                } else {
+                                    select.append('<option value="' + val + '">' + val + '</option>')
+                                }
                             });
-
-                        column.data().unique().sort().each(function (d, j) {
-                            select.append('<option value="' + d + '">' + d + '</option>')
-                        });
+                        }
                     });
                 }
             });
-
-            $("#tbbusiness").wrap("<div class='wrap' style='overflow:auto; min-height:200px;'></div>");
         });
 
         function rendHead(start, end) {
@@ -305,7 +304,64 @@
                 }
 
             </tr>
+            <tr>
+
+            </tr>
         </thead>
+        <tfoot>
+            <tr>
+                <th>
+                    <span style="width:200px;display:inline-block">客户名</span>
+                </th>
+                <th>城市</th>
+                <th>
+                    类型
+                </th>
+                <th>
+                    连锁店数量
+                </th>
+                <th>
+                    连锁合作方式
+                </th>
+                <th>
+                    合作渠道
+                </th>
+                <th>
+                    商业类型
+                </th>
+                <th>
+                    是否合作
+                </th>
+                <th>
+                    合作种类
+                </th>
+                <th>
+                    联系人
+                </th>
+                <th>
+                    联系电话
+                </th>
+                <th>
+                    联系人性别
+                </th>
+                <th>
+                    业务员
+                </th>
+                <th>
+                    业务员类型
+                </th>
+                <th>
+                    业务统计<br />(此时间段)
+                </th>
+
+                @for (int x = 0; x <= RANGE; x++)
+                {
+                    <th>
+                        <span>@(((DateTime)ViewData["startDate"]).AddDays(x).ToString("yyyy-MM-dd")) </span>
+                    </th>
+                }
+            </tr>
+        </tfoot>
         <tbody id="tbbody">
             @if (Model != null)
             {
@@ -316,63 +372,61 @@
                         {
                             <td class="blue">
                                 <a class="blue thickbox" style="cursor:pointer" title="点击开始录入跟单信息"
-                                   href="@Url.Action("AddByCustomerId", "Business", new { CustomerId = item.Customer.ID })&TB_iframe=true&height=480&width=600"><span>@item.Customer.Name</span></a>
+                                   href='@Url.Action("AddByCustomerId", "Business", new { CustomerId = item.Customer.ID })&TB_iframe=true&height=480&width=600'>
+                                    @item.Customer.Name
+                                </a>
                             </td>
                             <td class="green">
                                 @if (item.Customer.City != null)
                                 {
-                                    <span>
-                                        @item.Customer.City.Name
-                                    </span>
+                                    @item.Customer.City.Name
                                 }
                             </td>
                             <td>
-                                <span>@EnumHelper.GetEnumTitle((EnumCategory)item.Customer.Category)</span>
+                                @EnumHelper.GetEnumTitle((EnumCategory)item.Customer.Category)
                             </td>
                             <td>
-                                <span>@((item.Customer.ChainCount.HasValue == true && (EnumCategory)item.Customer.Category == EnumCategory.Married) ? item.Customer.ChainCount.Value.ToString() : "...")</span>
+                                @((item.Customer.ChainCount.HasValue == true && (EnumCategory)item.Customer.Category == EnumCategory.Married) ? item.Customer.ChainCount.Value.ToString() : "无")
                             </td>
                             <td>
-                                <span>
-                                    @((item.Customer.ChainType.HasValue == true) ? EnumHelper.GetEnumTitle((EnumChainType)item.Customer.ChainType) : "...")
-                                </span>
+                                @((item.Customer.ChainType.HasValue == true) ? EnumHelper.GetEnumTitle((EnumChainType)item.Customer.ChainType) : "无")
                             </td>
                             <td>
-                                <span>@item.Customer.ShowChannel</span>
+                                @item.Customer.ShowChannel
                             </td>
                             <td>
-                                <span>@item.Customer.ShowBusinessType</span>
+                                @item.Customer.ShowBusinessType
                             </td>
                             <th>
                                 @if (item.Customer.CooperationOrNot.HasValue && item.Customer.CooperationOrNot.Value == true)
                                 {
-                                    <span>是</span>
+                                    new HtmlString("是");
                                 }
                                 else
                                 {
-                                    <span>否</span>
+                                    new HtmlString("否");
                                 }
                             </th>
                             <td>
-                                <span>@item.Customer.CustomerCooperShow</span>
+                                @item.Customer.CustomerCooperShow
                             </td>
                             <td class="blue">
-                                <span>@item.Customer.Contacter</span>
+                                @item.Customer.Contacter
                             </td>
                             <td>
-                                <span>@item.Customer.Tel</span>
+                                @item.Customer.Tel
                             </td>
                             <td>
-                                <span>@EnumHelper.GetEnumTitle((EnumGender)item.Customer.Gender)</span>
+                                @EnumHelper.GetEnumTitle((EnumGender)item.Customer.Gender)
                             </td>
                             <td class="green">
-                                <span>@(item.Customer.Staff == null ? "没有分配" : item.Customer.Staff.Name)</span>
+                                @(item.Customer.Staff == null ? "没有分配" : item.Customer.Staff.Name)
                             </td>
                             <td class="blue">
-                                <span>@(item.Customer.Staff == null ? "没有分配" : EnumHelper.GetEnumTitle((GMS.OA.Contract.EnumPosition)item.Customer.Staff.Position))</span>
+                                @(item.Customer.Staff == null ? "没有分配" : EnumHelper.GetEnumTitle((GMS.OA.Contract.EnumPosition)item.Customer.Staff.Position))
                             </td>
                             <td class="green">
-                                <span>@((item.Business == null || item.Business.Count() == 0) ? "没有业务" : item.Business.Count().ToString() + " 次业务")</span>
+                                @((item.Business == null || item.Business.Count() == 0) ? "没有业务" : item.Business.Count().ToString() + " 次业务")
                             </td>
                         }
                         else
@@ -389,7 +443,7 @@
                                 if (msg != null)
                                 {
                                     <td>
-                                        <span>@msg.Message</span>
+                                        @msg.Message
                                     </td>
                                 }
                                 else
@@ -399,9 +453,7 @@
                             }
                             else
                             {
-                                <td>
-                                    <span></span>
-                                </td>
+                                <td></td>
                             }
 
                         }
