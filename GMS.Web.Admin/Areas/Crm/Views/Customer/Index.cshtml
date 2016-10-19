@@ -72,6 +72,9 @@
                     商业类型
                 </th>
                 <th>
+                    是否合作
+                </th>
+                <th>
                     合作品种
                 </th>
                 <th>
@@ -130,14 +133,22 @@
                             @((p.ChainType.HasValue == true) ? EnumHelper.GetEnumTitle((EnumChainType)p.ChainType) : "...")
                         </span>
                     </td>
-
                     <td>
                         <span>@p.ShowChannel</span>
                     </td>
                     <td>
                         <span>@p.ShowBusinessType</span>
                     </td>
-
+                    <td>
+                        @if (p.CooperationOrNot.HasValue && p.CooperationOrNot.Value == true)
+                        {
+                            <span>是</span>
+                        }
+                        else
+                        {
+                            <span>否</span>
+                        }
+                    </td>
                     <td>
                         <span>@p.CustomerCooperShow</span>
                     </td>

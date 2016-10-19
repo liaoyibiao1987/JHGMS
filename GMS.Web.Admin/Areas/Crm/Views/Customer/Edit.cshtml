@@ -163,6 +163,12 @@
                 </div>
             </div>
             <div class="control-group">
+                <label class="control-label">是否合作：</label>
+                <div class="controls">
+                    @Html.CheckBox("CooperationOrNot")
+                </div>
+            </div>
+            <div class="control-group">
                 <label class="control-label">合作品种：</label>
                 <div class="controls">
                     @Html.CheckBoxList("CustomerCooperationsIds")
@@ -173,22 +179,6 @@
                 <div class="controls">
                     @Html.TextBoxFor(m => m.Tel, new { @class = "m-wrap" })
                     <span class="help-inline">@Html.ValidationMessageFor(m => m.Tel)</span>
-                </div>
-            </div>
-
-            <div class="control-group">
-                <label class="control-label">电子邮件：</label>
-                <div class="controls">
-                    @Html.TextBoxFor(m => m.Email, new { @class = "m-wrap" })
-                    <span class="help-inline">@Html.ValidationMessageFor(m => m.Email)</span>
-                </div>
-            </div>
-
-            <div class="control-group">
-                <label class="control-label">通讯地址：</label>
-                <div class="controls">
-                    @Html.TextBoxFor(m => m.Address, new { @class = "m-wrap" })
-                    <span class="help-inline">@Html.ValidationMessageFor(m => m.Address)</span>
                 </div>
             </div>
         </div>

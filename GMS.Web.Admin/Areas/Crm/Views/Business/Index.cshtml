@@ -264,6 +264,18 @@
                     连锁店数量
                 </th>
                 <th>
+                    连锁合作方式
+                </th>
+                <th>
+                    合作渠道
+                </th>
+                <th>
+                    商业类型
+                </th>
+                <th>
+                    是否合作
+                </th>
+                <th>
                     合作种类
                 </th>
                 <th>
@@ -320,6 +332,27 @@
                             <td>
                                 <span>@((item.Customer.ChainCount.HasValue == true && (EnumCategory)item.Customer.Category == EnumCategory.Married) ? item.Customer.ChainCount.Value.ToString() : "...")</span>
                             </td>
+                            <td>
+                                <span>
+                                    @((item.Customer.ChainType.HasValue == true) ? EnumHelper.GetEnumTitle((EnumChainType)item.Customer.ChainType) : "...")
+                                </span>
+                            </td>
+                            <td>
+                                <span>@item.Customer.ShowChannel</span>
+                            </td>
+                            <td>
+                                <span>@item.Customer.ShowBusinessType</span>
+                            </td>
+                            <th>
+                                @if (item.Customer.CooperationOrNot.HasValue && item.Customer.CooperationOrNot.Value == true)
+                                {
+                                    <span>是</span>
+                                }
+                                else
+                                {
+                                    <span>否</span>
+                                }
+                            </th>
                             <td>
                                 <span>@item.Customer.CustomerCooperShow</span>
                             </td>

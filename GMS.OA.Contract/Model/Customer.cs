@@ -40,7 +40,7 @@ namespace GMS.Crm.Contract
         public int Gender { get; set; }
         public int Category { get; set; }
         public int? ContacterType { get; set; }
-        public int? CooperationOrNot { get; set; }
+        public bool? CooperationOrNot { get; set; }
 
         [NotMapped]
         public float? AvePayment { get; set; }
