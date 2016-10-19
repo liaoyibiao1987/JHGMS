@@ -133,8 +133,9 @@
                     this.api().columns().every(function (i) {
                         if (i < 15) {
                             var column = this;
-                            var select = $('<select style="width:100px;" ><option value=""></option></select>')
-                                .appendTo($(column.footer()).empty())
+                            debugger;
+                            var select = $('<select style="width:100px;" ><option value=""></option></select>').css({ "width": i == 0 ? "150px" : "100px", "z-index": "9" })
+                                .appendTo($(column.header()))
                                 .on('change', function () {
                                     var val = $.fn.dataTable.util.escapeRegex(
                                        $(this).val()
@@ -145,6 +146,8 @@
                                     else {
                                         column.search(val ? '^' + val + '$' : '', true, false).draw();
                                     }
+                                }).on("click", function (event) {
+                                    event.stopPropagation();
                                 });
 
                             column.data().unique().sort().each(function (d, j) {
@@ -298,13 +301,10 @@
 
                 @for (int x = 0; x <= RANGE; x++)
                 {
-                    <th>
-                        <span>@(((DateTime)ViewData["startDate"]).AddDays(x).ToString("yyyy-MM-dd")) </span>
-                    </th>
+                <th>
+                    <span>@(((DateTime)ViewData["startDate"]).AddDays(x).ToString("yyyy-MM-dd")) </span>
+                </th>
                 }
-
-            </tr>
-            <tr>
 
             </tr>
         </thead>
@@ -356,9 +356,9 @@
 
                 @for (int x = 0; x <= RANGE; x++)
                 {
-                    <th>
-                        <span>@(((DateTime)ViewData["startDate"]).AddDays(x).ToString("yyyy-MM-dd")) </span>
-                    </th>
+                <th>
+                    <span>@(((DateTime)ViewData["startDate"]).AddDays(x).ToString("yyyy-MM-dd")) </span>
+                </th>
                 }
             </tr>
         </tfoot>
