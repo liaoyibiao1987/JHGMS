@@ -64,7 +64,7 @@ namespace GMS.Web.Admin.Areas.Account.Controllers
         }
         public ActionResult AddAreaByPost(int CityId, string Name)
         {
-            bool ret = AccountService.AddProvinceByName(Name);
+            bool ret = AccountService.AddAreaByName(CityId, Name);
             return new ContentResult() { Content = ret.ToString() };
         }
 

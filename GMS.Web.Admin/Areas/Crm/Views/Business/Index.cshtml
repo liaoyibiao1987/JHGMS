@@ -131,7 +131,7 @@
 
                 initComplete: function () {
                     this.api().columns().every(function (i) {
-                        if (i < 15) {
+                        if (i < 16) {
                             var column = this;
                             debugger;
                             var select = $('<select style="width:100px;" ><option value=""></option></select>').css({ "width": i == 0 ? "150px" : "100px", "z-index": "9" })
@@ -258,6 +258,7 @@
                 <th>
                     <span style="width:200px;display:inline-block">客户名</span>
                 </th>
+                <th>省份</th>
                 <th>城市</th>
                 <th>
                     类型
@@ -301,9 +302,9 @@
 
                 @for (int x = 0; x <= RANGE; x++)
                 {
-                <th>
-                    <span>@(((DateTime)ViewData["startDate"]).AddDays(x).ToString("yyyy-MM-dd")) </span>
-                </th>
+                    <th>
+                        <span>@(((DateTime)ViewData["startDate"]).AddDays(x).ToString("yyyy-MM-dd")) </span>
+                    </th>
                 }
 
             </tr>
@@ -313,6 +314,7 @@
                 <th>
                     <span style="width:200px;display:inline-block">客户名</span>
                 </th>
+                <th>省份</th>
                 <th>城市</th>
                 <th>
                     类型
@@ -356,9 +358,9 @@
 
                 @for (int x = 0; x <= RANGE; x++)
                 {
-                <th>
-                    <span>@(((DateTime)ViewData["startDate"]).AddDays(x).ToString("yyyy-MM-dd")) </span>
-                </th>
+                    <th>
+                        <span>@(((DateTime)ViewData["startDate"]).AddDays(x).ToString("yyyy-MM-dd")) </span>
+                    </th>
                 }
             </tr>
         </tfoot>
@@ -375,6 +377,9 @@
                                    href='@Url.Action("AddByCustomerId", "Business", new { CustomerId = item.Customer.ID })&TB_iframe=true&height=480&width=600'>
                                     @item.Customer.Name
                                 </a>
+                            </td>
+                            <td>
+                                @item.Provienc
                             </td>
                             <td class="green">
                                 @if (item.Customer.City != null)

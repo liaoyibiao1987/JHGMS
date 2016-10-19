@@ -53,6 +53,19 @@ namespace GMS.Crm.Contract
 
     public class BusinessVM
     {
+        private string provienc;
+        public string Provienc
+        {
+            get
+            {
+                return provienc;
+            }
+            set
+            {
+                provienc = value;
+            }
+        }
+
         private Customer customer;
         public Customer Customer
         {

@@ -181,7 +181,7 @@
                     //}
                     calendar.fullCalendar('unselect');
                 },
-                titleFormat: "yyyy年-MM月-dd日",
+                titleFormat: "yyyy年-MM月",
                 editable: true,
                 dayNamesShort: ['星期天', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
                 dayClick: function (date, allDay, jsEvent, view) {
@@ -204,21 +204,7 @@
                     var fstart = $.fullCalendar.formatDate(event.start, "yyyy-MM-dd");
                     var fend = $.fullCalendar.formatDate(event.end, "yyyy-MM-dd");
                     var confbg = '';
-                    if (event.confid == 1) {
-                        confbg = confbg + '<span class=""></span>';
-                    } else if (event.confid == 2) {
-                        confbg = confbg + '<span class=""></span>';
-                    } else if (event.confid == 3) {
-                        confbg = confbg + '<span class=""></span>';
-                    } else if (event.confid == 4) {
-                        confbg = confbg + '<span class=""></span>';
-                    } else if (event.confid == 5) {
-                        confbg = confbg + '<span class=""></span>';
-                    } else if (event.confid == 6) {
-                        confbg = confbg + '<span class=""></span>';
-                    } else {
-                        confbg = confbg + '<span class=""></span>';
-                    }
+                    confbg = confbg + '<span class=""></span>';
                     if (view.name == "month") {//按月份
                         var evtcontent = '<div class="fc-event-vert"><a>';
                         evtcontent = evtcontent + confbg;

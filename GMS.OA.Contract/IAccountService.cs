@@ -40,5 +40,6 @@ namespace GMS.Account.Contract
 
         bool DeleteCooperations(List<int> ids);
         bool AddOrEidtCooperation(int id, string name);
+
     }
 }
