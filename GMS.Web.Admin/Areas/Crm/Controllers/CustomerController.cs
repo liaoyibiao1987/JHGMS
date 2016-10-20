@@ -51,7 +51,7 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
         {
             var model = new Customer();
             this.TryUpdateModel<Customer>(model);
-            model.StaffID = UserContext.LoginInfo.StaffID.HasValue ? UserContext.LoginInfo.StaffID.Value : -1;
+            model.StaffID = model.StaffID == null ? (UserContext.LoginInfo.StaffID.HasValue ? UserContext.LoginInfo.StaffID.Value : -1) : model.StaffID;
             model.Channel = collection["Channel"];
             model.BusinessType = collection["BusinessType"];
             try
