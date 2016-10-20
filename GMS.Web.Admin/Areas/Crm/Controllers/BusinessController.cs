@@ -21,7 +21,7 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
         {
             RenderMyViewData(rquester);
             rquester.StartDate = DateTime.Now.AddMonths(-1);
-            rquester.EndDate = DateTime.Now.AddMonths(1);
+            rquester.EndDate = DateTime.Now;
             int currentstaffid = UserContext.LoginInfo.StaffID.HasValue ? UserContext.LoginInfo.StaffID.Value : -1;
             IEnumerable<BusinessVM> list = CrmService.GetBusinessList(rquester, GetCurrentUserStaffs(currentstaffid));
             return View(list);
@@ -170,7 +170,7 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
 
         private void RenderMyViewData(BusinessRequest model)
         {
-            ViewData.Add("startDate", (model == null || model.StartDate == null) ? DateTime.Now.AddMonths(-1).Subtract(DateTime.Now.TimeOfDay) : model.StartDate.Value);
+            ViewData.Add("startDate", (model == null || model.StartDate == null) ? DateTime.Now.AddDays(-7).Subtract(DateTime.Now.TimeOfDay) : model.StartDate.Value);
             ViewData.Add("endDate", (model == null || model.EndDate == null) ? DateTime.Now.Subtract(DateTime.Now.TimeOfDay) : model.EndDate.Value);
 
         }

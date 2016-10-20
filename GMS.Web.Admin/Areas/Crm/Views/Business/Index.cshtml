@@ -57,7 +57,7 @@
         $(document).ready(function () {
             var dates = $("#start, #end").datepicker({
                 dateFormat: "yy-mm-dd",
-                defaultDate: "-1w",
+                defaultDate: "-7d",
                 changeMonth: true,
                 numberOfMonths: 2,
                 onSelect: function (selectedDate) {
@@ -103,7 +103,7 @@
             $('#tbbusiness').dataTable().fnDestroy();
             $("#tbbusiness").DataTable({
                 "scrollX": true,
-                "scrollY": '50vh',
+                "scrollY": '70vh',
                 "scrollCollapse": true,
                 "bServerSide": false,//服务端处理分页
                 'bPaginate': true,  //是否分页。
@@ -164,37 +164,37 @@
             });
         });
 
-        function rendHead(start, end) {
-            range = (end - start) / 86400000;
-            if (range >= 0) {
-                var headhtml = "";
-                for (var i = 0; i <= range; i++) {
-                    headhtml += "<th b='bns'>" + start.dateAdd("d", i).format("M-dd") + "</th>";
-                }
-                $(headhtml).appendTo("#tbhead");
-            }
-        }
-        function getData(dStart, dEnd) {
-            $.ajax({
-                "url": "/Crm/Business/Index",
-                "data":
-                    {
-                        start: dStart,
-                        end: dEnd
-                    },
-                "success": function (json) {
-                    fnCallback(json, dStart, dEnd);
-                },
-                "cache": false,
-                "type": "POST",
-                "error": function (xhr, error, thrown) {
-                    if (error == "parsererror") {
-                        alert(oSettings, 0, "DataTables warning: JSON data from " +
-                            "server could not be parsed. This is caused by a JSON formatting error.");
-                    }
-                }
-            });
-        }
+        //function rendHead(start, end) {
+        //    range = (end - start) / 86400000;
+        //    if (range >= 0) {
+        //        var headhtml = "";
+        //        for (var i = 0; i <= range; i++) {
+        //            headhtml += "<th b='bns'>" + start.dateAdd("d", i).format("M-dd") + "</th>";
+        //        }
+        //        $(headhtml).appendTo("#tbhead");
+        //    }
+        //}
+        //function getData(dStart, dEnd) {
+        //    $.ajax({
+        //        "url": "/Crm/Business/Index",
+        //        "data":
+        //            {
+        //                start: dStart,
+        //                end: dEnd
+        //            },
+        //        "success": function (json) {
+        //            fnCallback(json, dStart, dEnd);
+        //        },
+        //        "cache": false,
+        //        "type": "POST",
+        //        "error": function (xhr, error, thrown) {
+        //            if (error == "parsererror") {
+        //                alert(oSettings, 0, "DataTables warning: JSON data from " +
+        //                    "server could not be parsed. This is caused by a JSON formatting error.");
+        //            }
+        //        }
+        //    });
+        //}
         String.prototype.toDate = function () {
             var dateMilliseconds;
             if (isNaN(this)) {
@@ -206,35 +206,35 @@
             //实例化一个新的日期格式，使用1970 年 1 月 1 日至今的毫秒数为参数
             return new Date(parseInt(dateMilliseconds));
         };
-        function fnCallback(json, start, end) {
-            var bodyhtml = "";
-            $.each(json, function (i, item) {
-                bodyhtml += "<tr>";
-                bodyhtml += "<td b='bns' style='font-size:10px;'>" + item.Customer.Name + "</td>";
-                for (var j = 0; j <= range; j++) {
-                    if (item.Business == null || item.Business.length <= 0) {
-                        bodyhtml += "<td b='bns' style='font-size:10px;'>" + "" + "</td>";
-                    }
-                    else {
-                        for (var i = 0; i < item.Business.length; i++) {
-                            var creat = item.Business[i].CreateTime.toDate();
-                            bodyhtml += "<td b='bns' style='font-size:10px;'>" + (creat - start) + "</td>";
-                            if (creat - start == 86400000 * j) {
-                                var msg = item.Business[i].Message;
-                                bodyhtml += "<td b='bns' style='font-size:10px;'>" + item.Business[i].Message + "</td>";
-                            }
-                            else {
-                                bodyhtml += "<td b='bns' style='font-size:10px;'>" + "" + "</td>";
-                            }
-                        }
-                    }
-                }
-                bodyhtml += "</tr>";
-            });
+        //function fnCallback(json, start, end) {
+        //    var bodyhtml = "";
+        //    $.each(json, function (i, item) {
+        //        bodyhtml += "<tr>";
+        //        bodyhtml += "<td b='bns' style='font-size:10px;'>" + item.Customer.Name + "</td>";
+        //        for (var j = 0; j <= range; j++) {
+        //            if (item.Business == null || item.Business.length <= 0) {
+        //                bodyhtml += "<td b='bns' style='font-size:10px;'>" + "" + "</td>";
+        //            }
+        //            else {
+        //                for (var i = 0; i < item.Business.length; i++) {
+        //                    var creat = item.Business[i].CreateTime.toDate();
+        //                    bodyhtml += "<td b='bns' style='font-size:10px;'>" + (creat - start) + "</td>";
+        //                    if (creat - start == 86400000 * j) {
+        //                        var msg = item.Business[i].Message;
+        //                        bodyhtml += "<td b='bns' style='font-size:10px;'>" + item.Business[i].Message + "</td>";
+        //                    }
+        //                    else {
+        //                        bodyhtml += "<td b='bns' style='font-size:10px;'>" + "" + "</td>";
+        //                    }
+        //                }
+        //            }
+        //        }
+        //        bodyhtml += "</tr>";
+        //    });
 
-            $(bodyhtml).appendTo("#tbbody");
-            $('#tbbusiness').dataTable();
-        }
+        //    $(bodyhtml).appendTo("#tbbody");
+        //    $('#tbbusiness').dataTable();
+        //}
     </script>
 
 }
@@ -288,9 +288,6 @@
                     联系电话
                 </th>
                 <th>
-                    联系人性别
-                </th>
-                <th>
                     业务员
                 </th>
                 <th>
@@ -342,9 +339,6 @@
                 </th>
                 <th>
                     联系电话
-                </th>
-                <th>
-                    联系人性别
                 </th>
                 <th>
                     业务员
@@ -421,9 +415,6 @@
                             <td>
                                 @item.Customer.Tel
                             </td>
-                            <td>
-                                @EnumHelper.GetEnumTitle((EnumGender)item.Customer.Gender)
-                            </td>
                             <td class="green">
                                 @(item.Customer.Staff == null ? "没有分配" : item.Customer.Staff.Name)
                             </td>
@@ -469,7 +460,6 @@
             else
             {
                 <tr>
-                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
