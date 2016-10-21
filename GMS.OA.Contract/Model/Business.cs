@@ -101,6 +101,10 @@ namespace GMS.Crm.Contract
             this.business = bis;
         }
         //public IEnumerable<Business> 
+
+        public Branch RootBranch { get; set; }
+
+        public Branch ParentBranch { get; set; }
     }
 
     public class CreateBusinessEntity

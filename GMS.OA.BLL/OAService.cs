@@ -150,7 +150,6 @@ namespace GMS.OA.BLL
                 }
             }
         }
-
         private List<int> GetALLBranch(int BranchID)
         {
             List<int> ret = new List<int> { BranchID };
@@ -158,6 +157,17 @@ namespace GMS.OA.BLL
             if (sonBranch.Count() > 0)
             {
                 ret.AddRange(sonBranch.Select(p => p.ID));
+            }
+
+            return ret;
+        }
+        public List<Branch> GetBelongsToBranch(int BranchID)
+        {
+            List<Branch> ret = new List<Branch> { GetBranch(BranchID) };
+            IEnumerable<Branch> parentsBranch = GetParentBranch(BranchID);
+            if (parentsBranch.Count() > 0)
+            {
+                ret.AddRange(parentsBranch);
             }
 
             return ret;
@@ -171,6 +181,17 @@ namespace GMS.OA.BLL
                             where c.ParentId.Equals(BranchID)
                             select c;
                 return query.ToList().Concat(query.ToList().SelectMany(t => GetSonBranch(t.ID)));
+            }
+        }
+        private IEnumerable<Branch> GetParentBranch(int BranchID)
+        {
+            using (var dbContext = new OADbContext())
+            {
+                Branch branch = dbContext.Branchs.FirstOrDefault(p => p.ID == BranchID);
+                var query = from c in dbContext.Branchs
+                            where c.ID.Equals(branch.ParentId)
+                            select c;
+                return query.ToList().Concat(query.ToList().SelectMany(t => GetParentBranch(t.ID)));
             }
         }
         #endregion

@@ -10,6 +10,7 @@ using GMS.Framework.Contract;
 using EntityFramework.Extensions;
 using GMS.Core.Cache;
 using GMS.Account.DAL;
+using GMS.OA.Contract;
 
 namespace GMS.Crm.BLL
 {
@@ -251,11 +252,13 @@ namespace GMS.Crm.BLL
                 var query = from a in dbContext.Customers.Include("Cooperations").Include("Staff").Include("City").ToList()
                             join b in dbContext.Business
                             on new { Cus = a.ID, Stf = a.StaffID } equals new { Cus = b.CustomerID == null ? 0 : b.CustomerID.Value, Stf = b.StaffID } into t
-                            join c in dbContext.Provinces on  (a.CityId == null ? 0 : a.City.ProvinceID) equals c.ID into x
+                            join c in dbContext.Provinces on (a.CityId == null ? 0 : a.City.ProvinceID) equals c.ID into x
 
                             where staffIDs.Contains(a.StaffID == null ? -1 : a.StaffID.Value)
                             select new BusinessVM
                             {
+                                ParentBranch = GetParentBranch(dbContext, a.StaffID),
+                                RootBranch = GetRootBranch(dbContext, GetParentBranch(dbContext, a.StaffID)),
                                 Customer = a,
                                 Business = t.Where(p => (p.CreateTime > request.StartDate.Value && p.CreateTime < request.EndDate.Value)),
                                 Provienc = x.FirstOrDefault() == null ? "" : x.First().Name
@@ -272,6 +275,35 @@ namespace GMS.Crm.BLL
                 //                                                UserIDs=t
                 //                                            }).Where(p=>p.ID);
 
+            }
+        }
+        private Branch GetParentBranch(CrmDbContext dbContext, int? staffid)
+        {
+            var query = from a in dbContext.Staffs
+                        join b in dbContext.Branchs on a.BranchId equals b.ID
+                        where a.ID == staffid
+                        select b;
+
+            if (query == null || query.Count() == 0)
+            {
+                return null;
+            }
+            else
+            {
+                int curID = query.FirstOrDefault().ID;
+                Branch val = dbContext.Branchs.FirstOrDefault(p => p.ID == curID);
+                return val;
+            }
+        }
+        private Branch GetRootBranch(CrmDbContext dbContext, Branch branch)
+        {
+            if (branch != null)
+            {
+                return dbContext.Branchs.FirstOrDefault(p => p.ID == branch.ParentId);
+            }
+            else
+            {
+                return null;
             }
         }
 

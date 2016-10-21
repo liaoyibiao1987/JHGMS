@@ -102,16 +102,28 @@
                     类型
                 </th>
                 <th>
-                    连锁店数量
+                    联系人
                 </th>
                 <th>
-                    连锁合作方式
+                    联系电话
                 </th>
                 <th>
                     合作渠道
                 </th>
                 <th>
                     商业类型
+                </th>
+                <th>
+                    连锁店数量
+                </th>
+                <th>
+                    连锁合作方式
+                </th>
+                <th>
+                    业务员
+                </th>
+                <th>
+                    业务员类型
                 </th>
                 <th>
                     单位名称
@@ -121,18 +133,6 @@
                 </th>
                 <th>
                     合作品种
-                </th>
-                <th>
-                    业务员
-                </th>
-                <th>
-                    业务员类型
-                </th>
-                <th>
-                    联系人
-                </th>
-                <th>
-                    联系电话
                 </th>
                 <th>
                     添加时间
@@ -165,6 +165,18 @@
                     <td>
                         @EnumHelper.GetEnumTitle((EnumCategory)p.Category)
                     </td>
+                    <td class="blue">
+                        @p.Contacter
+                    </td>
+                    <td>
+                        @p.Tel
+                    </td>
+                    <td>
+                        @p.ShowChannel
+                    </td>                    
+                    <td>
+                        @p.ShowBusinessType
+                    </td>
                     <td>
                         @((p.ChainCount.HasValue == true && (EnumCategory)p.Category == EnumCategory.Married) ? p.ChainCount.Value.ToString() : "...")
                     </td>
@@ -172,11 +184,11 @@
                         @((p.ChainType.HasValue == true) ? EnumHelper.GetEnumTitle((EnumChainType)p.ChainType) : "...")
 
                     </td>
-                    <td>
-                        @p.ShowChannel
-                    </td>                    
-                    <td>
-                        @p.ShowBusinessType
+                    <td class="green">
+                        @(p.Staff == null ? "没有分配" : p.Staff.Name)
+                    </td>
+                    <td class="blue">
+                        @(p.Staff == null ? "没有分配" : EnumHelper.GetEnumTitle((GMS.OA.Contract.EnumPosition)p.Staff.Position))
                     </td>
                     <td>
                         @p.UnitName
@@ -193,18 +205,6 @@
                     </td>
                     <td>
                         @p.CustomerCooperShow
-                    </td>
-                    <td class="green">
-                        @(p.Staff == null ? "没有分配" : p.Staff.Name)
-                    </td>
-                    <td class="blue">
-                        @(p.Staff == null ? "没有分配" : EnumHelper.GetEnumTitle((GMS.OA.Contract.EnumPosition)p.Staff.Position))
-                    </td>
-                    <td class="blue">
-                        @p.Contacter
-                    </td>
-                    <td>
-                        @p.Tel
                     </td>
                     <td>
                         @p.CreateTime.ToCnDataString()

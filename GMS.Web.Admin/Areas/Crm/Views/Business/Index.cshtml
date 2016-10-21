@@ -131,7 +131,7 @@
 
                 initComplete: function () {
                     this.api().columns().every(function (i) {
-                        if (i < 17) {
+                        if (i < 19) {
                             var column = this;
                             debugger;
                             var select = $('<select style="width:100px;" ><option value=""></option></select>').css({ "width": i == 0 ? "150px" : "100px", "z-index": "9" })
@@ -140,7 +140,7 @@
                                     var val = $.fn.dataTable.util.escapeRegex(
                                        $(this).val()
                                     ).trim();
-                                    if (i == 0) {
+                                    if (i == 4) {
                                         column.search(val ? val : '', false, true).draw();
                                     }
                                     else {
@@ -255,13 +255,28 @@
     <table class="table table-striped table-hover" id="tbbusiness">
         <thead>
             <tr id="tbhead">
-                <th>
-                    <span style="width:200px;display:inline-block">公司名称</span>
-                </th>
+                <th>分管领导</th>
+                <th>办事处</th>
                 <th>省份</th>
                 <th>城市</th>
                 <th>
+                    <span style="width:200px;display:inline-block">公司名称</span>
+                </th>
+                <th>
                     类型
+                </th>
+
+                <th>
+                    联系人
+                </th>
+                <th>
+                    联系电话
+                </th>
+                <th>
+                    合作渠道
+                </th>
+                <th>
+                    商业类型
                 </th>
                 <th>
                     连锁店数量
@@ -270,31 +285,19 @@
                     连锁合作方式
                 </th>
                 <th>
-                    合作渠道
+                    业务员
+                </th>
+                <th>
+                    业务员类型
                 </th>
                 <th>
                     单位名称
-                </th>
-                <th>
-                    商业类型
                 </th>
                 <th>
                     是否合作
                 </th>
                 <th>
                     合作种类
-                </th>
-                <th>
-                    联系人
-                </th>
-                <th>
-                    联系电话
-                </th>
-                <th>
-                    业务员
-                </th>
-                <th>
-                    业务员类型
                 </th>
                 <th>
                     业务统计<br />(此时间段)
@@ -311,34 +314,15 @@
         </thead>
         <tfoot>
             <tr>
-                <th>
-                    <span style="width:200px;display:inline-block">客户名</span>
-                </th>
+                <th>分管领导</th>
+                <th>办事处</th>
                 <th>省份</th>
                 <th>城市</th>
                 <th>
+                    <span style="width:200px;display:inline-block">客户名</span>
+                </th>
+                <th>
                     类型
-                </th>
-                <th>
-                    连锁店数量
-                </th>
-                <th>
-                    连锁合作方式
-                </th>
-                <th>
-                    合作渠道
-                </th>
-                <th>
-                    单位名称
-                </th>
-                <th>
-                    商业类型
-                </th>
-                <th>
-                    是否合作
-                </th>
-                <th>
-                    合作种类
                 </th>
                 <th>
                     联系人
@@ -347,10 +331,31 @@
                     联系电话
                 </th>
                 <th>
+                    合作渠道
+                </th>
+                <th>
+                    商业类型
+                </th>
+                <th>
+                    连锁店数量
+                </th>
+                <th>
+                    连锁合作方式
+                </th>
+                <th>
+                <th>
                     业务员
                 </th>
                 <th>
                     业务员类型
+                </th>
+                单位名称
+                </th>
+                <th>
+                    是否合作
+                </th>
+                <th>
+                    合作种类
                 </th>
                 <th>
                     业务统计<br />(此时间段)
@@ -370,14 +375,27 @@
                 foreach (var item in Model)
                 {
                     <tr>
+                        @if (item.RootBranch != null)
+                        {
+                            <td>@item.RootBranch.Name</td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+
+
+                        @if (item.ParentBranch != null)
+                        {
+                            <td>@item.ParentBranch.Name</td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+
                         @if (item.Customer != null)
                         {
-                            <td class="blue">
-                                <a class="blue thickbox" style="cursor:pointer" title="点击开始录入跟单信息"
-                                   href='@Url.Action("AddByCustomerId", "Business", new { CustomerId = item.Customer.ID })&TB_iframe=true&height=480&width=600'>
-                                    @item.Customer.Name
-                                </a>
-                            </td>
                             <td>
                                 @item.Provienc
                             </td>
@@ -387,8 +405,26 @@
                                     @item.Customer.City.Name
                                 }
                             </td>
+                            <td class="blue">
+                                <a class="blue thickbox" style="cursor:pointer" title="点击开始录入跟单信息"
+                                   href='@Url.Action("AddByCustomerId", "Business", new { CustomerId = item.Customer.ID })&TB_iframe=true&height=480&width=600'>
+                                    @item.Customer.Name
+                                </a>
+                            </td>
                             <td>
                                 @EnumHelper.GetEnumTitle((EnumCategory)item.Customer.Category)
+                            </td>
+                            <td class="blue">
+                                @item.Customer.Contacter
+                            </td>
+                            <td>
+                                @item.Customer.Tel
+                            </td>
+                            <td>
+                                @item.Customer.ShowChannel
+                            </td>
+                            <td>
+                                @item.Customer.ShowBusinessType
                             </td>
                             <td>
                                 @((item.Customer.ChainCount.HasValue == true && (EnumCategory)item.Customer.Category == EnumCategory.Married) ? item.Customer.ChainCount.Value.ToString() : "无")
@@ -396,14 +432,14 @@
                             <td>
                                 @((item.Customer.ChainType.HasValue == true) ? EnumHelper.GetEnumTitle((EnumChainType)item.Customer.ChainType) : "无")
                             </td>
-                            <td>
-                                @item.Customer.ShowChannel
+                            <td class="green">
+                                @(item.Customer.Staff == null ? "没有分配" : item.Customer.Staff.Name)
+                            </td>
+                            <td class="blue">
+                                @(item.Customer.Staff == null ? "没有分配" : EnumHelper.GetEnumTitle((GMS.OA.Contract.EnumPosition)item.Customer.Staff.Position))
                             </td>
                             <td>
                                 @item.Customer.UnitName
-                            </td>
-                            <td>
-                                @item.Customer.ShowBusinessType
                             </td>
                             <td>
                                 @if (item.Customer.CooperationOrNot.HasValue && item.Customer.CooperationOrNot.Value == true)
@@ -417,18 +453,6 @@
                             </td>
                             <td>
                                 @item.Customer.CustomerCooperShow
-                            </td>
-                            <td class="blue">
-                                @item.Customer.Contacter
-                            </td>
-                            <td>
-                                @item.Customer.Tel
-                            </td>
-                            <td class="green">
-                                @(item.Customer.Staff == null ? "没有分配" : item.Customer.Staff.Name)
-                            </td>
-                            <td class="blue">
-                                @(item.Customer.Staff == null ? "没有分配" : EnumHelper.GetEnumTitle((GMS.OA.Contract.EnumPosition)item.Customer.Staff.Position))
                             </td>
                             <td class="green">
                                 @((item.Business == null || item.Business.Count() == 0) ? "没有业务" : item.Business.Count().ToString() + " 次业务")
@@ -469,6 +493,8 @@
             else
             {
                 <tr>
+                    <td></td>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>

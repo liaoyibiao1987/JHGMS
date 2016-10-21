@@ -20,7 +20,7 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
         public ActionResult Index(BusinessRequest rquester)
         {
             RenderMyViewData(rquester);
-            rquester.StartDate = DateTime.Now.AddMonths(-1);
+            rquester.StartDate = DateTime.Now.AddDays(-7);
             rquester.EndDate = DateTime.Now;
             int currentstaffid = UserContext.LoginInfo.StaffID.HasValue ? UserContext.LoginInfo.StaffID.Value : -1;
             IEnumerable<BusinessVM> list = CrmService.GetBusinessList(rquester, GetCurrentUserStaffs(currentstaffid));
