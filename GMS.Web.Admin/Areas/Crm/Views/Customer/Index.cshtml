@@ -15,7 +15,7 @@
             width: 150px;
         }
 
-        #tbbusiness th,td {
+        #tbbusiness th, td {
             word-break: keep-all;
             word-wrap: inherit;
             min-width: 60px;
@@ -93,9 +93,11 @@
                     <input type="checkbox" id="checkall" class="group-checkable" />
                 </th>
                 <th>
-                    客户名
+                    公司名称
                 </th>
-                <th>城市</th>
+                <th>
+                    城市
+                </th>
                 <th>
                     类型
                 </th>
@@ -110,6 +112,9 @@
                 </th>
                 <th>
                     商业类型
+                </th>
+                <th>
+                    单位名称
                 </th>
                 <th>
                     是否合作
@@ -130,9 +135,6 @@
                     联系电话
                 </th>
                 <th>
-                    联系人性别
-                </th>
-                <th>
                     添加时间
                 </th>
                 @*<th>
@@ -146,77 +148,77 @@
         <tbody>
             @foreach (var p in Model)
             {
-            <tr>
-                <td style="min-width:10px;">
-                    <input type="checkbox" class="checkboxes" name='ids' value='@p.ID' />
-                </td>
-                <td class="blue">
-                    <a class="blue thickbox" style="cursor:pointer" title="点击开始录入跟单信息"
-                       href="@Url.Action("AddByCustomerId", "Business", new { CustomerId = p.ID })&TB_iframe=true&height=480&width=600"><span>@p.Name</span></a>
-                </td>
-                <td class="green">
-                    @if (p.City != null)
+                <tr>
+                    <td style="min-width:10px;">
+                        <input type="checkbox" class="checkboxes" name='ids' value='@p.ID' />
+                    </td>
+                    <td class="blue">
+                        <a class="blue thickbox" style="cursor:pointer" title="点击开始录入跟单信息"
+                           href="@Url.Action("AddByCustomerId", "Business", new { CustomerId = p.ID })&TB_iframe=true&height=480&width=600"><span>@p.Name</span></a>
+                    </td>
+                    <td class="green">
+                        @if (p.City != null)
                         {
-                            new HtmlString(p.City.Name);
+                            @Html.Raw(p.City.Name);
                         }
-                </td>
-                <td>
-                    @EnumHelper.GetEnumTitle((EnumCategory)p.Category)
-                </td>
-                <td>
-                    @((p.ChainCount.HasValue == true && (EnumCategory)p.Category == EnumCategory.Married) ? p.ChainCount.Value.ToString() : "...")
-                </td>
-                <td>
-                    @((p.ChainType.HasValue == true) ? EnumHelper.GetEnumTitle((EnumChainType)p.ChainType) : "...")
+                    </td>
+                    <td>
+                        @EnumHelper.GetEnumTitle((EnumCategory)p.Category)
+                    </td>
+                    <td>
+                        @((p.ChainCount.HasValue == true && (EnumCategory)p.Category == EnumCategory.Married) ? p.ChainCount.Value.ToString() : "...")
+                    </td>
+                    <td>
+                        @((p.ChainType.HasValue == true) ? EnumHelper.GetEnumTitle((EnumChainType)p.ChainType) : "...")
 
-                </td>
-                <td>
-                    @p.ShowChannel
-                </td>
-                <td>
-                    @p.ShowBusinessType
-                </td>
-                <td>
-                    @if (p.CooperationOrNot.HasValue && p.CooperationOrNot.Value == true)
+                    </td>
+                    <td>
+                        @p.ShowChannel
+                    </td>                    
+                    <td>
+                        @p.ShowBusinessType
+                    </td>
+                    <td>
+                        @p.UnitName
+                    </td>
+                    <td>
+                        @if (p.CooperationOrNot.HasValue && p.CooperationOrNot.Value == true)
                         {
-                            new HtmlString("是");
+                            @Html.Raw("是");
                         }
                         else
                         {
-                            new HtmlString("否");
+                            @Html.Raw("否");
                         }
-                </td>
-                <td>
-                    @p.CustomerCooperShow
-                </td>
-                <td class="green">
-                    @(p.Staff == null ? "没有分配" : p.Staff.Name)
-                </td>
-                <td class="blue">
-                    @(p.Staff == null ? "没有分配" : EnumHelper.GetEnumTitle((GMS.OA.Contract.EnumPosition)p.Staff.Position))
-                </td>
-                <td class="blue">
-                    @p.Contacter
-                </td>
-                <td>
-                    @p.Tel
-                </td>
-                <td>
-                    @EnumHelper.GetEnumTitle((EnumGender)p.Gender)
-                </td>
-                <td>
-                    @p.CreateTime.ToCnDataString()
-                </td>
-                @*<td class="toolbar">
-                    @p.VisitRecords.Count <a href="@Url.Action("Index", "VisitRecord")?Customer.Tel=@p.Tel" target="_blank">查看来电</a>
-                                    </td>*@
-                <td>
-                    <a class="btn mini purple thickbox" title='编辑客户内容' href="@Url.Action("Edit", new { id = p.ID })?TB_iframe=true&height=600&width=600">
-                        <i class="icon-edit"></i>
-                        编辑
-                    </a>
-                </td>
-            </tr>
+                    </td>
+                    <td>
+                        @p.CustomerCooperShow
+                    </td>
+                    <td class="green">
+                        @(p.Staff == null ? "没有分配" : p.Staff.Name)
+                    </td>
+                    <td class="blue">
+                        @(p.Staff == null ? "没有分配" : EnumHelper.GetEnumTitle((GMS.OA.Contract.EnumPosition)p.Staff.Position))
+                    </td>
+                    <td class="blue">
+                        @p.Contacter
+                    </td>
+                    <td>
+                        @p.Tel
+                    </td>
+                    <td>
+                        @p.CreateTime.ToCnDataString()
+                    </td>
+                    @*<td class="toolbar">
+                        @p.VisitRecords.Count <a href="@Url.Action("Index", "VisitRecord")?Customer.Tel=@p.Tel" target="_blank">查看来电</a>
+                                        </td>*@
+                    <td>
+                        <a class="btn mini purple thickbox" title='编辑客户内容' href="@Url.Action("Edit", new { id = p.ID })?TB_iframe=true&height=600&width=600">
+                            <i class="icon-edit"></i>
+                            编辑
+                        </a>
+                    </td>
+                </tr>
             }
         </tbody>
     </table>

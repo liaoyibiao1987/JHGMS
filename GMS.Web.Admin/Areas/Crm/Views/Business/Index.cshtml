@@ -131,7 +131,7 @@
 
                 initComplete: function () {
                     this.api().columns().every(function (i) {
-                        if (i < 16) {
+                        if (i < 17) {
                             var column = this;
                             debugger;
                             var select = $('<select style="width:100px;" ><option value=""></option></select>').css({ "width": i == 0 ? "150px" : "100px", "z-index": "9" })
@@ -256,7 +256,7 @@
         <thead>
             <tr id="tbhead">
                 <th>
-                    <span style="width:200px;display:inline-block">客户名</span>
+                    <span style="width:200px;display:inline-block">公司名称</span>
                 </th>
                 <th>省份</th>
                 <th>城市</th>
@@ -271,6 +271,9 @@
                 </th>
                 <th>
                     合作渠道
+                </th>
+                <th>
+                    单位名称
                 </th>
                 <th>
                     商业类型
@@ -324,6 +327,9 @@
                 </th>
                 <th>
                     合作渠道
+                </th>
+                <th>
+                    单位名称
                 </th>
                 <th>
                     商业类型
@@ -394,18 +400,21 @@
                                 @item.Customer.ShowChannel
                             </td>
                             <td>
+                                @item.Customer.UnitName
+                            </td>
+                            <td>
                                 @item.Customer.ShowBusinessType
                             </td>
-                            <th>
+                            <td>
                                 @if (item.Customer.CooperationOrNot.HasValue && item.Customer.CooperationOrNot.Value == true)
                                 {
-                                    new HtmlString("是");
+                                    @Html.Raw("是");
                                 }
                                 else
                                 {
-                                    new HtmlString("否");
+                                    @Html.Raw("否");
                                 }
-                            </th>
+                            </td>
                             <td>
                                 @item.Customer.CustomerCooperShow
                             </td>
@@ -460,6 +469,7 @@
             else
             {
                 <tr>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>

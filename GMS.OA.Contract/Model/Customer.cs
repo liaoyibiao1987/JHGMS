@@ -90,6 +90,7 @@ namespace GMS.Crm.Contract
         [RegularExpression(@"[0-9]{1,4}", ErrorMessage = "输入0-1000的数字")]
         public int? ChainCount { get; set; }
         public int? ChainType { get; set; }
+        public string UnitName { get; set; }
 
         private int? staffId;
         public int? StaffID
