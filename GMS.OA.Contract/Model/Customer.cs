@@ -57,9 +57,9 @@ namespace GMS.Crm.Contract
         {
             get
             {
-                if (string.IsNullOrEmpty(BusinessType) == false)
+                if (string.IsNullOrEmpty(Channel) == false)
                 {
-                    string[] strs = BusinessType.Split(",".ToCharArray());
+                    string[] strs = Channel.Split(",".ToCharArray());
                     if (strs != null && strs.Count() > 0)
                     {
                         return string.Join(",", strs.Select(p => int.Parse(p)).Cast<EnumChannel>().Select(p => EnumHelper.GetEnumTitle(p)));
