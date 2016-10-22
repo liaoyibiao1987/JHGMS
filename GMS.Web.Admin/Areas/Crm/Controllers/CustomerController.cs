@@ -93,7 +93,9 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
             model.BusinessType = collection["BusinessType"];
             if (collection["ChainType"] != null)
             {
-                model.ChainType = int.Parse(collection["ChainType"]);
+                int chain = 0;
+                int.TryParse(collection["ChainType"], out chain);
+                model.ChainType = chain;
             }
             else
             {
