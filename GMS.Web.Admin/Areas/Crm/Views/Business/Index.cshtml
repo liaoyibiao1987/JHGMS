@@ -131,10 +131,9 @@
 
                 initComplete: function () {
                     this.api().columns().every(function (i) {
-                        if (i < 19) {
+                        if (i < 18) {
                             var column = this;
-                            debugger;
-                            var select = $('<select style="width:100px;" ><option value=""></option></select>').css({ "width": i == 0 ? "150px" : "100px", "z-index": "9" })
+                            var select = $('<select style="width:100px;" ><option value=""></option></select>')
                                 .appendTo($(column.header()))
                                 .on('change', function () {
                                     var val = $.fn.dataTable.util.escapeRegex(

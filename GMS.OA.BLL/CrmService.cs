@@ -249,7 +249,7 @@ namespace GMS.Crm.BLL
                 //                    && t1.CreateTime > request.StartDate.Value
                 //                    && t1.CreateTime < request.EndDate.Value
                 //           select new BusinessVM { Customer = t2, Business = t1 };
-                var query = from a in dbContext.Customers.Include("Cooperations").Include("Staff").Include("City").ToList()
+                var query = from a in dbContext.Customers.Include("Cooperations").Include("Staff").Include("City")
                             join b in dbContext.Business
                             on new { Cus = a.ID, Stf = a.StaffID } equals new { Cus = b.CustomerID == null ? 0 : b.CustomerID.Value, Stf = b.StaffID } into t
                             join c in dbContext.Provinces on (a.CityId == null ? 0 : a.City.ProvinceID) equals c.ID into x
@@ -257,11 +257,11 @@ namespace GMS.Crm.BLL
                             where staffIDs.Contains(a.StaffID == null ? -1 : a.StaffID.Value)
                             select new BusinessVM
                             {
-                                ParentBranch = GetParentBranch(dbContext, a.StaffID),
-                                RootBranch = GetRootBranch(dbContext, GetParentBranch(dbContext, a.StaffID)),
+                                //ParentBranch = GetParentBranch(dbContext, a.StaffID),
+                                //RootBranch = GetRootBranch(dbContext, GetParentBranch(dbContext, a.StaffID)),
                                 Customer = a,
                                 Business = t.Where(p => (p.CreateTime > request.StartDate.Value && p.CreateTime < request.EndDate.Value)),
-                                Provienc = x.FirstOrDefault() == null ? "" : x.First().Name
+                                //Provienc = x.FirstOrDefault() == null ? "" : x.First().Name
                             };
                 return query.ToList();
                 //return list.OrderByDescending(u => u.Customer.ID).ToList();
