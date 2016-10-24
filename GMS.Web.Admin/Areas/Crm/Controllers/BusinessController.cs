@@ -17,7 +17,7 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
     {
         //
         // GET: /Crm/Business/
-        public JsonResult Index(BusinessRequest rquester)
+        public ActionResult Index(BusinessRequest rquester)
         {
             RenderMyViewData(rquester);
             rquester.StartDate = DateTime.Now.AddDays(-7);
@@ -25,13 +25,13 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
             int currentstaffid = UserContext.LoginInfo.StaffID.HasValue ? UserContext.LoginInfo.StaffID.Value : -1;
             IEnumerable<BusinessVM> list = CrmService.GetBusinessList(rquester, GetCurrentUserStaffs(currentstaffid));
             //return Json(list, JsonRequestBehavior.AllowGet);
-            return new JsonResult()
- {
-     Data = list,
-     JsonRequestBehavior = JsonRequestBehavior.AllowGet,
-     MaxJsonLength = Int32.MaxValue
- };
-            //return View(list);
+            //return new JsonResult()
+            //{
+            //    Data = list,
+            //    JsonRequestBehavior = JsonRequestBehavior.AllowGet,
+            //    MaxJsonLength = Int32.MaxValue
+            //};
+            return View(list);
         }
 
         [HttpPost]

@@ -16,7 +16,7 @@
     double RANGE = ((DateTime)ViewData["endDate"] - (DateTime)ViewData["startDate"]).TotalDays;
 }
 
-@model IEnumerable<BusinessVM>
+@model PagedList<BusinessVM>
 
 @section PageSpecificStyleSheetIncludes{
     <style type="text/css">
@@ -348,7 +348,8 @@
                 <th>
                     业务员类型
                 </th>
-                单位名称
+                <th>
+                    单位名称
                 </th>
                 <th>
                     是否合作
@@ -511,4 +512,7 @@
             }
         </tbody>
     </table>
+</div>
+<div class="dataTables_paginate paging_bootstrap pagination">
+    @Html.Pager(Model, new PagerOptions() { ShowTotalItemCount = true, AutoHide = false })
 </div>

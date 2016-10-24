@@ -254,7 +254,7 @@ namespace GMS.Crm.BLL
                             on new { Cus = a.ID, Stf = a.StaffID } equals new { Cus = b.CustomerID == null ? 0 : b.CustomerID.Value, Stf = b.StaffID } into t
                             join c in dbContext.Provinces on (a.CityId == null ? 0 : a.City.ProvinceID) equals c.ID into x
 
-                            where staffIDs.Contains(a.StaffID == null ? -1 : a.StaffID.Value)
+                            where staffIDs.Contains(a.StaffID == null ? -1 : a.StaffID.Value) orderby a.ID descending
                             select new BusinessVM
                             {
                                 //ParentBranch = GetParentBranch(dbContext, a.StaffID),
@@ -263,7 +263,8 @@ namespace GMS.Crm.BLL
                                 Business = t.Where(p => (p.CreateTime > request.StartDate.Value && p.CreateTime < request.EndDate.Value)),
                                 //Provienc = x.FirstOrDefault() == null ? "" : x.First().Name
                             };
-                return query.ToList();
+
+                return query.ToPagedList(request.PageIndex, request.PageSize); ;
                 //return list.OrderByDescending(u => u.Customer.ID).ToList();
                 //var query=dbContext.Customers.GroupJoin(dbContext.Business,
                 //                                        a=>new { Cus = a.ID , Stf = a.StaffId },
