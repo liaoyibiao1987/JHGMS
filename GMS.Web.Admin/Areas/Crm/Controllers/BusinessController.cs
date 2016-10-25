@@ -1,6 +1,8 @@
 ﻿using GMS.Account.Contract;
 using GMS.Crm.Contract;
 using GMS.Framework.Contract;
+using GMS.Framework.Utility;
+using GMS.OA.Contract;
 using GMS.Web.Admin.Common;
 using System;
 using System.Collections.Generic;
@@ -20,6 +22,7 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
         public ActionResult Index(BusinessRequest rquester)
         {
             RenderMyViewData(rquester);
+            RenderMyViewData();
             rquester.StartDate = DateTime.Now.AddDays(-7);
             rquester.EndDate = DateTime.Now;
             int currentstaffid = UserContext.LoginInfo.StaffID.HasValue ? UserContext.LoginInfo.StaffID.Value : -1;
@@ -35,6 +38,28 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
         }
 
         [HttpPost]
+        public JsonResult GetBusinessByAjax(FormCollection form)
+        {
+            var p = form;
+            BusinessRequest rquester = new BusinessRequest();
+            rquester.StartDate = DateTime.Now.AddDays(-7);
+            rquester.EndDate = DateTime.Now;
+            int currentstaffid = UserContext.LoginInfo.StaffID.HasValue ? UserContext.LoginInfo.StaffID.Value : -1;
+            IEnumerable<BusinessVM> list = CrmService.GetBusinessList(rquester, GetCurrentUserStaffs(currentstaffid));
+            JsonResult re = new JsonResult();
+            re.MaxJsonLength = int.MaxValue;
+            re.JsonRequestBehavior = JsonRequestBehavior.DenyGet;
+            re.Data = list;
+            return re;
+        }
+
+        [HttpPost]
+        public ActionResult Index(int page, DateTime start, DateTime end)
+        {
+            return View();
+        }
+
+        [HttpPost]
         public ActionResult Index(DateTime start, DateTime end)
         {
             BusinessRequest req = new BusinessRequest();
@@ -46,6 +71,17 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
             IEnumerable<BusinessVM> list = CrmService.GetBusinessList(req, GetCurrentUserStaffs(currentstaffid));
             return View(list);
         }
+
+        private void RenderMyViewData()
+        {
+            ViewData.Add("Category", new SelectList(EnumHelper.GetItemValueList<EnumCategory>(), "Key", "Value", 0));
+            ViewData.Add("Channel", new SelectList(EnumHelper.GetItemValueList<EnumChannel>(), "Key", "Value", 0));
+            ViewData.Add("BusinessType", new SelectList(EnumHelper.GetItemValueList<EnumBusinessType>(), "Key", "Value", 0));
+            ViewData.Add("EnumPosition", new SelectList(EnumHelper.GetItemValueList<EnumPosition>(), "Key", "Value", 0));
+        }
+
+
+
         /// <summary>
         /// 日历菜单
         /// </summary>

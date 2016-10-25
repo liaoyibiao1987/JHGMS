@@ -139,19 +139,18 @@
                     <span class="help-inline">@Html.ValidationMessageFor(m => m.Message)</span>
                 </div>
             </div>
-            <div class="control-group">
-                <div class="controls">
-                    <div style="width:48%;display:inline-block">
-                        <label>本月回款:</label>
-                        @Html.TextBoxFor(m => m.CurrentPayment, "{0:###,#.00}", new { style = "width:50%;", @class = "m-wrap small" })
+            @*<div class="control-group">
+                    <div class="controls">
+                        <div style="width:48%;display:inline-block">
+                            <label>本月回款:</label>
+                            @Html.TextBoxFor(m => m.CurrentPayment, "{0:###,#.00}", new { style = "width:50%;", @class = "m-wrap small" })
+                        </div>
+                        <div style="width:48%;display:inline-block">
+                            <label>本月预计回款:</label>
+                            @Html.TextBoxFor(m => m.PredictPayment, "{0:###,#.00}", new { style = "width:50%;", @class = "m-wrap small" })
+                        </div>
                     </div>
-                    <div style="width:48%;display:inline-block">
-                        <label>本月预计回款:</label>
-                        @Html.TextBoxFor(m => m.PredictPayment, "{0:###,#.00}", new { style = "width:50%;", @class = "m-wrap small" })
-                    </div>
-                </div>
-                <!-- /.form-group -->
-            </div>
+                </div>*@
         </div>
     </div>
 }

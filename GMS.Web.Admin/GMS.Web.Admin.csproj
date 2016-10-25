@@ -1533,6 +1533,7 @@
     <Content Include="Areas\Account\Views\Settings\CitySelect.cshtml" />
     <Content Include="Areas\Account\Views\Settings\ProvinceSelect.cshtml" />
     <Content Include="Areas\Crm\Views\Customer\CitySelect.cshtml" />
+    <Content Include="Areas\Crm\Views\Business\Index-back.cshtml" />
     <None Include="Assets\bootstrap-colorpicker\less\colorpicker.less" />
     <None Include="Assets\bootstrap-datepicker\less\datepicker.less" />
     <None Include="Assets\bootstrap-daterangepicker\README.md" />
