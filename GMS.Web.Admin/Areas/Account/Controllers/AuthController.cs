@@ -19,7 +19,7 @@ namespace GMS.Web.Admin.Areas.Account.Controllers
         {
             return View();
         }
-        
+
         [HttpPost]
         [AllowAnonymous]
         [AuthorizeIgnore]
@@ -30,14 +30,19 @@ namespace GMS.Web.Admin.Areas.Account.Controllers
                 ModelState.AddModelError("error", "验证码错误");
                 return View();
             }
-            
-            var loginInfo = this.AccountService.Login(username, password);
 
+            var loginInfo = this.AccountService.Login(username, password);
+            if (loginInfo.StaffID.HasValue == false)
+            {
+                ModelState.AddModelError("error", "改用户没有员工号。");
+                return View();
+            }
             if (loginInfo != null)
             {
                 this.CookieContext.UserToken = loginInfo.LoginToken;
                 this.CookieContext.UserName = loginInfo.LoginName;
                 this.CookieContext.UserId = loginInfo.UserID;
+                this.CookieContext.StaffID = loginInfo.StaffID.Value;
                 return RedirectToAction("Index");
             }
             else
@@ -53,6 +58,7 @@ namespace GMS.Web.Admin.Areas.Account.Controllers
             this.CookieContext.UserToken = Guid.Empty;
             this.CookieContext.UserName = string.Empty;
             this.CookieContext.UserId = 0;
+            this.CookieContext.StaffID = -1;
             return RedirectToAction("Login");
         }
 

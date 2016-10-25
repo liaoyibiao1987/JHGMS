@@ -21,11 +21,15 @@ namespace GMS.Web
                 {
                     if (authCookie.UserToken == Guid.Empty)
                         return null;
-                    
+
                     var loginInfo = ServiceContext.Current.AccountService.GetLoginInfo(authCookie.UserToken);
 
-                    if (loginInfo != null && loginInfo.UserID > 0 && loginInfo.UserID != this.authCookie.UserId)
-                        throw new Exception("非法操作，试图通过网站修改Cookie取得用户信息！");
+                    if (loginInfo != null && loginInfo.UserID > 0 && (loginInfo.UserID != this.authCookie.UserId || loginInfo.StaffID != this.authCookie.StaffID))
+                    {
+                        System.Diagnostics.Debug.WriteLine("非法操作，试图通过网站修改Cookie取得用户信息！");
+                        return null;
+                        //throw new Exception("非法操作，试图通过网站修改Cookie取得用户信息！");
+                    }
 
                     return loginInfo;
                 });

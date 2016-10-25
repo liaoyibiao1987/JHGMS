@@ -67,6 +67,18 @@ namespace GMS.Web
             }
         }
 
+        public virtual int StaffID
+        {
+            get
+            {
+                return Cookie.GetValue(KeyPrefix + "StaffID").ToInt();
+            }
+            set
+            {
+                Cookie.Save(KeyPrefix + "StaffID", value.ToString(), UserExpiresHours);
+            }
+        }
+
         public virtual Guid UserToken
         {
             get

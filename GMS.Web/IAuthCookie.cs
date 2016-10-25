@@ -5,10 +5,11 @@ namespace GMS.Web
     public interface IAuthCookie
     {
         int UserExpiresHours { get; set; }
-        
+
         string UserName { get; set; }
 
         int UserId { get; set; }
+        int StaffID { get; set; }
 
         Guid UserToken { get; set; }
 

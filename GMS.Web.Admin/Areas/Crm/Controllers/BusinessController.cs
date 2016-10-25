@@ -3,6 +3,7 @@ using GMS.Crm.Contract;
 using GMS.Framework.Contract;
 using GMS.Framework.Utility;
 using GMS.OA.Contract;
+using GMS.OA.Contract.Model;
 using GMS.Web.Admin.Common;
 using System;
 using System.Collections.Generic;
@@ -38,9 +39,9 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetBusinessByAjax(FormCollection form)
+        public JsonResult GetBusinessByAjax(DataTableParameter aoData)
         {
-            var p = form;
+            //Fetch.Post("");
             BusinessRequest rquester = new BusinessRequest();
             rquester.StartDate = DateTime.Now.AddDays(-7);
             rquester.EndDate = DateTime.Now;
@@ -49,7 +50,13 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
             JsonResult re = new JsonResult();
             re.MaxJsonLength = int.MaxValue;
             re.JsonRequestBehavior = JsonRequestBehavior.DenyGet;
-            re.Data = list;
+            re.Data = new
+            {
+                iDraw = aoData.draw,
+                iTotalRecords = 50,
+                iTotalDisplayRecords = 50,
+                Data = list
+            };
             return re;
         }
 

@@ -19,7 +19,7 @@ namespace GMS.Crm.Contract
         [Required]
         public int? CustomerID { get; set; }
         public bool? IsSpecial { get; set; }
-        public virtual Customer Customer { get; set; }
+        //public virtual Customer Customer { get; set; }
 
         [Required]
         [StringLength(2000, ErrorMessage = "细节不能超过2000个字符")]

@@ -49,6 +49,7 @@
     <Compile Include="ICrmService.cs" />
     <Compile Include="Model\Area.cs" />
     <Compile Include="Model\Article.cs" />
+    <Compile Include="Model\DataTableParameter.cs" />
     <Compile Include="Model\Payment.cs" />
     <Compile Include="Model\Channel.cs" />
     <Compile Include="Model\Cooperations.cs" />
