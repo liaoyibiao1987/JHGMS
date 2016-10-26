@@ -7,18 +7,11 @@
 @using GMS.Web
 @{
     ViewBag.Title = "业务跟单查询";
-}
-@{
     Layout = "~/Views/Shared/_Layout.cshtml";
-    DateTime endDate = (DateTime)ViewData["endDate"];
-    DateTime startDate = (DateTime)ViewData["startDate"];
-
-    double RANGE = ((DateTime)ViewData["endDate"] - (DateTime)ViewData["startDate"]).TotalDays;
 }
-
-@model PagedList<BusinessVM>
-
 @section PageSpecificStyleSheetIncludes{
+    <link rel="stylesheet" type="text/css" href="@Url.StaticFile("/Assets/data-tables/css/dataTables.jqueryui.min.css")" />
+
     <style type="text/css">
         select {
             margin: 1px;
@@ -30,10 +23,28 @@
             margin-left: 10px;
         }
 
+        .odd {
+            background-color: whitesmoke !important;
+        }
+
+        .w60 {
+            width: 60px;
+            word-break: keep-all;
+        }
+
         #divData th {
             word-break: keep-all;
             word-wrap: inherit;
             min-width: 120px;
+        }
+
+        td table tbody {
+            display: initial;
+        }
+
+        td table, td table tr {
+            width: 100% !important;
+            display: inline-block;
         }
     </style>
 }
@@ -47,6 +58,19 @@
     <script type="text/javascript" src="@Url.StaticFile("/assets/js/GMS.js")"></script>
 
     <script type="text/javascript">
+        var dstart;
+        var dend;
+
+        function rendHead(start, end) {
+            range = (dend - dstart) / 86400000;
+            if (range >= 0) {
+                var headhtml = "";
+                for (var i = 0; i <= range; i++) {
+                    headhtml += "<th b='bns'>" + start.dateAdd("d", i).format("M-dd") + "</th>";
+                }
+                $(headhtml).appendTo("#tbhead");
+            }
+        }
 
         //$.validator.setDefaults({
         //    submitHandler: function () {
@@ -55,6 +79,7 @@
         //});
         var range = 0;
         $(document).ready(function () {
+
             var dates = $("#start, #end").datepicker({
                 dateFormat: "yy-mm-dd",
                 defaultDate: "-7d",
@@ -70,16 +95,34 @@
                     dates.not(this).datepicker("option", option, date);
                 }
             });
+            var myDate = new Date();
+            $("#start").datepicker("setDate", myDate.dateAdd("d", -7).format("yyyy-MM-dd"));
+            $("#end").datepicker("setDate", myDate.format("yyyy-MM-dd"));
+
+            dstart = $("#start").datepicker("getDate");
+            dend = $("#end").datepicker("getDate");
+            range = (dend - dstart) / 86400000;
+
+            $("#btnsubmit").live("click", function () {
+                $('#example').dataTable().fnClearTable(false);
+                $('#example').DataTable().draw();
+            });
+
             $('#example').DataTable({
                 "scrollX": true,
                 "scrollY": '70vh',
+                "autoWidth": false,
                 "scrollCollapse": true,
+                "sDom": "t<'row-fluid'<'span6'i><'span6'p>>",//定义表格的显示方式
+                "ordering": false,
                 "bServerSide": true,//服务端处理分页
                 'bPaginate': true,  //是否分页。
-                'bFilter': true,  //是否使用内置的过滤功能
-                'bLengthChange': false, //是否允许自定义每页显示条数.
+                'bFilter': false,  //是否使用内置的过滤功能
+                'bLengthChange': true, //是否允许自定义每页显示条数.
                 "bProcessing": true, //DataTables载入数据时，是否显示‘进度’提示
                 "Paginate": false,  //是否分页。
+                "lengthMenu": [[10, 25, 50, 100, 500], ["10", "25", "50", "100", "500"]],
+                "sPaginationType": "full_numbers",
                 "ajax": {
                     "url": "GetBusinessByAjax",
                     "type": "POST",
@@ -104,100 +147,263 @@
                         "sNext": "下一页",
                         "sLast": "最后一页"
                     }
+                },
+                "createdRow": function (row, data, dataIndex) {
+                    //$(row).children('td').attr('style', 'text-align: center;')
+                    //if (dataIndex % 2 == 0) {
+                    //    $(row).attr('style', 'background-color: whitesmoke;')
+                    //}
+                    //$(":even", row).attr('style', 'background-color: red;')
                 }
-                //, "aoColumns": [
-                //        {
-                //            "sName": "Customer.Name",
-                //            "bSearchable": false,
-                //            "bSortable": false,
-                //            "fnRender": function (oObj) {
-                //                return '<a href=\"Details/' + oObj.aData[0] + '\">View</a>';
-                //            }                           //自定义列的样式
-                //        }
-                //]
                 , "fnServerParams": function (aoData) {
-                    aoData.xxx = "ddd";
-
+                    aoData.startdate = $("#start").datepicker("getDate").format("yyyy-MM-dd");
+                    aoData.enddate = $("#end").datepicker("getDate").format("yyyy-MM-dd");
+                    aoData.Category = 0;
+                    aoData.Channel = 0;
+                    aoData.BusinessType = 1;
+                    aoData.EnumPosition = 1;
                 }
-                , columns: [
-                           { data: 'Customer.Name' }
-                           , { data: 'Customer.Name' }
-                           //,{ data: 'RootBranch.Name' }
+                , "columns": [
+                       {
+                           data: 'RootBranch.Name'
+                           , "defaultContent": "未知"
+                           , "width": "20px"
+                           , "type": "date"
+                           //"visible": false,
+                           //"targets": [18],
+                           //"orderable": false,
+                           //"searchable": false
+                           //, "render": function (data, type, full, meta) {
+                           //    return '<a href="' + data + '">' + data + '</a>';
+                           //}
+                           , "searchable": false
+                           , "createdCell": function (td, cellData, rowData, row, col) {
+                               //if (row < 1) {
+                               //    $(td).css('color', 'red');
+                               //}
+                           }
+                           , "cellType": "th"
+                           , "className": "my_class"
+                           , "contentPadding": "mmm"
+                       }
+                       , { data: 'ParentBranch.Name' }
+                       , { data: 'Provienc' }
+                       , {
+                           data: 'Customer.City.Name'
+                           , "defaultContent": "未知"
+                           , "render": function (data, type, full, meta) {
+                               return '<a href="' + data + '">' + data + '</a>';
+                           }
+                           , "searchable": false
+                       }
+                       , { data: 'Customer.Name' }
+                       , {
+                           data: 'Customer.Category'
+                           , "defaultContent": "未知"
+                           , "render": function (data, type, full, meta) {
+                               var ret;
+                               switch (data) {
+                                   case 0:
+                                       ret = "无";
+                                       break;
+                                   case 1:
+                                       ret = "商业";
+                                       break;
+                                   case 2:
+                                       ret = "连锁";
+                                       break;
+                                   case 3:
+                                   default:
+                                       ret = "其他";
+                                       break;
+                               }
+                               return ret;
+                           }
+                           , "searchable": false
+                           , "createdCell": function (td, cellData, rowData, row, col) {
+                               //if (row < 1) {
+                               //    $(td).css('color', 'red');
+                               //}
+                           }
+                       }
+                       , { data: 'Customer.Contacter' }
+                       , { data: 'Customer.Tel' }
+                       , { data: 'Customer.ShowChannel' }
+                       , { data: 'Customer.ShowBusinessType' }
+                       , { data: 'Customer.ChainCount' }
+                       , { data: 'Customer.ChainType' }
+                       , {
+                           data: 'Customer.Staff.Name'
+                           , "defaultContent": "未知"
+                           , "render": function (data, type, full, meta) {
+                               return '<a href="' + data + '">' + data + '</a>';
+                           }
+                           , "searchable": false
+                           , "createdCell": function (td, cellData, rowData, row, col) {
+                               //if (row < 1) {
+                               //    $(td).css('color', 'red');
+                               //}
+                           }
+                       }
+                       , {
+                           data: 'Customer.Staff.Position'
+                           , "defaultContent": "未知"
+                           , "width": "20px"
+                           , "type": "int"
+                           , "render": function (data, type, full, meta) {
+                               var ret;
+                               switch (data) {
+                                   case 0:
+                                       ret = "无";
+                                       break;
+                                   case 1:
+                                       ret = "兼职";
+                                       break;
+                                   case 2:
+                                       ret = "销售经理";
+                                       break;
+                                   case 3:
+                                       ret = "销售经理兼临床";
+                                       break;
+                                   case 4:
+                                       ret = "终端经理";
+                                       break;
+                                   case 5:
+                                       ret = "主任";
+                                       break;
+                                   case 6:
+                                   default:
+                                       ret = "其他";
+                                       break;
+                               }
+                               return ret;
+                           }
+                           , "searchable": false
+                           , "createdCell": function (td, cellData, rowData, row, col) {
+                               //if (row < 1) {
+                               //    $(td).css('color', 'red');
+                               //}
+                           }
+                       }
+                       , {
+                           data: 'Customer.UnitName'
+                           , "defaultContent": "无"
+                       }
+                       , {
+                           data: 'Customer.CooperationOrNot'
+                           , "defaultContent": "未知"
+                           , "width": "20px"
+                           , "type": "Boolean"
+                           , "render": function (data, type, full, meta) {
+                               if (data == true) {
+                                   return "是";
+                               } else {
+                                   return "否";
+                               }
+                           }
+                           , "searchable": false
+                       }
+                       , { data: 'Customer.CustomerCooperShow' }
+                       , {
+                           data: 'Business'
+                           , "defaultContent": "未知"
+                           , "width": "20px"
+                           , "render": function (data, type, full, meta) {
+                               if (data != null && data !== undefined && data.length > 0) {
+                                   return data.length + "条业务";
+                               } else {
+                                   return "无";
+                               }
+
+                           }
+                       }
+                       , {
+                           data: 'Business'
+                           , "defaultContent": "未知"
+                           , "width": "20px"
+                           , "render": function (data, type, full, meta) {
+                               var retvalue = "<div>";
+                               if (data != null && data !== undefined && data.length > 0) {
+                                   for (var j = 0; j < data.length; j++) {
+                                       var creat = data[j].CreateTime.toDate();
+                                       var msg = data[j].Message;
+                                       if (creat != null && msg != null) {
+                                           var msg2 = msg.length > 50 ? msg.substring(0, 50) + "..." : msg;
+                                           var content = "<li> 时间：" + creat.format("yyyy-MM-dd") + "</li>";
+                                           content += "<li> 事件：" + msg2 + "</li>";
+                                           retvalue += "<span style='display:inline-block; background-color:lightblue;padding:5px;margin:1px;'>" + content + "</span>";
+                                       }
+
+                                   }
+                               }
+                               retvalue += "</div>";
+                               return retvalue;
+                               //var retvalue = "<table><tr>";
+                               //if (data != null && data !== undefined && data.length > 0) {
+                               //    for (var i = 0; i < range; i++) {
+                               //        for (var j = 0; j < data.length; j++) {
+                               //            var creat = data[j].CreateTime.toDate();
+                               //            if (creat - dstart == 86400000 * i) {
+                               //                var msg = data[j].Message;
+                               //                retvalue += "<td>" + msg + "</td>";
+                               //            }
+                               //            else {
+                               //                retvalue += "<td>" + "" + "</td>";
+                               //            }
+                               //        }
+
+                               //    }
+                               //} else {
+
+                               //    for (var i = 0; i < range; i++) {
+                               //        retvalue += '<td></td>'
+                               //    }
+                               //}
+                               //retvalue += "</tr></table>";
+                               //return retvalue;
+                           }
+                       }
+
                 ]
-                //"aoColumns": [
-                //        { "sName": "ID",
-                //            "bSearchable": false,
-                //            "bSortable": false,
-                //            "fnRender": function (oObj) {
-                //                return '<a href=\"Details/' + oObj.aData[0] + '\">View</a>';
-                //            }                           //自定义列的样式
-                //        }
-                //]
-                //"columns": [
-                //    { data: 0 }
-                //]
+                //和 columnsOption 参数很像，这个参数允许你给指定列设置选项，应用到一个或这多个列。而不像 columnsOption 需要每列都要定义
+                , "columnDefs": [
+                            {
+                                // The `data` parameter refers to the data for the cell (defined by the
+                                // `data` option, which defaults to the column being worked with, in
+                                // this case `data: 0`.
+                                data: "RootBranch.Name",
+                                "render": function (data, type, row) {
+                                    return data + ' (' + row[3] + ')';
+                                },
+                                "orderable": false,
+                                "targets": 0
+                            },
+                            {
+                                //"visible": false,
+                                "targets": [18],
+                                "orderable": false,
+                                "searchable": false
+                            }
+                ]
+                , "headerCallback": function (thead, data, start, end, display) {
+                    //var headhtml = "<table><tr>";
+                    var str = "时间段：" + dstart.format("yyyy年  (MM-dd ") + "至" + dend.format(" M-dd)");
+                    //headhtml += "<td class='w60'>" + str + "</td>";
+                    //headhtml += "</tr></table>";
+                    $("#lasthead", thead).html(str);
+                }
+                , "footerCallback": function (tfoot, data, start, end, display) {
+                    var str = "时间段：" + dstart.format("yyyy年 (MM-dd ") + "至" + dend.format(" M-dd)");
+
+                    //var headhtml = "<table><tr>";
+                    //for (var i = 0; i <= range; i++) {
+                    //    headhtml += "<td class='w60'>" + dstart.dateAdd("d", i).format("M-dd") + "</td>";
+                    //}
+                    //headhtml += "</tr></table>";
+                    $("#lastfoot", tfoot).html(str);
+                }
             });
             //$('#tbbusiness').DataTable().fnDestroy();
-            //$("#tbbusiness").DataTable({
-            //"scrollX": true,
-            //"scrollY": '70vh',
-            //"scrollCollapse": true,
-            //"bServerSide": false,//服务端处理分页
-            //'bPaginate': true,  //是否分页。
-            //'bFilter': true,  //是否使用内置的过滤功能
-            //'bLengthChange': false, //是否允许自定义每页显示条数.
-            //"bProcessing": true, //DataTables载入数据时，是否显示‘进度’提示
-            //"bFilter": true, //是否启动过滤、搜索功能
-            //"oLanguage": { //国际化配置
-            //    "sProcessing": "正在获取数据，请稍后...",
-            //    "sLengthMenu": "显示 _MENU_ 条",
-            //    "sZeroRecords": "没有您要搜索的内容",
-            //    "sInfo": "从 _START_ 到  _END_ 条记录 总记录数为 _TOTAL_ 条",
-            //    "sInfoEmpty": "记录数为0",
-            //    "sInfoFiltered": "(全部记录数 _MAX_ 条)",
-            //    "sInfoPostFix": "",
-            //    "sSearch": "搜索",
-            //    "sUrl": "",
-            //    "oPaginate": {
-            //        "sFirst": "第一页",
-            //        "sPrevious": "上一页",
-            //        "sNext": "下一页",
-            //        "sLast": "最后一页"
-            //    }
-            //},
-
-            //initComplete: function () {
-            //    this.api().columns().every(function (i) {
-            //        if (i < 18) {
-            //            var column = this;
-            //            var select = $('<select style="width:100px;" ><option value=""></option></select>')
-            //                .appendTo($(column.header()))
-            //                .on('change', function () {
-            //                    var val = $.fn.dataTable.util.escapeRegex(
-            //                       $(this).val()
-            //                    ).trim();
-            //                    if (i == 4) {
-            //                        column.search(val ? val : '', false, true).draw();
-            //                    }
-            //                    else {
-            //                        column.search(val ? '^' + val + '$' : '', true, false).draw();
-            //                    }
-            //                }).on("click", function (event) {
-            //                    event.stopPropagation();
-            //                });
-
-            //            column.data().unique().sort().each(function (d, j) {
-            //                var val = $(d).text() == "" ? d : $(d).text();
-            //                if (column.search() === '^' + val + '$') {
-            //                    select.append('<option value="' + val + '" selected="selected">' + val + '</option>')
-            //                } else {
-            //                    select.append('<option value="' + val + '">' + val + '</option>')
-            //                }
-            //            });
-            //        }
-            //    });
-            //}
-            //});
         });
 
 
@@ -219,9 +425,9 @@
 <div class="row-fluid">
     <div class="span11">
         <div class="p5 form-inline">
-            <label>开始时间：</label>@Html.TextBox("start", ((DateTime)ViewData["startDate"]).ToString("yyyy-MM-dd"), new { @class = "m-wrap small" })&nbsp;
-            <label>结束时间：</label>@Html.TextBox("end", ((DateTime)ViewData["endDate"]).ToString("yyyy-MM-dd"), new { @class = "m-wrap small" })&nbsp;
-            <button type="submit" class="btn">搜索<i class="icon-search"></i></button>
+            <label>开始时间：</label>@Html.TextBox("start", "", new { @class = "m-wrap small" })&nbsp;
+            <label>结束时间：</label>@Html.TextBox("end", "", new { @class = "m-wrap small" })&nbsp;
+            <button id="btnsubmit" type="submit" class="btn">搜索<i class="icon-search"></i></button>
             <br />
             <br />
             <label>企业类型：</label>@Html.DropDownList("Category", ViewData["Category"] as SelectList, "--请选择--", new { @class = "select2" })
@@ -232,275 +438,89 @@
         </div>
     </div>
 </div>
-<div>
-    <table id="example">
-        <tbody></tbody>
-    </table>
-
-</div>
-<div id="divData" class="row-fluid">
-    <table class="table table-striped table-hover" id="tbbusiness">
+<br />
+<br />
+<br />
+<br />
+<div id="divData">
+    <table id="example" class="stripe" cellspacing="0" width="100%">
         <thead>
             <tr id="tbhead">
                 <th>分管领导</th>
                 <th>办事处</th>
                 <th>省份</th>
                 <th>城市</th>
-                <th>
-                    <span style="width:200px;display:inline-block">公司名称</span>
-                </th>
-                <th>
-                    类型
-                </th>
+                <th>客户名</th>
+                <th>类型</th>
+                <th>联系人</th>
+                <th>联系电话</th>
+                <th>合作渠道</th>
+                <th>商业类型</th>
 
-                <th>
-                    联系人
-                </th>
-                <th>
-                    联系电话
-                </th>
-                <th>
-                    合作渠道
-                </th>
-                <th>
-                    商业类型
-                </th>
-                <th>
-                    连锁店数量
-                </th>
-                <th>
-                    连锁合作方式
-                </th>
-                <th>
-                    业务员
-                </th>
-                <th>
-                    业务员类型
-                </th>
-                <th>
-                    单位名称
-                </th>
-                <th>
-                    是否合作
-                </th>
-                <th>
-                    合作种类
-                </th>
-                <th>
-                    业务统计<br />(此时间段)
-                </th>
+                <th>连锁店数量</th>
+                <th>连锁合作方式</th>
+                <th>业务员</th>
+                <th>业务员类型</th>
+                <th>单位名称</th>
+                <th>是否合作</th>
+                <th>合作种类</th>
+                <th>业务统计<br />(此时间段)</th>
 
-                @for (int x = 0; x <= RANGE; x++)
-                {
-                    <th>
-                        <span>@(((DateTime)ViewData["startDate"]).AddDays(x).ToString("yyyy-MM-dd")) </span>
-                    </th>
-                }
-
+                <th id="lasthead">
+                </th>
             </tr>
         </thead>
         <tfoot>
-            <tr>
+            <tr id="tbfoot">
                 <th>分管领导</th>
                 <th>办事处</th>
                 <th>省份</th>
                 <th>城市</th>
-                <th>
-                    <span style="width:200px;display:inline-block">客户名</span>
-                </th>
-                <th>
-                    类型
-                </th>
-                <th>
-                    联系人
-                </th>
-                <th>
-                    联系电话
-                </th>
-                <th>
-                    合作渠道
-                </th>
-                <th>
-                    商业类型
-                </th>
-                <th>
-                    连锁店数量
-                </th>
-                <th>
-                    连锁合作方式
-                </th>
-                <th>
-                <th>
-                    业务员
-                </th>
-                <th>
-                    业务员类型
-                </th>
-                <th>
-                    单位名称
-                </th>
-                <th>
-                    是否合作
-                </th>
-                <th>
-                    合作种类
-                </th>
-                <th>
-                    业务统计<br />(此时间段)
-                </th>
+                <th>客户名</th>
+                <th>类型</th>
+                <th>联系人</th>
+                <th>联系电话</th>
+                <th>合作渠道</th>
+                <th>商业类型</th>
 
-                @for (int x = 0; x <= RANGE; x++)
-                {
-                    <th>
-                        <span>@(((DateTime)ViewData["startDate"]).AddDays(x).ToString("yyyy-MM-dd")) </span>
-                    </th>
-                }
+                <th>连锁店数量</th>
+                <th>连锁合作方式</th>
+                <th>业务员</th>
+                <th>业务员类型</th>
+                <th>单位名称</th>
+                <th>是否合作</th>
+                <th>合作种类</th>
+                <th>业务统计<br />(此时间段)</th>
+
+                <th id="lastfoot">
+                </th>
             </tr>
         </tfoot>
-        <tbody id="tbbody">
-            @if (Model != null)
-            {
-                foreach (var item in Model)
-                {
-                    <tr>
-                        @if (item.RootBranch != null)
-                        {
-                            <td>@item.RootBranch.Name</td>
-                        }
-                        else
-                        {
-                            <td></td>
-                        }
+        <tbody>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
 
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
 
-                        @if (item.ParentBranch != null)
-                        {
-                            <td>@item.ParentBranch.Name</td>
-                        }
-                        else
-                        {
-                            <td></td>
-                        }
-
-                        @if (item.Customer != null)
-                        {
-                            <td>
-                                @item.Provienc
-                            </td>
-                            <td class="green">
-                                @if (item.Customer.City != null)
-                                {
-                                    @item.Customer.City.Name
-                                }
-                            </td>
-                            <td class="blue">
-                                <a class="blue thickbox" style="cursor:pointer" title="点击开始录入跟单信息"
-                                   href='@Url.Action("AddByCustomerId", "Business", new { CustomerId = item.Customer.ID })&TB_iframe=true&height=480&width=600'>
-                                    @item.Customer.Name
-                                </a>
-                            </td>
-                            <td>
-                                @EnumHelper.GetEnumTitle((EnumCategory)item.Customer.Category)
-                            </td>
-                            <td class="blue">
-                                @item.Customer.Contacter
-                            </td>
-                            <td>
-                                @item.Customer.Tel
-                            </td>
-                            <td>
-                                @item.Customer.ShowChannel
-                            </td>
-                            <td>
-                                @item.Customer.ShowBusinessType
-                            </td>
-                            <td>
-                                @((item.Customer.ChainCount.HasValue == true && (EnumCategory)item.Customer.Category == EnumCategory.Married) ? item.Customer.ChainCount.Value.ToString() : "无")
-                            </td>
-                            <td>
-                                @((item.Customer.ChainType.HasValue == true) ? EnumHelper.GetEnumTitle((EnumChainType)item.Customer.ChainType) : "无")
-                            </td>
-                            <td class="green">
-                                @(item.Customer.Staff == null ? "没有分配" : item.Customer.Staff.Name)
-                            </td>
-                            <td class="blue">
-                                @(item.Customer.Staff == null ? "没有分配" : EnumHelper.GetEnumTitle((GMS.OA.Contract.EnumPosition)item.Customer.Staff.Position))
-                            </td>
-                            <td>
-                                @item.Customer.UnitName
-                            </td>
-                            <td>
-                                @if (item.Customer.CooperationOrNot.HasValue && item.Customer.CooperationOrNot.Value == true)
-                                {
-                                    @Html.Raw("是");
-                                }
-                                else
-                                {
-                                    @Html.Raw("否");
-                                }
-                            </td>
-                            <td>
-                                @item.Customer.CustomerCooperShow
-                            </td>
-                            <td class="green">
-                                @((item.Business == null || item.Business.Count() == 0) ? "没有业务" : item.Business.Count().ToString() + " 次业务")
-                            </td>
-                        }
-                        else
-                        {
-                            <td></td>
-                        }
-
-                        @for (int x = 0; x <= RANGE; x++)
-                        {
-                            if (item.Business != null)
-                            {
-                                var msg = item.Business.FirstOrDefault(o => ((int)(o.CreateTime - startDate).TotalDays) == x);
-
-                                if (msg != null)
-                                {
-                                    <td>
-                                        @msg.Message
-                                    </td>
-                                }
-                                else
-                                {
-                                    <td></td>
-                                }
-                            }
-                            else
-                            {
-                                <td></td>
-                            }
-
-                        }
-
-                    </tr>
-                }
-            }
-            else
-            {
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    @for (int x = 0; x <= RANGE; x++)
-                    {
-                        <td></td>
-                    }
-                </tr>
-            }
+                <td></td>
+            </tr>
         </tbody>
     </table>
-</div>
-<div class="dataTables_paginate paging_bootstrap pagination">
-    @Html.Pager(Model, new PagerOptions() { ShowTotalItemCount = true, AutoHide = false })
+
 </div>

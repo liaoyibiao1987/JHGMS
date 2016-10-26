@@ -20,44 +20,36 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
     {
         //
         // GET: /Crm/Business/
-        public ActionResult Index(BusinessRequest rquester)
+        public ActionResult Index()
         {
-            RenderMyViewData(rquester);
+            //RenderMyViewData(rquester);
             RenderMyViewData();
-            rquester.StartDate = DateTime.Now.AddDays(-7);
-            rquester.EndDate = DateTime.Now;
-            int currentstaffid = UserContext.LoginInfo.StaffID.HasValue ? UserContext.LoginInfo.StaffID.Value : -1;
-            IEnumerable<BusinessVM> list = CrmService.GetBusinessList(rquester, GetCurrentUserStaffs(currentstaffid));
-            //return Json(list, JsonRequestBehavior.AllowGet);
-            //return new JsonResult()
-            //{
-            //    Data = list,
-            //    JsonRequestBehavior = JsonRequestBehavior.AllowGet,
-            //    MaxJsonLength = Int32.MaxValue
-            //};
-            return View(list);
+            //rquester.StartDate = DateTime.Now.AddDays(-7);
+            //rquester.EndDate = DateTime.Now;
+            //int currentstaffid = UserContext.LoginInfo.StaffID.HasValue ? UserContext.LoginInfo.StaffID.Value : -1;
+            //IEnumerable<BusinessVM> list = CrmService.GetBusinessList(rquester, GetCurrentUserStaffs(currentstaffid));
+            //return View(list);
+            return View();
         }
 
         [HttpPost]
-        public JsonResult GetBusinessByAjax(DataTableParameter aoData)
+        public JsonResult GetBusinessByAjax(BusinessPostParameter aoData)
         {
             //Fetch.Post("");
-            BusinessRequest rquester = new BusinessRequest();
-            rquester.StartDate = DateTime.Now.AddDays(-7);
-            rquester.EndDate = DateTime.Now;
             int currentstaffid = UserContext.LoginInfo.StaffID.HasValue ? UserContext.LoginInfo.StaffID.Value : -1;
-            IEnumerable<BusinessVM> list = CrmService.GetBusinessList(rquester, GetCurrentUserStaffs(currentstaffid));
-            JsonResult re = new JsonResult();
-            re.MaxJsonLength = int.MaxValue;
-            re.JsonRequestBehavior = JsonRequestBehavior.DenyGet;
-            re.Data = new
+            PagedList<BusinessVM> list = CrmService.GetBusinessList(aoData, GetCurrentUserStaffs(currentstaffid));
+            return new JsonResult()
             {
-                iDraw = aoData.draw,
-                iTotalRecords = 50,
-                iTotalDisplayRecords = 50,
-                Data = list
+                Data = new
+                {
+                    iDraw = aoData.draw,
+                    iTotalRecords = list.TotalItemCount,
+                    iTotalDisplayRecords = list.TotalItemCount,
+                    Data = list
+                },
+                JsonRequestBehavior = JsonRequestBehavior.DenyGet,
+                MaxJsonLength = Int32.MaxValue
             };
-            return re;
         }
 
         [HttpPost]
@@ -207,7 +199,12 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
             CrmService.UpdateBusiness(business);
             return new EmptyResult();
         }
-
+        /// <summary>
+        /// 业务员获取自己一个月的业务信息。
+        /// </summary>
+        /// <param name="dstart"></param>
+        /// <param name="dend"></param>
+        /// <returns></returns>
         [HttpPost]
         public JsonResult GetBusiness(DateTime dstart, DateTime dend)
         {

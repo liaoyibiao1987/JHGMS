@@ -15,7 +15,7 @@ namespace GMS.Crm.Contract
     {
         public Customer()
         {
-            this.Cooperations = new List<Cooperations>();
+            //this.Cooperations = new List<Cooperations>();
             this.CustomerCooperationsIds = new List<int>();
             Gender = 0;
         }
@@ -118,7 +118,7 @@ namespace GMS.Crm.Contract
         {
             get
             {
-                if (Cooperations == null || Cooperations.Count > 0)
+                if (Cooperations != null && Cooperations.Count > 1)
                 {
                     return string.Join(",", Cooperations.Select(p => p.Name));
                 }
@@ -130,9 +130,9 @@ namespace GMS.Crm.Contract
         }
 
         /// <summary>
-        /// 角色列表
+        /// 合作产品列表
         /// </summary>
-        public virtual List<Cooperations> Cooperations { get; set; }
+        public virtual ICollection<Cooperations> Cooperations { get; set; }
 
 
         //public virtual ICollection<Business> Business { get; set; }

@@ -11,6 +11,7 @@ using EntityFramework.Extensions;
 using GMS.Core.Cache;
 using GMS.Account.DAL;
 using GMS.OA.Contract;
+using GMS.OA.Contract.Model;
 
 namespace GMS.Crm.BLL
 {
@@ -254,7 +255,8 @@ namespace GMS.Crm.BLL
                             on new { Cus = a.ID, Stf = a.StaffID } equals new { Cus = b.CustomerID == null ? 0 : b.CustomerID.Value, Stf = b.StaffID } into t
                             join c in dbContext.Provinces on (a.CityId == null ? 0 : a.City.ProvinceID) equals c.ID into x
 
-                            where staffIDs.Contains(a.StaffID == null ? -1 : a.StaffID.Value) orderby a.ID descending
+                            where staffIDs.Contains(a.StaffID == null ? -1 : a.StaffID.Value)
+                            orderby a.ID descending
                             select new BusinessVM
                             {
                                 //ParentBranch = GetParentBranch(dbContext, a.StaffID),
@@ -262,9 +264,10 @@ namespace GMS.Crm.BLL
                                 Customer = a,
                                 Business = t.Where(p => (p.CreateTime > request.StartDate.Value && p.CreateTime < request.EndDate.Value)),
                                 //Provienc = x.FirstOrDefault() == null ? "" : x.First().Name
+                                Provienc = "江南"
                             };
 
-                return query.ToPagedList(request.PageIndex, request.PageSize); ;
+                return query.OrderByDescending(u => u.Customer.ID).ToPagedList(request.PageIndex, request.PageSize);
                 //return list.OrderByDescending(u => u.Customer.ID).ToList();
                 //var query=dbContext.Customers.GroupJoin(dbContext.Business,
                 //                                        a=>new { Cus = a.ID , Stf = a.StaffId },
@@ -276,6 +279,28 @@ namespace GMS.Crm.BLL
                 //                                                UserIDs=t
                 //                                            }).Where(p=>p.ID);
 
+            }
+        }
+
+        public PagedList<BusinessVM> GetBusinessList(BusinessPostParameter parm, List<int> staffids)
+        {
+            if (parm == null || parm.startdate == null || parm.enddate == null || parm == null) return null;
+
+            using (var dbContext = new CrmDbContext())
+            {
+                var query = from a in dbContext.Customers.Include("Cooperations").Include("Staff").Include("City")
+                            join b in dbContext.Business
+                            on new { Cus = a.ID, Stf = a.StaffID } equals new { Cus = b.CustomerID == null ? 0 : b.CustomerID.Value, Stf = b.StaffID } into t
+                            join c in dbContext.Provinces on (a.CityId == null ? 0 : a.City.ProvinceID) equals c.ID into x
+
+                            where staffids.Contains(a.StaffID == null ? -1 : a.StaffID.Value)
+                            select new BusinessVM
+                            {
+                                Customer = a,
+                                Business = t.OrderBy(aa => aa.CreateTime).Where(p => (p.CreateTime > parm.startdate.Value && p.CreateTime < parm.enddate.Value)),
+                                Provienc = x.FirstOrDefault() == null ? "" : x.FirstOrDefault().Name
+                            };
+                return query.OrderByDescending(u => u.Customer.ID).ToPagedList(parm.startpage, parm.length);
             }
         }
         private Branch GetParentBranch(CrmDbContext dbContext, int? staffid)

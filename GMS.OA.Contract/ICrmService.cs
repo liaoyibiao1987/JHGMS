@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using GMS.Framework.Contract;
+using GMS.OA.Contract.Model;
 
 namespace GMS.Crm.Contract
 {
@@ -21,7 +22,7 @@ namespace GMS.Crm.Contract
         void SaveVisitRecord(VisitRecord visitRecord);
         void DeleteVisitRecord(List<int> ids);
 
-
+        PagedList<BusinessVM> GetBusinessList(BusinessPostParameter request, List<int> staffIDs);
         IEnumerable<BusinessVM> GetBusinessList(BusinessRequest request, List<int> staffIDs);
         IEnumerable<Business> GetBusinessList(BusinessRequest request, int staffID);
         //IEnumerable<Business> GetBusinessList(BusinessRequest request, int staffID);

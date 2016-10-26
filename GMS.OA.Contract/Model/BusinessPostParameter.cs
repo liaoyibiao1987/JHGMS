@@ -5,8 +5,10 @@ using System.Text;
 
 namespace GMS.OA.Contract.Model
 {
-    public class DataTableParameter
+    public class BusinessPostParameter
     {
+        public DateTime? startdate { get; set; }
+        public DateTime? enddate { get; set; }
         /// <summary>
         /// DataTable请求服务器端次数
         /// </summary>       
@@ -34,6 +36,12 @@ namespace GMS.OA.Contract.Model
         /// </summary>
         public object columns { get; set; }
 
-        public string xxx { get; set; }
+        public int startpage
+        {
+            get
+            {
+                return start / length + 1;
+            }
+        }
     }
 }

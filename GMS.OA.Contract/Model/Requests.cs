@@ -80,6 +80,12 @@ namespace GMS.Crm.Contract
         public BusinessRequest()
         {
         }
+        public int Category { get; set; }
+        public int Channel { get; set; }
+        public int BusinessType { get; set; }
+        public int EnumPosition { get; set; }
+        
+
 
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
