@@ -210,3 +210,9 @@ E:\Users\平平\git\GMS\GMS.Web.Admin\bin\GMS.Framework.DAL.xml
 E:\Users\平平\git\GMS\GMS.Web.Admin\obj\Debug\GMS.Web.Admin.csprojResolveAssemblyReference.cache
 E:\Users\平平\git\GMS\GMS.Web.Admin\obj\Debug\GMS.Web.Admin.dll
 E:\Users\平平\git\GMS\GMS.Web.Admin\obj\Debug\GMS.Web.Admin.pdb
+C:\Users\Administrator\git\JHDMS\JHGMS\GMS.Web.Admin\bin\EntityFramework.SqlServer.dll
+C:\Users\Administrator\git\JHDMS\JHGMS\GMS.Web.Admin\bin\EntityFramework.SqlServer.xml
+C:\Users\Administrator\git\JHDMS\JHGMS\GMS.Web.Admin\bin\DevTrends.MvcDonutCaching.pdb
+C:\Users\Administrator\git\JHDMS\JHGMS\GMS.Web.Admin\bin\DevTrends.MvcDonutCaching.xml
+C:\Users\Administrator\git\JHDMS\JHGMS\GMS.Web.Admin\bin\Castle.Core.xml
+C:\Users\Administrator\git\JHDMS\JHGMS\GMS.Web.Admin\bin\log4net.xml

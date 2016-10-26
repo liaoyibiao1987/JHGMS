@@ -5,12 +5,12 @@ using System.Text;
 using GMS.Account.Contract;
 using GMS.Account.DAL;
 using GMS.Framework.Utility;
-using System.Data.Objects;
 using GMS.Framework.Contract;
 using EntityFramework.Extensions;
 using GMS.Core.Cache;
 using GMS.Core.Config;
 using GMS.Crm.Contract;
+using System.Data.Entity.Core.Objects;
 
 namespace GMS.Account.BLL
 {

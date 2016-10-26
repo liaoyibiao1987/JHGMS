@@ -5,7 +5,7 @@ using System.Text;
 using GMS.Crm.Contract;
 using GMS.Crm.DAL;
 using GMS.Framework.Utility;
-using System.Data.Objects;
+using System.Data.Entity.Core;
 using GMS.Framework.Contract;
 using EntityFramework.Extensions;
 using GMS.Core.Cache;
