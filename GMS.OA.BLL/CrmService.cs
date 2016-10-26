@@ -288,7 +288,7 @@ namespace GMS.Crm.BLL
 
             using (var dbContext = new CrmDbContext())
             {
-                var query = from a in dbContext.Customers.Include("Cooperations").Include("Staff").Include("City")
+                var query = (from a in dbContext.Customers.Include("Cooperations").Include("Staff").Include("City")
                             join b in dbContext.Business
                             on new { Cus = a.ID, Stf = a.StaffID } equals new { Cus = b.CustomerID == null ? 0 : b.CustomerID.Value, Stf = b.StaffID } into t
                             join c in dbContext.Provinces on (a.CityId == null ? 0 : a.City.ProvinceID) equals c.ID into x
@@ -296,10 +296,12 @@ namespace GMS.Crm.BLL
                             where staffids.Contains(a.StaffID == null ? -1 : a.StaffID.Value)
                             select new BusinessVM
                             {
+                                ParentBranch = GetParentBranch(dbContext, a.StaffID),
+                                RootBranch = GetRootBranch(dbContext, GetParentBranch(dbContext, a.StaffID)),
                                 Customer = a,
                                 Business = t.OrderBy(aa => aa.CreateTime).Where(p => (p.CreateTime > parm.startdate.Value && p.CreateTime < parm.enddate.Value)),
                                 Provienc = x.FirstOrDefault() == null ? "" : x.FirstOrDefault().Name
-                            };
+                            });
                 return query.OrderByDescending(u => u.Customer.ID).ToPagedList(parm.startpage, parm.length);
             }
         }

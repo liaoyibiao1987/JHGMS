@@ -104,6 +104,8 @@
             range = (dend - dstart) / 86400000;
 
             $("#btnsubmit").live("click", function () {
+                dstart = $("#start").datepicker("getDate");
+                dend = $("#end").datepicker("getDate");
                 $('#example').dataTable().fnClearTable(false);
                 $('#example').DataTable().draw();
             });
@@ -113,7 +115,7 @@
                 "scrollY": '70vh',
                 "autoWidth": false,
                 "scrollCollapse": true,
-                "sDom": "t<'row-fluid'<'span6'i><'span6'p>>",//定义表格的显示方式
+                //"sDom": "t<'row-fluid'<'span6'i><'span6'p>>",//定义表格的显示方式
                 "ordering": false,
                 "bServerSide": true,//服务端处理分页
                 'bPaginate': true,  //是否分页。
@@ -158,10 +160,10 @@
                 , "fnServerParams": function (aoData) {
                     aoData.startdate = $("#start").datepicker("getDate").format("yyyy-MM-dd");
                     aoData.enddate = $("#end").datepicker("getDate").format("yyyy-MM-dd");
-                    aoData.Category = 0;
-                    aoData.Channel = 0;
-                    aoData.BusinessType = 1;
-                    aoData.EnumPosition = 1;
+                    aoData.Category = $("#Category").val();
+                    aoData.Channel = $("#Channel").val();
+                    aoData.BusinessType = $("#BusinessType").val();
+                    aoData.EnumPosition = $("#EnumPosition").val();
                 }
                 , "columns": [
                        {
@@ -497,29 +499,7 @@
             </tr>
         </tfoot>
         <tbody>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-
-                <td></td>
-            </tr>
+           
         </tbody>
     </table>
 

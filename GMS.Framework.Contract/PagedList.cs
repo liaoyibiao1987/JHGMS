@@ -8,7 +8,7 @@ namespace GMS.Framework.Contract
     /// 分页数据集合，用于后端返回分页好的集合及前端视图分页控件绑定
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class PagedList<T> : List<T>,IPagedList
+    public class PagedList<T> : List<T>, IPagedList
     {
         public PagedList(IList<T> items, int pageIndex, int pageSize)
         {
@@ -54,5 +54,20 @@ namespace GMS.Framework.Contract
             var totalItemCount = allItems.Count();
             return new PagedList<T>(pageOfItems, pageIndex, pageSize, totalItemCount);
         }
+        public static PagedList<T> ToPagedList<T>
+            (
+                this IOrderedEnumerable<T> allItems,
+                int pageIndex,
+                int pageSize
+            )
+        {
+            if (pageIndex < 1)
+                pageIndex = 1;
+            var itemIndex = (pageIndex - 1) * pageSize;
+            var pageOfItems = allItems.Skip(itemIndex).Take(pageSize).ToList();
+            var totalItemCount = allItems.Count();
+            return new PagedList<T>(pageOfItems, pageIndex, pageSize, totalItemCount);
+        }
+
     }
 }

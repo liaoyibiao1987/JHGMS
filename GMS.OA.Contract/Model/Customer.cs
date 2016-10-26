@@ -15,7 +15,7 @@ namespace GMS.Crm.Contract
     {
         public Customer()
         {
-            //this.Cooperations = new List<Cooperations>();
+            this.Cooperations = new List<Cooperations>();
             this.CustomerCooperationsIds = new List<int>();
             Gender = 0;
         }
