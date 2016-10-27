@@ -29,7 +29,7 @@ namespace GMS.Web.Admin.Areas.Account.Controllers
         {
             var roles = this.AccountService.GetRoleList();
             this.ViewBag.RoleIds = new SelectList(roles, "ID", "Name");
-            
+
             var model = new User();
             model.Password = "111111";
             return View("Edit", model);
@@ -70,8 +70,8 @@ namespace GMS.Web.Admin.Areas.Account.Controllers
         {
             var model = this.AccountService.GetUser(id);
 
-             var roles = this.AccountService.GetRoleList();
-             this.ViewBag.RoleIds = new SelectList(roles, "ID", "Name", string.Join(",", model.Roles.Select(r => r.ID)));
+            var roles = this.AccountService.GetRoleList();
+            this.ViewBag.RoleIds = new SelectList(roles, "ID", "Name", string.Join(",", model.Roles.Select(r => r.ID)));
 
             return View(model);
         }

@@ -91,6 +91,7 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
             this.TryUpdateModel<Customer>(model);
             model.Channel = collection["Channel"];
             model.BusinessType = collection["BusinessType"];
+            model.StaffID = this.LoginInfo.StaffID;
             if (collection["ChainType"] != null)
             {
                 int chain = 0;

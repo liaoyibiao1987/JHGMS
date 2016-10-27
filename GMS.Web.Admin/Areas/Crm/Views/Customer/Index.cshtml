@@ -51,6 +51,15 @@
                                    "targets": [0],
                                    "orderable": false
                                }
+                               , {
+                                   "targets": [14],
+                                   "orderable": false,
+                                   "render": function (data, type, full, meta) {
+                                       debugger;
+                                       var msg = '<a title=' + data + '>' + (data.length > 15 ? data.substring(0, 15) + '...' : data) + '<a/>';
+                                       return msg;
+                                   }
+                               }
                 ],
             });
         });
@@ -99,7 +108,7 @@
                     城市
                 </th>
                 <th>
-                    类型
+                    公司类型
                 </th>
                 <th>
                     联系人
@@ -173,7 +182,7 @@
                     </td>
                     <td>
                         @p.ShowChannel
-                    </td>                    
+                    </td>
                     <td>
                         @p.ShowBusinessType
                     </td>

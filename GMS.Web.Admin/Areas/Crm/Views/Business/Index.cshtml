@@ -197,8 +197,9 @@
                                    showdata = data + ' (' + row.Customer.Tel + ')';
                                }
                                var url = "@Url.Action("AddByCustomerId", "Business")";
+                               debugger;
                                htmls += '<a class="blue thickbox" style="cursor:pointer" title="点击开始录入跟单信息" href=';
-                               htmls += url + "?CustomerId=" + row.ID + '&TB_iframe=true&height=480&width=600">';
+                               htmls += url + "?CustomerId=" + row.Customer.ID + '&TB_iframe=true&height=480&width=600">';
                                htmls += '<span>' + showdata + '</span></a>';
                                return htmls;
                            },
@@ -384,21 +385,6 @@
                                 },
                                 "orderable": false,
                                 "targets": 0
-                            },
-                             {
-                                 // The `data` parameter refers to the data for the cell (defined by the
-                                 // `data` option, which defaults to the column being worked with, in
-                                 // this case `data: 0`.
-                                 data: "Customer.Name",
-
-                                 "orderable": false,
-                                 "targets": 4
-                             },
-                            {
-                                //"visible": false,
-                                "targets": [18],
-                                "orderable": false,
-                                "searchable": false
                             }
                 ]
                 , "headerCallback": function (thead, data, start, end, display) {
@@ -419,7 +405,7 @@
                     $("#lastfoot", tfoot).html(str);
                 }
                 , "initComplete": function (settings, json) {
-                    tb_init('a.thickbox');
+                    //tb_init('a.thickbox');
                 }
             });
         }
@@ -511,8 +497,6 @@
         </div>
     </div>
 </div>
-<br />
-<br />
 <br />
 <br />
 <div id="divData">
