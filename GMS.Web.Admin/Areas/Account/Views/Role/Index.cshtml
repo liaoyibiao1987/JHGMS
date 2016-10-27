@@ -66,7 +66,7 @@
                 @m.Info
             </td>
             <td class="hidden-480">
-                @StringUtil.CutString(string.Join(",", m.BusinessPermissionList.Select(r => EnumHelper.GetEnumTitle(r))), 40)
+                @StringUtil.CutString(string.Join(",", m.BusinessPermissionList.Select(r => GMS.Framework.Utility.EnumHelper.GetEnumTitle(r))), 40)
             </td>
             <td>
                 <a class="btn mini purple thickbox" title='编辑角色资料' href="@Url.Action("Edit", new { id = m.ID })?TB_iframe=true&height=350&width=500">

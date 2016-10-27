@@ -5,9 +5,9 @@ using System.Text;
 using GMS.Cms.Contract;
 using GMS.Cms.DAL;
 using GMS.Framework.Utility;
-//using System.Data.Objects;
+using System.Data.Entity;
 using GMS.Framework.Contract;
-//using EntityFramework.Extensions;
+using EntityFramework.Extensions;
 using GMS.Core.Cache;
 
 namespace GMS.Cms.BLL

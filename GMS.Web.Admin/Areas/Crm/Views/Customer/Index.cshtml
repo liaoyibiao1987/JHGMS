@@ -163,7 +163,7 @@
                         }
                     </td>
                     <td>
-                        @EnumHelper.GetEnumTitle((EnumCategory)p.Category)
+                        @GMS.Framework.Utility.EnumHelper.GetEnumTitle((EnumCategory)p.Category)
                     </td>
                     <td class="blue">
                         @p.Contacter
@@ -181,14 +181,14 @@
                         @((p.ChainCount.HasValue == true && (EnumCategory)p.Category == EnumCategory.Married) ? p.ChainCount.Value.ToString() : "...")
                     </td>
                     <td>
-                        @((p.ChainType.HasValue == true) ? EnumHelper.GetEnumTitle((EnumChainType)p.ChainType) : "...")
+                        @((p.ChainType.HasValue == true) ? GMS.Framework.Utility.EnumHelper.GetEnumTitle((EnumChainType)p.ChainType) : "...")
 
                     </td>
                     <td class="green">
                         @(p.Staff == null ? "没有分配" : p.Staff.Name)
                     </td>
                     <td class="blue">
-                        @(p.Staff == null ? "没有分配" : EnumHelper.GetEnumTitle((GMS.OA.Contract.EnumPosition)p.Staff.Position))
+                        @(p.Staff == null ? "没有分配" : GMS.Framework.Utility.EnumHelper.GetEnumTitle((GMS.OA.Contract.EnumPosition)p.Staff.Position))
                     </td>
                     <td>
                         @p.UnitName

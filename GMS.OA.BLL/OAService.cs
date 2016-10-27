@@ -8,6 +8,7 @@ using GMS.Framework.Utility;
 using GMS.Framework.Contract;
 using GMS.Core.Cache;
 using GMS.Account.Contract;
+using EntityFramework.Extensions;
 
 namespace GMS.OA.BLL
 {

@@ -42,6 +42,7 @@ namespace GMS.Crm.Contract
         public int Category { get; set; }
         public int? ContacterType { get; set; }
         public bool? CooperationOrNot { get; set; }
+        public string CooperationKinds { get; set; }
 
         [NotMapped]
         public float? AvePayment { get; set; }
@@ -63,7 +64,7 @@ namespace GMS.Crm.Contract
                     string[] strs = Channel.Split(",".ToCharArray());
                     if (strs != null && strs.Count() > 0)
                     {
-                        return string.Join(",", strs.Select(p => int.Parse(p)).Cast<EnumChannel>().Select(p => EnumHelper.GetEnumTitle(p)));
+                        return string.Join(",", strs.Select(p => int.Parse(p)).Cast<EnumChannel>().Select(p => GMS.Framework.Utility.EnumHelper.GetEnumTitle(p)));
                     }
                 }
                 return "";
@@ -81,7 +82,7 @@ namespace GMS.Crm.Contract
                     string[] strs = BusinessType.Split(",".ToCharArray());
                     if (strs != null && strs.Count() > 0)
                     {
-                        return string.Join(",", strs.Select(p => int.Parse(p)).Cast<EnumBusinessType>().Select(p => EnumHelper.GetEnumTitle(p)));
+                        return string.Join(",", strs.Select(p => int.Parse(p)).Cast<EnumBusinessType>().Select(p => GMS.Framework.Utility.EnumHelper.GetEnumTitle(p)));
                     }
                 }
                 return "";
@@ -112,7 +113,39 @@ namespace GMS.Crm.Contract
         public virtual Staff Staff { get; set; }
 
         [NotMapped]
-        public List<int> CustomerCooperationsIds { get; set; }
+        public List<int> CustomerCooperationsIds
+        {
+            get
+            {
+                List<int> ret = new List<int>();
+                if (CooperationKinds != null)
+                {
+                    string[] x = CooperationKinds.Split(',');
+                    if (x != null && x.Count() > 0)
+                    {
+                        int outp = 0;
+                        foreach (var item in x)
+                        {
+                            int.TryParse(item, out outp);
+                            ret.Add(outp);
+                        }
+                    }
+                }
+
+                return ret;
+            }
+            set
+            {
+                if (value != null && value.Count > 0)
+                {
+                    CooperationKinds = string.Join(",", value);
+                }
+                else
+                {
+                    CooperationKinds = "";
+                }
+            }
+        }
         [NotMapped]
         public string CustomerCooperShow
         {
@@ -132,7 +165,7 @@ namespace GMS.Crm.Contract
         /// <summary>
         /// 合作产品列表
         /// </summary>
-        public virtual ICollection<Cooperations> Cooperations { get; set; }
+        public virtual List<Cooperations> Cooperations { get; set; }
 
 
         //public virtual ICollection<Business> Business { get; set; }

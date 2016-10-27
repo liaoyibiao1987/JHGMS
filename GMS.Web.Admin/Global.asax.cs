@@ -34,7 +34,7 @@ namespace GMS.Web.Admin
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
-
+            //BundleConfig.RegisterBundles(BundleTable.Bundles);
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
         }

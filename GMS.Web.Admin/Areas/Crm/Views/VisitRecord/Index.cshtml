@@ -208,7 +208,7 @@
                         <span>@(p.Customer == null ? string.Empty : p.Customer.Tel)</span>
                     </td>
                     <td>
-                        <span>@EnumHelper.GetEnumTitle((EnumVisitWay)p.VisitWay)</span>
+                        <span>@GMS.Framework.Utility.EnumHelper.GetEnumTitle((EnumVisitWay)p.VisitWay)</span>
                     </td>
                     <td>
                         <span>@AdminCacheContext.Current.AreaDic[p.AreaId].Name</span>
@@ -218,13 +218,13 @@
                         <span>@(p.Customer == null ? string.Empty : StringUtil.CutString(p.Project.Name, 10))</span>
                     </td>
                     <td>
-                        <span>@EnumHelper.GetEnumTitle((EnumMotivation)p.Motivation)</span>
+                        <span>@GMS.Framework.Utility.EnumHelper.GetEnumTitle((EnumMotivation)p.Motivation)</span>
                     </td>
                     <td>
-                        <span>@EnumHelper.GetEnumTitle((EnumAreaDemand)p.AreaDemand)</span>
+                        <span>@GMS.Framework.Utility.EnumHelper.GetEnumTitle((EnumAreaDemand)p.AreaDemand)</span>
                     </td>
                     <td>
-                        <span>@EnumHelper.GetEnumTitle((EnumPriceResponse)p.PriceResponse)</span>
+                        <span>@GMS.Framework.Utility.EnumHelper.GetEnumTitle((EnumPriceResponse)p.PriceResponse)</span>
                     </td>
                     <td>
                         <span>@StringUtil.CutString(EnumHelper.GetEnumTitle((EnumCognitiveChannel)p.CognitiveChannel), 20)</span>

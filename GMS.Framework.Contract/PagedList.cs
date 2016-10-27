@@ -56,7 +56,7 @@ namespace GMS.Framework.Contract
         }
         public static PagedList<T> ToPagedList<T>
             (
-                this IOrderedEnumerable<T> allItems,
+                this IOrderedQueryable<T> allItems,
                 int pageIndex,
                 int pageSize
             )
