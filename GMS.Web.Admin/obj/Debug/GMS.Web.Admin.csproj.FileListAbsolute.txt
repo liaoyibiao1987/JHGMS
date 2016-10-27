@@ -180,6 +180,7 @@ E:\Users\平平\git\GMS\GMS.Web.Admin\bin\GMS.Framework.Web.dll
 E:\Users\平平\git\GMS\GMS.Web.Admin\bin\GMS.OA.Contract.dll
 E:\Users\平平\git\GMS\GMS.Web.Admin\bin\GMS.Web.dll
 E:\Users\平平\git\GMS\GMS.Web.Admin\bin\Newtonsoft.Json.dll
+E:\Users\平平\git\GMS\GMS.Web.Admin\bin\System.Web.Extensions.dll
 E:\Users\平平\git\GMS\GMS.Web.Admin\bin\System.Web.Helpers.dll
 E:\Users\平平\git\GMS\GMS.Web.Admin\bin\System.Web.Mvc.dll
 E:\Users\平平\git\GMS\GMS.Web.Admin\bin\System.Web.Razor.dll
@@ -205,6 +206,7 @@ E:\Users\平平\git\GMS\GMS.Web.Admin\bin\GMS.OA.Contract.pdb
 E:\Users\平平\git\GMS\GMS.Web.Admin\bin\GMS.Web.pdb
 E:\Users\平平\git\GMS\GMS.Web.Admin\bin\EntityFramework.xml
 E:\Users\平平\git\GMS\GMS.Web.Admin\bin\EntityFramework.SqlServer.xml
+E:\Users\平平\git\GMS\GMS.Web.Admin\bin\Newtonsoft.Json.xml
 E:\Users\平平\git\GMS\GMS.Web.Admin\bin\System.Web.Helpers.xml
 E:\Users\平平\git\GMS\GMS.Web.Admin\bin\System.Web.Mvc.xml
 E:\Users\平平\git\GMS\GMS.Web.Admin\bin\System.Web.Razor.xml
@@ -229,4 +231,3 @@ E:\Users\平平\git\GMS\GMS.Web.Admin\bin\zh-Hans\System.Web.WebPages.Razor.reso
 E:\Users\平平\git\GMS\GMS.Web.Admin\obj\Debug\GMS.Web.Admin.csprojResolveAssemblyReference.cache
 E:\Users\平平\git\GMS\GMS.Web.Admin\obj\Debug\GMS.Web.Admin.dll
 E:\Users\平平\git\GMS\GMS.Web.Admin\obj\Debug\GMS.Web.Admin.pdb
-E:\Users\平平\git\GMS\GMS.Web.Admin\bin\System.Web.Extensions.dll

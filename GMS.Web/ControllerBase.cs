@@ -9,6 +9,7 @@ using GMS.Core.Log;
 using GMS.Cms.Contract;
 using GMS.Crm.Contract;
 using GMS.OA.Contract;
+using System.Text;
 
 namespace GMS.Web
 {
@@ -21,7 +22,16 @@ namespace GMS.Web
                 return ServiceContext.Current.AccountService;
             }
         }
-
+        protected override JsonResult Json(object data, string contentType,Encoding contentEncoding, JsonRequestBehavior behavior)
+        {
+            return new JsonNetResult
+            {
+                Data = data,
+                ContentType = contentType,
+                ContentEncoding = contentEncoding,
+                JsonRequestBehavior = behavior
+            };
+        }
         //public virtual ICmsService CmsService
         //{
         //    get

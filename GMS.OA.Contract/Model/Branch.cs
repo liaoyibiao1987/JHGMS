@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using GMS.Framework.Utility;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json;
 
 namespace GMS.OA.Contract
 {
@@ -31,6 +32,7 @@ namespace GMS.OA.Contract
         public virtual Branch ParentBranch { get; set; }
 
         [ForeignKey("ParentId")]
+        [JsonIgnore]
         public virtual List<Branch> Embranchment { get; set; }
     }
 }

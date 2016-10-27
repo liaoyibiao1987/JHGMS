@@ -251,7 +251,7 @@ namespace GMS.Crm.BLL
                 //                    && t1.CreateTime > request.StartDate.Value
                 //                    && t1.CreateTime < request.EndDate.Value
                 //           select new BusinessVM { Customer = t2, Business = t1 };
-                var query = from a in dbContext.Customers.Include("Cooperations").Include("Staff").Include("City")
+                var query = from a in dbContext.Customers.Include("Staff").Include("City")
                             join b in dbContext.Business
                             on new { Cus = a.ID, Stf = a.StaffID } equals new { Cus = b.CustomerID == null ? 0 : b.CustomerID.Value, Stf = b.StaffID } into t
                             join c in dbContext.Provinces on (a.CityId == null ? 0 : a.City.ProvinceID) equals c.ID into x
@@ -282,6 +282,21 @@ namespace GMS.Crm.BLL
 
             }
         }
+        private List<int> CopKinds(string input)
+        {
+            List<int> output = new List<int>();
+            if (string.IsNullOrEmpty(input) == false)
+            {
+                var tmp = input.Split(',').ToList();
+                int peer = 0;
+                foreach (var item in tmp)
+                {
+                    int.TryParse(item, out peer);
+                    output.Add(peer);
+                }
+            }
+            return output;
+        }
 
         public PagedList<BusinessVM> GetBusinessList(BusinessPostParameter parm, List<int> staffids)
         {
@@ -290,54 +305,73 @@ namespace GMS.Crm.BLL
             using (var dbContext = new CrmDbContext())
             {
                 var query = (//from a in dbContext.Customers.Include("Cooperations").Include("Staff").Include("City")
-                            from a in dbContext.Customers.Include("Cooperations").Include("Staff").Include("City")
-                            join b in dbContext.Business
-                            on new { Cus = a.ID, Stf = a.StaffID } equals new { Cus = b.CustomerID == null ? 0 : b.CustomerID.Value, Stf = b.StaffID } into t
+                            from a in dbContext.Customers
+                            join b in dbContext.Business on new { Cus = a.ID, Stf = a.StaffID } equals new { Cus = b.CustomerID == null ? 0 : b.CustomerID.Value, Stf = b.StaffID } into t
                             join c in dbContext.Provinces on (a.CityId == null ? 0 : a.City.ProvinceID) equals c.ID into x
 
-                            join d in dbContext.Cooperations on (a.ID) equals d.ID into y
+                            join d in dbContext.Staffs on (a.StaffID) equals d.ID into y
+                            join e in dbContext.Citys on (a.CityId) equals e.ID into z
+
                             where staffids.Contains(a.StaffID == null ? -1 : a.StaffID.Value)
+                            orderby a.ID descending
                             select new BusinessVM
                             {
-                                //ParentBranch = GetParentBranch(dbContext, a.StaffID),
-                                //RootBranch = GetRootBranch(dbContext, GetParentBranch(dbContext, a.StaffID)),
                                 Customer = a,
-                                Business = t.OrderBy(aa => aa.CreateTime).Where(p => (p.CreateTime > parm.startdate.Value && p.CreateTime < parm.enddate.Value)),
-                                Provienc = x.FirstOrDefault() == null ? "" : x.FirstOrDefault().Name
+                                Business = t.Where(p => (p.CreateTime > parm.startdate.Value && p.CreateTime < parm.enddate.Value)).OrderBy(aa => aa.CreateTime),
+                                Provienc = x.FirstOrDefault() == null ? "" : x.FirstOrDefault().Name,
+                                CityName = z.FirstOrDefault() == null ? "" : z.FirstOrDefault().Name,
+                                Staff = y.FirstOrDefault()
                             });
 
-                return query.OrderByDescending(u => u.Customer.ID).ToPagedList(parm.startpage, parm.length);
+                query = query.OrderByDescending(u => u.Customer.ID);
+                if (parm.Category.HasValue == true)
+                {
+                    query = query.Where(p => p.Customer.Category == (parm.Category.HasValue ? parm.Category.Value : p.Customer.Category));
+                }
+                if (parm.Channel.HasValue == true)
+                {
+                    query = query.Where(p => p.Customer.Channel == (parm.Channel.HasValue ? parm.Channel.ToString() : p.Customer.Channel));
+                }
+                if (parm.BusinessType.HasValue == true)
+                {
+                    query = query.Where(p => p.Customer.BusinessType.Contains((parm.BusinessType.HasValue ? parm.BusinessType.Value.ToString() : p.Customer.BusinessType)));
+                }
+                if (parm.EnumPosition.HasValue == true)
+                {
+                    query = query.Where(p => p.Staff.Position == (parm.EnumPosition.HasValue ? parm.EnumPosition.Value : p.Staff.Position));
+                }
+                return query.ToPagedList(parm.startpage, parm.length);
             }
         }
-        private Branch GetParentBranch(CrmDbContext dbContext, int? staffid)
-        {
-            var query = from a in dbContext.Staffs
-                        join b in dbContext.Branchs on a.BranchId equals b.ID
-                        where a.ID == staffid
-                        select b;
+        //private Branch GetParentBranch(CrmDbContext dbContext, int? staffid)
+        //{
+        //    var query = from a in dbContext.Staffs
+        //                join b in dbContext.Branchs on a.BranchId equals b.ID
+        //                where a.ID == staffid
+        //                select b;
 
-            if (query == null || query.Count() == 0)
-            {
-                return null;
-            }
-            else
-            {
-                int curID = query.FirstOrDefault().ID;
-                Branch val = dbContext.Branchs.FirstOrDefault(p => p.ID == curID);
-                return val;
-            }
-        }
-        private Branch GetRootBranch(CrmDbContext dbContext, Branch branch)
-        {
-            if (branch != null)
-            {
-                return dbContext.Branchs.FirstOrDefault(p => p.ID == branch.ParentId);
-            }
-            else
-            {
-                return null;
-            }
-        }
+        //    if (query == null || query.Count() == 0)
+        //    {
+        //        return null;
+        //    }
+        //    else
+        //    {
+        //        int curID = query.FirstOrDefault().ID;
+        //        Branch val = dbContext.Branchs.FirstOrDefault(p => p.ID == curID);
+        //        return val;
+        //    }
+        //}
+        //private Branch GetRootBranch(CrmDbContext dbContext, Branch branch)
+        //{
+        //    if (branch != null)
+        //    {
+        //        return dbContext.Branchs.FirstOrDefault(p => p.ID == branch.ParentId);
+        //    }
+        //    else
+        //    {
+        //        return null;
+        //    }
+        //}
 
         public IEnumerable<Business> GetBusinessList(BusinessRequest request, int staffID)
         {

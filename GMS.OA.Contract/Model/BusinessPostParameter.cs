@@ -26,6 +26,11 @@ namespace GMS.OA.Contract.Model
 
         public int start { get; set; }
 
+        public int? Category { get; set; }
+        public int? Channel { get; set; }
+        public int? BusinessType { get; set; }
+        public int? EnumPosition { get; set; }
+
         /// <summary>
         /// 排序列的数量
         /// </summary>

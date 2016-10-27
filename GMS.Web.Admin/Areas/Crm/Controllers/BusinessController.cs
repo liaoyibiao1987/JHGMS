@@ -33,6 +33,12 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
         }
 
         [HttpPost]
+        public JsonResult GetAllBranch()
+        {
+            IEnumerable<Branch> all = OAService.GetBranchList();
+            return Json(all);
+        }
+        [HttpPost]
         public JsonResult GetBusinessByAjax(BusinessPostParameter aoData)
         {
             //Fetch.Post("");
@@ -51,32 +57,13 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
                 MaxJsonLength = Int32.MaxValue
             };
         }
-
-        [HttpPost]
-        public ActionResult Index(int page, DateTime start, DateTime end)
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult Index(DateTime start, DateTime end)
-        {
-            BusinessRequest req = new BusinessRequest();
-            req.StartDate = start;
-            req.EndDate = end;
-            this.ModelState.Clear();
-            RenderMyViewData(req);
-            int currentstaffid = UserContext.LoginInfo.StaffID.HasValue ? UserContext.LoginInfo.StaffID.Value : -1;
-            IEnumerable<BusinessVM> list = CrmService.GetBusinessList(req, GetCurrentUserStaffs(currentstaffid));
-            return View(list);
-        }
-
         private void RenderMyViewData()
         {
             ViewData.Add("Category", new SelectList(EnumHelper.GetItemValueList<EnumCategory>(), "Key", "Value", 0));
             ViewData.Add("Channel", new SelectList(EnumHelper.GetItemValueList<EnumChannel>(), "Key", "Value", 0));
             ViewData.Add("BusinessType", new SelectList(EnumHelper.GetItemValueList<EnumBusinessType>(), "Key", "Value", 0));
             ViewData.Add("EnumPosition", new SelectList(EnumHelper.GetItemValueList<EnumPosition>(), "Key", "Value", 0));
+
         }
 
 

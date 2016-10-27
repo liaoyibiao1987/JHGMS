@@ -53,6 +53,32 @@ namespace GMS.Crm.Contract
 
     public class BusinessVM
     {
+        private Staff staff;
+        public Staff Staff
+        {
+            get
+            {
+                return staff;
+            }
+            set
+            {
+                staff = value;
+            }
+        }
+
+        private string cityName;
+        public string CityName
+        {
+            get
+            {
+                return cityName;
+            }
+            set
+            {
+                cityName = value;
+            }
+        }
+
         private string provienc;
         public string Provienc
         {
@@ -93,19 +119,12 @@ namespace GMS.Crm.Contract
         }
         public BusinessVM()
         {
-            RootBranch = new Branch();
-            ParentBranch = new Branch();
         }
         public BusinessVM(Customer cust, IEnumerable<Business> bis)
         {
             this.customer = cust;
             this.business = bis;
         }
-        //public IEnumerable<Business> 
-
-        public Branch RootBranch { get; set; }
-
-        public Branch ParentBranch { get; set; }
     }
 
     public class CreateBusinessEntity
