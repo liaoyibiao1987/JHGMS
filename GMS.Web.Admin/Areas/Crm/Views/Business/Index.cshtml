@@ -36,7 +36,7 @@
         #divData th {
             word-break: keep-all;
             word-wrap: inherit;
-            min-width: 120px;
+            /*min-width: 120px;*/
         }
 
         td table tbody {
@@ -89,18 +89,19 @@
         }
 
         function InitDatatable() {
-            table = $('#example').DataTable({
+            table = $('#example').on('processing.dt', function (e, settings, processing) {
+                $('#processing').css('display', processing ? 'block' : 'none');
+            }).DataTable({
                 "scrollX": true,
                 "scrollY": '70vh',
                 "autoWidth": false,
                 "scrollCollapse": true,
-                //"sDom": "t<'row-fluid'<'span6'i><'span6'p>>",//定义表格的显示方式
                 "ordering": false,
-                "bServerSide": true,//服务端处理分页
+                "serverSide": true,//服务端处理分页
                 'bPaginate': true,  //是否分页。
                 'bFilter': false,  //是否使用内置的过滤功能
                 'bLengthChange': true, //是否允许自定义每页显示条数.
-                "bProcessing": true, //DataTables载入数据时，是否显示‘进度’提示
+                "processing": true, //DataTables载入数据时，是否显示‘进度’提示
                 "Paginate": false,  //是否分页。
                 "lengthMenu": [[10, 25, 50, 100, 500, 1000, 10000], ["10", "25", "50", "100", "500", "1K", "1W"]],
                 "sPaginationType": "full_numbers",
@@ -197,9 +198,8 @@
                                    showdata = data + ' (' + row.Customer.Tel + ')';
                                }
                                var url = "@Url.Action("AddByCustomerId", "Business")";
-                               debugger;
                                htmls += '<a class="blue thickbox" style="cursor:pointer" title="点击开始录入跟单信息" href=';
-                               htmls += url + "?CustomerId=" + row.Customer.ID + '&TB_iframe=true&height=480&width=600">';
+                               htmls += url + "?CustomerId=" + row.Customer.ID + '&TB_iframe=true&height=400&width=580">';
                                htmls += '<span>' + showdata + '</span></a>';
                                return htmls;
                            },
@@ -328,7 +328,7 @@
                        , {
                            data: 'Business'
                            , "defaultContent": "未知"
-                           , "width": "20px"
+                           , "width": "20%"
                            , "render": function (data, type, full, meta) {
                                var retvalue = "<div style='font-size:8px;word-break:keep-all'>";
                                if (data != null && data !== undefined && data.length > 0) {
@@ -336,10 +336,10 @@
                                        var creat = data[j].CreateTime.toDate();
                                        var msg = data[j].Message;
                                        if (creat != null && msg != null) {
-                                           var msg2 = msg.length > 50 ? msg.substring(0, 50) + "..." : msg;
+                                           var msg2 = msg.length > 40 ? msg.substring(0, 37) + "..." : msg;
                                            var content = "<li > 时间：" + creat.format("MM-dd") + "</li>";
                                            content += "<li> 事件：" + msg2 + "</li>";
-                                           retvalue += "<span style='display:inline-block; background-color:lightblue;padding:5px;margin:1px;'>" + content + "</span>";
+                                           retvalue += "<span style='display:inline-block;word-break:break-all; background-color:lightblue;padding:5px;margin:1px;'>" + content + "</span>";
                                        }
 
                                    }
@@ -486,14 +486,16 @@
         <div class="p5 form-inline" style="word-break:keep-all">
             <label>开始时间：</label>@Html.TextBox("start", "", new { @class = "m-wrap small" })&nbsp;
             <label>结束时间：</label>@Html.TextBox("end", "", new { @class = "m-wrap small" })&nbsp;
-            <button id="btnsubmit" type="submit" class="btn blue">搜索<i class="icon-search"></i></button>
+            <button id="btnsubmit" type="submit" class="btn blue">搜索<i class="icon-search"></i></button><i style="background-image:"></i>
+
             <br />
             <br />
             <label>企业类型：</label>@Html.DropDownList("Category", ViewData["Category"] as SelectList, "--请选择--", new { @class = "select2" })
             <label>渠道：</label>@Html.DropDownList("Channel", ViewData["Channel"] as SelectList, "--请选择--", new { @class = "select2" })
             <label>商业类型：</label>@Html.DropDownList("BusinessType", ViewData["BusinessType"] as SelectList, "--请选择--", new { @class = "select2" })
             <label>员工类型：</label>@Html.DropDownList("EnumPosition", ViewData["EnumPosition"] as SelectList, "--请选择--", new { @class = "select2" })
-
+            <img style="display:inline-block;" id="processing" src="~/Assets/img/loading.gif" />
+            
         </div>
     </div>
 </div>
@@ -555,5 +557,4 @@
         </tfoot>
         <tbody></tbody>
     </table>
-
 </div>

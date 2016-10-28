@@ -37,10 +37,19 @@
 <!-- BEGIN BODY -->
 <body class="fixed-top">
     <!-- BEGIN HEADER -->
+    
+       
     <div class="header navbar navbar-inverse navbar-fixed-top">
         <!-- BEGIN TOP NAVIGATION BAR -->
         @Html.Partial("_Header")
         <!-- END TOP NAVIGATION BAR -->
+    </div>
+    <div class="row-fluid" style="position:fixed">
+        <div class="alert alert-info">
+            <button class="close" data-dismiss="alert"></button>
+            <strong>注意：</strong>
+            请选择最佳浏览器
+        </div>
     </div>
     <!-- END HEADER -->
     <!-- BEGIN CONTAINER -->
@@ -60,6 +69,7 @@
                     <p>Here will be a configuration form</p>
                 </div>
             </div>
+           
             <!-- END SAMPLE PORTLET CONFIGURATION MODAL FORM-->
             <!-- BEGIN PAGE CONTAINER-->
             <div class="container-fluid">

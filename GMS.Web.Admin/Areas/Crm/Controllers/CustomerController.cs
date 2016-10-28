@@ -91,7 +91,8 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
             this.TryUpdateModel<Customer>(model);
             model.Channel = collection["Channel"];
             model.BusinessType = collection["BusinessType"];
-            model.StaffID = this.LoginInfo.StaffID;
+            //如果是业务员，所属员工的属性无法改变。故为NULL，但是领导可以改变所属业务员
+            model.StaffID = model.StaffID == null ? UserContext.LoginInfo.StaffID : model.StaffID;
             if (collection["ChainType"] != null)
             {
                 int chain = 0;
