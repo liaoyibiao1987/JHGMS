@@ -33,10 +33,28 @@
             word-break: keep-all;
         }
 
-        #divData th {
+        .customername {
             word-break: keep-all;
             word-wrap: inherit;
-            /*min-width: 120px;*/
+        }
+
+        .serchtype {
+            display: inline-block;
+            margin: 3px;
+        }
+
+            .serchtype * {
+                word-break: keep-all;
+                padding: 4px;
+            }
+
+        #lasthead, #lastfoot {
+            min-width: 260px;
+        }
+
+        th {
+            word-break: keep-all;
+            word-wrap: inherit;
         }
 
         td table tbody {
@@ -90,6 +108,11 @@
 
         function InitDatatable() {
             table = $('#example').on('processing.dt', function (e, settings, processing) {
+                if (processing == true) {
+                    $("input,select,#btnsubmit").attr("disabled", "disabled");
+                } else {
+                    $("input,select,#btnsubmit").removeAttr("disabled");
+                }
                 $('#processing').css('display', processing ? 'block' : 'none');
             }).DataTable({
                 "scrollX": true,
@@ -131,7 +154,8 @@
                     }
                 },
                 "createdRow": function (row, data, dataIndex) {
-                    $(row).children('td').attr('style', 'text-align: center;')
+                    $(row).children('td').attr('style', 'text-align: center;');
+                    $(row.lastChild).attr('style', 'text-align: left;');
                     //if (dataIndex % 2 == 0) {
                     //    $(row).attr('style', 'background-color: whitesmoke;')
                     //}
@@ -146,64 +170,102 @@
                     aoData.EnumPosition = $("#EnumPosition").val();
                 }
                 , "columns": [
-                       {
-                           data: 'Staff.BranchId'
-                           , "defaultContent": "未知"
-                           , "width": "20px"
-                           , "type": "date"
-                           //"visible": false,
-                           //"targets": [18],
-                           //"orderable": false,
-                           //"searchable": false
-                           , "render": function (data, type, full, meta) {
-                               return getRoot(data);
-                           }
-                           , "searchable": false
-                           , "createdCell": function (td, cellData, rowData, row, col) {
-                               //if (row < 1) {
-                               //    $(td).css('color', 'red');
-                               //}
-                           }
-                           , "cellType": "th"
-                           , "className": "my_class"
-                           , "contentPadding": "mmm"
-                       }
-                       , {
-                           data: 'Staff.BranchId'
-                           , "defaultContent": "未知"
-                           , "render": function (data, type, full, meta) {
-                               var x = getParent(data);
-                               return x.Name;
-                           }
-                       }
-                       , { data: 'Provienc' }
-                       , {
-                           data: 'CityName'
-                           , "defaultContent": "未知"
-                           , "render": function (data, type, full, meta) {
-                               return data;
-                               //return '<a href="' + data + '">' + data + '</a>';
-                           }
-                           , "searchable": false
-                       }
-                       , {
-                           data: 'Customer.Name'
-                           , "render": function (data, type, row) {
-                               var showdata = "";
-                               var htmls = "";
-                               if (row.Customer.Contacter != null && row.Customer.Contacter != '' && row.Customer.Contacter != undefined) {
-                                   showdata = data + ' (' + row.Customer.Contacter + ')';
+                            {
+                                data: 'Customer.ID'
+                                       , "render": function (data, type, full, meta) {
+                                           var url = '@Url.Action("Edit", "Customer")';
+                                           var html = "";
+                                           html += "<a class='btn mini purple thickbox' style='width:39px' title='编辑客户内容' href=";
+                                           html += url + "/";
+                                           html += data;
+                                           html += '?&TB_iframe=true&height=600&width=600><i class="icon-edit"></i>编辑</a>';
+                                           return html;
+                                       }
+                                           , "searchable": false
+                                           , "createdCell": function (td, cellData, rowData, row, col) {
+                                               //if (row < 1) {
+                                               //    $(td).css('color', 'red');
+                                               //}
+                                           }
+                                           , "cellType": "td"
+                            }
+                            , {
+                                data: 'Customer.ID'
+                               , "render": function (data, type, full, meta) {
+                                   var url = '@Url.Action("Edit", "Customer")';
+                                   var html = "<input type='checkbox' name='ids' value='" + data + "' />";
+                                   return html;
                                }
-                               else {
-                                   showdata = data + ' (' + row.Customer.Tel + ')';
+                                 , "searchable": false
+                                 , "createdCell": function (td, cellData, rowData, row, col) {
+                                     //if (row < 1) {
+                                     //    $(td).css('color', 'red');
+                                     //}
+                                 }
+                                 , "cellType": "td"
+                            }
+                           , {
+                               data: 'Staff.BranchId'
+                               , "defaultContent": "未知"
+                               , "width": "20px"
+                               , "type": "date"
+                               //"visible": false,
+                               //"targets": [18],
+                               //"orderable": false,
+                               //"searchable": false
+                               , "render": function (data, type, full, meta) {
+                                   return getRoot(data);
                                }
-                               var url = "@Url.Action("AddByCustomerId", "Business")";
-                               htmls += '<a class="blue thickbox" style="cursor:pointer" title="点击开始录入跟单信息" href=';
-                               htmls += url + "?CustomerId=" + row.Customer.ID + '&TB_iframe=true&height=400&width=580">';
-                               htmls += '<span>' + showdata + '</span></a>';
-                               return htmls;
-                           },
-                       }
+                               , "searchable": false
+                               , "createdCell": function (td, cellData, rowData, row, col) {
+                                   //if (row < 1) {
+                                   //    $(td).css('color', 'red');
+                                   //}
+                               }
+                               , "cellType": "td"
+                               , "className": "my_class"
+                               , "contentPadding": "mmm"
+                           }
+                           , {
+                               data: 'Staff.BranchId'
+                               , "defaultContent": "未知"
+                               , "render": function (data, type, full, meta) {
+                                   var x = getParent(data);
+                                   return x.Name;
+                               }
+                           }
+                           , {
+                               data: 'Provienc'
+                               , "render": function (data, type, full, meta) {
+                                   return '<span class="customername">' + data + '</span>';
+                               }
+                           }
+                           , {
+                               data: 'CityName'
+                               , "defaultContent": "未知"
+                               , "render": function (data, type, full, meta) {
+                                   return '<span class="customername">' + data + '</span>';
+                               }
+                               , "searchable": false
+                           }
+                           , {
+                               data: 'Customer.Name'
+                               , "render": function (data, type, row) {
+                                   var showdata = data;
+                                   var htmls = "";
+                                   if (row.Customer.Contacter != null && row.Customer.Contacter != '' && row.Customer.Contacter != undefined) {
+                                       showdata = data + ' (' + row.Customer.Contacter + ')';
+                                   }
+                                   else if (row.Customer.Contacter != null && row.Customer.Tel != '' && row.Customer.Tel != undefined) {
+                                       showdata = data + ' (' + row.Customer.Tel + ')';
+                                   }
+                                   var url = "@Url.Action("AddByCustomerId", "Business")";
+                                   htmls += '<a class="blue thickbox customername" title="点击开始录入跟单信息" href=';
+                                   htmls += url + "?CustomerId=" + row.Customer.ID + '&TB_iframe=true&height=400&width=580">';
+                                   htmls += '<span>' + showdata + '</span></a>';
+                                   return htmls;
+                               },
+                           }
                        , {
                            data: 'Customer.Category'
                            , "defaultContent": "未知"
@@ -238,7 +300,29 @@
                        , { data: 'Customer.ShowChannel' }
                        , { data: 'Customer.ShowBusinessType' }
                        , { data: 'Customer.ChainCount' }
-                       , { data: 'Customer.ChainType' }
+                       , {
+                           data: 'Customer.ChainType'
+                           , "type": "string"
+                           , "render": function (data, type, full, meta) {
+                               var ret;
+                               switch (data) {
+                                   case 1:
+                                       ret = "公司直供";
+                                       break;
+                                   case 2:
+                                       ret = "代理商供";
+                                       break;
+                                   case 3:
+                                       ret = "业务员供";
+                                       break;
+                                   case 0:
+                                   default:
+                                       ret = "";
+                                       break;
+                               }
+                               return ret;
+                           }
+                       }
                        , {
                            data: 'Staff.Name'
                            , "defaultContent": "未知"
@@ -256,7 +340,6 @@
                        , {
                            data: 'Staff.Position'
                            , "defaultContent": "未知"
-                           , "width": "20px"
                            , "type": "int"
                            , "render": function (data, type, full, meta) {
                                var ret;
@@ -315,10 +398,9 @@
                        , {
                            data: 'Business'
                            , "defaultContent": "未知"
-                           , "width": "20px"
                            , "render": function (data, type, full, meta) {
                                if (data != null && data !== undefined && data.length > 0) {
-                                   return data.length + "条业务";
+                                   return data.length + "次拜访";
                                } else {
                                    return "无";
                                }
@@ -328,7 +410,7 @@
                        , {
                            data: 'Business'
                            , "defaultContent": "未知"
-                           , "width": "20%"
+                           , "cellType": "tr"
                            , "render": function (data, type, full, meta) {
                                var retvalue = "<div style='font-size:8px;word-break:keep-all'>";
                                if (data != null && data !== undefined && data.length > 0) {
@@ -336,9 +418,9 @@
                                        var creat = data[j].CreateTime.toDate();
                                        var msg = data[j].Message;
                                        if (creat != null && msg != null) {
-                                           var msg2 = msg.length > 40 ? msg.substring(0, 37) + "..." : msg;
-                                           var content = "<li > 时间：" + creat.format("MM-dd") + "</li>";
-                                           content += "<li> 事件：" + msg2 + "</li>";
+                                           //var msg2 = msg.length > 40 ? msg.substring(0, 37) + "..." : msg;
+                                           var content = "<li > 时间：" + creat.format("yyyy-MM-dd") + "</li>";
+                                           content += "<li> 事件：" + msg + "</li>";
                                            retvalue += "<span style='display:inline-block;word-break:break-all; background-color:lightblue;padding:5px;margin:1px;'>" + content + "</span>";
                                        }
 
@@ -384,7 +466,7 @@
                                     return data + ' (' + row[6] + ')';
                                 },
                                 "orderable": false,
-                                "targets": 0
+                                "targets": 1
                             }
                 ]
                 , "headerCallback": function (thead, data, start, end, display) {
@@ -395,14 +477,14 @@
                     $("#lasthead", thead).html(str);
                 }
                 , "footerCallback": function (tfoot, data, start, end, display) {
-                    var str = "时间段：" + dstart.format("yyyy年 (MM-dd ") + "至" + dend.format(" M-dd)");
+                    //var str = "时间段：" + dstart.format("yyyy年 (MM-dd ") + "至" + dend.format(" M-dd)");
 
                     //var headhtml = "<table><tr>";
                     //for (var i = 0; i <= range; i++) {
                     //    headhtml += "<td class='w60'>" + dstart.dateAdd("d", i).format("M-dd") + "</td>";
                     //}
                     //headhtml += "</tr></table>";
-                    $("#lastfoot", tfoot).html(str);
+                    //$("#lastfoot", tfoot).html(str);
                 }
                 , "initComplete": function (settings, json) {
                     //tb_init('a.thickbox');
@@ -450,7 +532,7 @@
                 }
             });
             var myDate = new Date();
-            $("#start").datepicker("setDate", myDate.dateAdd("d", -7).format("yyyy-MM-dd"));
+            $("#start").datepicker("setDate", myDate.dateAdd("d", -5).format("yyyy-MM-dd"));
             $("#end").datepicker("setDate", myDate.format("yyyy-MM-dd"));
 
             dstart = $("#start").datepicker("getDate");
@@ -482,79 +564,71 @@
 
 }
 <div class="row-fluid">
-    <div class="span11">
-        <div class="p5 form-inline" style="word-break:keep-all">
-            <label>开始时间：</label>@Html.TextBox("start", "", new { @class = "m-wrap small" })&nbsp;
-            <label>结束时间：</label>@Html.TextBox("end", "", new { @class = "m-wrap small" })&nbsp;
-            <button id="btnsubmit" type="submit" class="btn blue">搜索<i class="icon-search"></i></button><i style="background-image:"></i>
 
-            <br />
-            <br />
-            <label>企业类型：</label>@Html.DropDownList("Category", ViewData["Category"] as SelectList, "--请选择--", new { @class = "select2" })
-            <label>渠道：</label>@Html.DropDownList("Channel", ViewData["Channel"] as SelectList, "--请选择--", new { @class = "select2" })
-            <label>商业类型：</label>@Html.DropDownList("BusinessType", ViewData["BusinessType"] as SelectList, "--请选择--", new { @class = "select2" })
-            <label>员工类型：</label>@Html.DropDownList("EnumPosition", ViewData["EnumPosition"] as SelectList, "--请选择--", new { @class = "select2" })
-            <img style="display:inline-block;" id="processing" src="~/Assets/img/loading.gif" />
-            
+    <div class="form-inline" style="word-break:keep-all;overflow:auto">
+
+        <div class="serchtype">
+            <span>开始时间：@Html.TextBox("start", "", new { @class = "m-wrap small" })&nbsp;</span>
+            <span>结束时间：@Html.TextBox("end", "", new { @class = "m-wrap small" })&nbsp;</span>
+            <span><button id="btnsubmit" type="submit" class="btn blue" style="width:80px;height:35px;">搜索<i class="icon-search"></i></button><i style=""></i></span>
+            <div class="serchtype" style="float:right">
+                <span>
+                    <a class="btn blue thickbox" title='添加新客户' href="@Url.Action("Create","Customer")?TB_iframe=true&height=600&width=600"><i class="icon-plus icon-white"></i>新增</a>
+                </span>
+                <span>
+                    <a class="btn red" id="delete" href="javascript:;"><i class="icon-trash icon-white"></i>删除</a>
+                </span>
+            </div>
         </div>
+        <div class="serchtype">
+            <span>分管领导：@Html.TextBox("leader", "", new { @class = "m-wrap small" })</span>
+            <span>&nbsp;办&nbsp;事&nbsp;处：@Html.TextBox("leader", "", new { @class = "m-wrap small" })</span>
+            <span>&nbsp;业&nbsp;务&nbsp;员：@Html.TextBox("staff", "", new { @class = "m-wrap small" })</span>
+            <span>业务员类型：@Html.DropDownList("EnumPosition", ViewData["EnumPosition"] as SelectList, "--请选择--", new { @class = "select2" })</span>
+        </div>
+        <div class="serchtype">
+            <span>公司名称：@Html.DropDownList("Category", ViewData["Category"] as SelectList, "--请选择--", new { @class = "select2" })</span>
+            <span>商业类型：@Html.DropDownList("Category", ViewData["Category"] as SelectList, "--请选择--", new { @class = "select2" })</span>
+            <span>合&nbsp;作&nbsp;渠&nbsp;道：@Html.DropDownList("Channel", ViewData["Channel"] as SelectList, "--请选择--", new { @class = "select2" })</span>
+            <span>商业类型：@Html.DropDownList("BusinessType", ViewData["BusinessType"] as SelectList, "--请选择--", new { @class = "select2" })</span>
+        </div>
+        <img style="display:inline-block;" id="processing" src="~/Assets/img/loading.gif" />
+
     </div>
 </div>
 <br />
-<br />
-<div id="divData">
-    <table id="example" class="stripe" cellspacing="0" width="100%">
-        <thead>
-            <tr id="tbhead">
-                <th>分管领导</th>
-                <th>办事处</th>
-                <th>省份</th>
-                <th>城市</th>
-                <th>客户名</th>
-                <th>类型</th>
-                <th>联系人</th>
-                <th>联系电话</th>
-                <th>合作渠道</th>
-                <th>商业类型</th>
+<table id="example" cellspacing="0">
+    <thead>
+        <tr id="tbhead">
+            <th>
+                操作
+            </th>
+            <th style="min-width:10px;">
+                <input type="checkbox" id="checkall" class="group-checkable" />
+            </th>
+            <th>分管领导</th>
+            <th>办事处</th>
+            <th>省份</th>
+            <th>城市</th>
+            <th>客户名</th>
+            <th>类型</th>
+            <th>联系人</th>
+            <th>联系电话</th>
+            <th>合作渠道</th>
+            <th>商业类型</th>
 
-                <th>连锁店数量</th>
-                <th>连锁合作方式</th>
-                <th>业务员</th>
-                <th>业务员类型</th>
-                <th>单位名称</th>
-                <th>是否合作</th>
-                <th>合作种类</th>
-                <th>业务统计<br />(此时间段)</th>
+            <th>连锁店数量</th>
+            <th>连锁合作方式</th>
+            <th>业务员</th>
+            <th>业务员类型</th>
+            <th>单位名称</th>
+            <th>是否合作</th>
+            <th>合作种类</th>
+            <th>业务统计<br />(此时间段)</th>
 
-                <th id="lasthead">
-                </th>
-            </tr>
-        </thead>
-        <tfoot>
-            <tr id="tbfoot">
-                <th>分管领导</th>
-                <th>办事处</th>
-                <th>省份</th>
-                <th>城市</th>
-                <th>客户名</th>
-                <th>类型</th>
-                <th>联系人</th>
-                <th>联系电话</th>
-                <th>合作渠道</th>
-                <th>商业类型</th>
-
-                <th>连锁店数量</th>
-                <th>连锁合作方式</th>
-                <th>业务员</th>
-                <th>业务员类型</th>
-                <th>单位名称</th>
-                <th>是否合作</th>
-                <th>合作种类</th>
-                <th>业务统计<br />(此时间段)</th>
-
-                <th id="lastfoot">
-                </th>
-            </tr>
-        </tfoot>
-        <tbody></tbody>
-    </table>
-</div>
+            <th id="lasthead">
+            </th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>

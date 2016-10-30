@@ -84,8 +84,7 @@
                 客户电话：@Html.TextBox("tel", Request["tel"], new { @class = "m-wrap small" })&nbsp;
             </div>
             <div class="p10">
-                性别：@Html.DropDownList("Gender", "全部")&nbsp;
-                类型：@Html.DropDownList("Category", "全部")&nbsp;
+                公司类型：@Html.DropDownList("Category", "全部")&nbsp;
                 <button type="submit" class="btn">搜索 <i class="icon-search"></i></button>
 
             </div>
@@ -98,6 +97,9 @@
     <table class="table table-striped table-hover " id="tbbusiness">
         <thead>
             <tr>
+                <th>
+                    操作
+                </th>
                 <th style="min-width:10px;">
                     <input type="checkbox" id="checkall" class="group-checkable" />
                 </th>
@@ -149,15 +151,18 @@
                 @*<th>
                         来电数
                     </th>*@
-                <th>
-                    操作
-                </th>
             </tr>
         </thead>
         <tbody>
             @foreach (var p in Model)
             {
                 <tr>
+                    <td>
+                        <a class="btn mini purple thickbox"  style="width:45px" title='编辑客户内容' href="@Url.Action("Edit", new { id = p.ID })?TB_iframe=true&height=600&width=600">
+                            <i class="icon-edit"></i>
+                            编辑
+                        </a>
+                    </td>
                     <td style="min-width:10px;">
                         <input type="checkbox" class="checkboxes" name='ids' value='@p.ID' />
                     </td>
@@ -168,7 +173,7 @@
                     <td>
                         @if (p.City != null)
                         {
-                            @Html.Raw(p.City.Name);
+                        @Html.Raw(p.City.Name);
                         }
                     </td>
                     <td>
@@ -221,12 +226,7 @@
                     @*<td class="toolbar">
                         @p.VisitRecords.Count <a href="@Url.Action("Index", "VisitRecord")?Customer.Tel=@p.Tel" target="_blank">查看来电</a>
                                         </td>*@
-                    <td>
-                        <a class="btn mini purple thickbox" title='编辑客户内容' href="@Url.Action("Edit", new { id = p.ID })?TB_iframe=true&height=600&width=600">
-                            <i class="icon-edit"></i>
-                            编辑
-                        </a>
-                    </td>
+
                 </tr>
             }
         </tbody>
