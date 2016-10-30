@@ -65,6 +65,19 @@
             width: 100% !important;
             display: inline-block;
         }
+
+        .controls label {
+            display: inline;
+        }
+
+        .custom-combobox input {
+            height: 28px;
+            margin: 1px;
+        }
+
+        .custom-combobox a {
+            height: 30px;
+        }
     </style>
 }
 
@@ -560,6 +573,12 @@
             return new Date(parseInt(dateMilliseconds));
         };
 
+        $("#Leader").autocomplete({
+            source: '@Url.Action("GetLeader", "Ajax")',
+            minLength: 1,
+            select: function (event, ui) {
+            }
+        });
     </script>
 
 }
@@ -581,13 +600,14 @@
             </div>
         </div>
         <div class="serchtype">
-            <span>分管领导：@Html.TextBox("leader", "", new { @class = "m-wrap small" })</span>
+            <span>分管领导：@Html.TextBox("Leader", "", new { @class = "m-wrap small" })</span>
             <span>&nbsp;办&nbsp;事&nbsp;处：@Html.TextBox("leader", "", new { @class = "m-wrap small" })</span>
-            <span>&nbsp;业&nbsp;务&nbsp;员：@Html.TextBox("staff", "", new { @class = "m-wrap small" })</span>
+
+            <span>&nbsp;业&nbsp;务&nbsp;员：@Html.DropDownList("StaffID", ViewData["Staffs"] as SelectList, "--请选择--", new { @class = "select2" })</span>
             <span>业务员类型：@Html.DropDownList("EnumPosition", ViewData["EnumPosition"] as SelectList, "--请选择--", new { @class = "select2" })</span>
         </div>
         <div class="serchtype">
-            <span>公司名称：@Html.DropDownList("Category", ViewData["Category"] as SelectList, "--请选择--", new { @class = "select2" })</span>
+            <span>公司名称：@Html.DropDownList("CustomerId", ViewData["CustomerId"] as SelectList, "--请选择--", new { @class = "select2" })</span>
             <span>商业类型：@Html.DropDownList("Category", ViewData["Category"] as SelectList, "--请选择--", new { @class = "select2" })</span>
             <span>合&nbsp;作&nbsp;渠&nbsp;道：@Html.DropDownList("Channel", ViewData["Channel"] as SelectList, "--请选择--", new { @class = "select2" })</span>
             <span>商业类型：@Html.DropDownList("BusinessType", ViewData["BusinessType"] as SelectList, "--请选择--", new { @class = "select2" })</span>

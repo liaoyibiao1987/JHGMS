@@ -140,7 +140,7 @@ namespace GMS.OA.BLL
                     }
                     else
                     {
-                        return null;
+                        return new List<Staff> { staff };
                     }
                 }
                 else

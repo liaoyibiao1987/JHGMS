@@ -74,6 +74,13 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
             ViewData.Add("BusinessType", new SelectList(EnumHelper.GetItemValueList<EnumBusinessType>(), "Key", "Value", 0));
             ViewData.Add("EnumPosition", new SelectList(EnumHelper.GetItemValueList<EnumPosition>(), "Key", "Value", 0));
 
+            int currentstaffid = UserContext.LoginInfo.StaffID.HasValue ? UserContext.LoginInfo.StaffID.Value : -1;
+            var customerList = this.CrmService.GetCustomerList(GetCurrentUserStaffs(currentstaffid)).ToList();
+            customerList.ForEach(c => c.Name = string.Format("{0}({1})", c.Name, c.Tel));
+            ViewData.Add("CustomerId", new SelectList(customerList, "Id", "Name"));
+
+            List<Staff> liststaff = GetCurrentUserStaffs();
+            ViewData.Add("Staffs", new SelectList(liststaff.Select(c => new { Id = c.ID, Name = c.Name }), "Id", "Name", UserContext.LoginInfo.StaffID));
         }
 
 
@@ -211,14 +218,6 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
             IEnumerable<Business> list = CrmService.GetBusinessList(rquester, UserContext.LoginInfo.StaffID.HasValue ? UserContext.LoginInfo.StaffID.Value : -1);
             return Json(list);
         }
-
-        private void RenderMyViewData(BusinessRequest model)
-        {
-            ViewData.Add("startDate", (model == null || model.StartDate == null) ? DateTime.Now.AddDays(-7).Subtract(DateTime.Now.TimeOfDay) : model.StartDate.Value);
-            ViewData.Add("endDate", (model == null || model.EndDate == null) ? DateTime.Now.Subtract(DateTime.Now.TimeOfDay) : model.EndDate.Value);
-
-        }
-
         private void RenderMyViewData(int customid)
         {
             var request = new CustomerRequest();

@@ -213,7 +213,11 @@ namespace GMS.Web.Admin.Common
             if (UserContext.LoginInfo.BusinessPermissionList.Contains(EnumBusinessPermission.CrmManage_Belongs))
             {
                 belongs = this.OAService.GetBelongsStaffEntity(currentstaffid);
-
+            }
+            else
+            {
+                Staff nowstaff = OAService.GetStaff(currentstaffid);
+                belongs.Add(nowstaff);
             }
             return belongs;
         }
