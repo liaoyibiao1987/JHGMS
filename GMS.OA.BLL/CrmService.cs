@@ -340,6 +340,35 @@ namespace GMS.Crm.BLL
                 {
                     query = query.Where(p => p.Staff.Position == (parm.EnumPosition.HasValue ? parm.EnumPosition.Value : p.Staff.Position));
                 }
+
+
+                if (parm.CustomerId.HasValue == true)
+                {
+                    query = query.Where(p => p.Customer.ID == (parm.CustomerId.HasValue ? parm.CustomerId.Value : p.Customer.ID));
+                }
+                if (parm.Leaders.HasValue == true)
+                {
+                    var tempquery = dbContext.Branchs.Where(p => (p.ID == parm.Leaders.Value || p.ParentId == parm.Leaders.Value)).Select(x => x.ID);
+                    query = query.Where(p => tempquery.Contains(parm.Leaders.HasValue ? parm.Leaders.Value : p.Staff.ID));
+                }
+                if (parm.Suboffice.HasValue == true)
+                {
+                    var tempquery = dbContext.Branchs.Where(p => (p.ID == parm.Leaders.Value)).Select(x => x.ID);
+                    query = query.Where(p => tempquery.Contains(parm.Leaders.HasValue ? parm.Leaders.Value : p.Staff.ID));
+                }
+                if (parm.ChainType.HasValue == true)
+                {
+                    query = query.Where(p => p.Customer.ChainType == (parm.ChainType.HasValue ? parm.ChainType.Value : p.Customer.ChainType));
+                }
+                if (parm.CooperationOrNot.HasValue == true)
+                {
+                    query = query.Where(p => p.Customer.CooperationOrNot == (parm.CooperationOrNot.HasValue ? parm.CooperationOrNot.Value : p.Customer.CooperationOrNot));
+                }
+                if (parm.CooperationKinds.HasValue == true)
+                {
+                    query = query.Where(p => p.Customer.CooperationKinds.Contains(parm.CooperationKinds.Value.ToString()));
+                }
+
                 return query.ToPagedList(parm.startpage, parm.length);
             }
         }

@@ -38,6 +38,7 @@ namespace GMS.Crm.Contract
         [NotMapped]
         public double? CurrentPayment { get; set; }
 
+        [NotMapped]
         public double? PredictPayment { get; set; }
 
         public void UpatePayment(Payment pment)

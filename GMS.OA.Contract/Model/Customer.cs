@@ -155,6 +155,7 @@ namespace GMS.Crm.Contract
         {
             get
             {
+                
                 if (Cooperations != null && Cooperations.Count > 1)
                 {
                     return string.Join(",", Cooperations.Select(p => p.Name));

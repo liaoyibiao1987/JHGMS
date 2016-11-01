@@ -19,19 +19,16 @@
             margin: 0px;
             font-size: 9px !important;
         }
+        
+        td {
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
 
         #top {
             display: none;
             height: 0px;
             visibility: collapse;
-        }
-
-        table td, header th, header td {
-            padding: 5px !important;
-            margin: 2px !important;
-            line-height: 12px;
-            margin: 3px !important;
-            padding: 3px !important;
         }
 
         .error {
@@ -54,13 +51,17 @@
         }
 
         .serchtype input {
-            width: 60px !important;
+            width: 68px !important;
             height: 20px !important;
             font-size: 8px !important;
+            margin: 3px !important;
+            padding: 3px !important;
         }
 
         .serchtype select {
             width: 80px !important;
+            margin: 3px !important;
+            padding: 3px !important;
         }
 
         .serchtype {
@@ -185,8 +186,8 @@
                     "dataType": 'json',
                     //"data": aoData
                     //"success": "fnCallback"
-                },
-                "oLanguage": { //国际化配置
+                }
+                , "oLanguage": { //国际化配置
                     "sProcessing": "正在获取数据，请稍后...",
                     "sLengthMenu": "显示 _MENU_ 条",
                     "sZeroRecords": "没有您要搜索的内容",
@@ -222,8 +223,13 @@
                     aoData.CustomerId = $("#CustomerId").val();
                     aoData.Leaders = $("#Leaders").val();
                     aoData.Suboffice = $("#Suboffice").val();
+
+                    aoData.CooperationOrNot = $("#CooperationOrNot").val();
+                    aoData.ChainType = $("#ChainType").val();
+                    aoData.CooperationKinds = $("#CooperationKinds").val();
                 }
-                , "columns": [
+               , "order": [[6, "desc"]]
+               , "columns": [
                             {
                                 data: 'Customer.ID'
                                        , title: "编辑"
@@ -242,6 +248,7 @@
                                                //    $(td).css('color', 'red');
                                                //}
                                            }
+                                , "orderable": false
                                            , "cellType": "td"
                             }
                             , {
@@ -252,6 +259,7 @@
                                    return html;
                                }
                                  , "searchable": false
+                                , "orderable": false
                                  , "createdCell": function (td, cellData, rowData, row, col) {
                                      //if (row < 1) {
                                      //    $(td).css('color', 'red');
@@ -272,6 +280,7 @@
                                , "render": function (data, type, full, meta) {
                                    return getRoot(data);
                                }
+                               , "orderable": false
                                , "searchable": false
                                , "createdCell": function (td, cellData, rowData, row, col) {
                                    //if (row < 1) {
@@ -286,7 +295,8 @@
                                data: 'Staff.BranchId'
                                , title: "办事处"
                                , "defaultContent": "未知"
-                                , "className": "customername"
+                               , "orderable": false
+                               , "className": "customername"
                                , "render": function (data, type, full, meta) {
                                    var x = getParent(data);
                                    return x.Name;
@@ -295,6 +305,7 @@
                            , {
                                data: 'Provienc'
                                , title: "省份"
+                               , "orderable": false
                                , "render": function (data, type, full, meta) {
                                    return '<span class="customername">' + data + '</span>';
                                }
@@ -302,6 +313,7 @@
                            , {
                                data: 'CityName'
                                , title: "地市"
+                               , "orderable": false
                                , "defaultContent": "未知"
                                , "render": function (data, type, full, meta) {
                                    return '<span class="customername">' + data + '</span>';
@@ -330,6 +342,7 @@
                        , {
                            data: 'Customer.Category'
                            , title: "类别"
+                           , sWidth: '100px'
                            , "defaultContent": "未知"
                            , "render": function (data, type, full, meta) {
                                var ret;
@@ -351,6 +364,7 @@
                                return ret;
                            }
                            , "searchable": false
+                           , "class": "customername"
                            , "createdCell": function (td, cellData, rowData, row, col) {
                                //if (row < 1) {
                                //    $(td).css('color', 'red');
@@ -359,6 +373,7 @@
                        }
                        , {
                            data: 'Customer.Contacter'
+                           , "class": "customername"
                        , title: "联系人"
                        }
                        , {
@@ -500,9 +515,10 @@
                        , {
                            data: 'Business'
                            , "defaultContent": "未知"
-                           , "cellType": "tr"
+                           , "cellType": "td"
+                           , "orderable": false
                            , "render": function (data, type, full, meta) {
-                               var retvalue = "<div style='font-size:8px;word-break:keep-all'>";
+                               var retvalue = "<div style='font-size:8px;word-break:keep-all;width:100%'>";
                                if (data != null && data !== undefined && data.length > 0) {
                                    for (var j = 0; j < data.length; j++) {
                                        var creat = data[j].CreateTime.toDate();
@@ -511,7 +527,7 @@
                                            //var msg2 = msg.length > 40 ? msg.substring(0, 37) + "..." : msg;
                                            var content = "<li > 时间：" + creat.format("yyyy-MM-dd") + "</li>";
                                            content += "<li> 事件：" + msg + "</li>";
-                                           retvalue += "<span style='display:inline-block;word-break:break-all; background-color:lightblue;padding:5px;margin:1px;'>" + content + "</span>";
+                                           retvalue += "<span style='display:inline-block;word-break:break-all; background-color:lightblue;padding:5px;margin:1px;width:100%'>" + content + "</span>";
                                        }
 
                                    }
@@ -544,7 +560,7 @@
                            }
                        }
 
-                ]
+               ]
                 //和 columnsOption 参数很像，这个参数允许你给指定列设置选项，应用到一个或这多个列。而不像 columnsOption 需要每列都要定义
                 , "columnDefs": [
                             {
@@ -702,7 +718,6 @@
                 $("select[name='example_length']").val($("#tablelength").val());
                 $("select[name='example_length']").change();
             });
-
             //$('#tbbusiness').dataTable().fnDestroy();
         });
 
@@ -719,42 +734,78 @@
             return new Date(parseInt(dateMilliseconds));
         };
 
-
+        function postDelete() {
+            var message = "你确定要删除勾选的记录吗?";
+            if ($("input:checkbox[name='ids'][checked]").length > 0) {
+                var datas = new Array();
+                $("input:checkbox[name='ids'][checked]").each(function (i, item) {
+                    datas.push(item.value);
+                })
+                if (confirm(message) == true) {
+                    $.ajax({
+                        url: "@Url.Action("DeleteCustomers")",
+                        cache: false,
+                        type: "POST",
+                        data: { ids: datas },
+                        success: function (html) {
+                            refeshTable();
+                            return true;
+                        },
+                        error: function (x, y) {
+                            alert("删除记录发生错误");
+                            return false;
+                        }
+                    });
+                }
+            } else {
+                alert("必须勾选一些记录。");
+                return false;
+            }
+        }
     </script>
 
 }
-<div class="row-fluid" style="font-size:9px;">
+<div class="row-fluid" style="font-size:9px; margin-bottom:9px;">
     <div class="form-inline" style="word-break:keep-all;overflow:auto">
-
         <div class="serchtype">
             <span>开始时间：@Html.TextBox("start", "", new { })&nbsp;</span>
             <span>结束时间：@Html.TextBox("end", "", new { })&nbsp;</span>
-            <span><button id="btnsubmit" type="submit" class="btn blue" style="width:80px;height:35px;">搜索<i class="icon-search"></i></button><i style=""></i></span>
-            <div class="serchtype" style="float:right">
-                <span>
-                    <a class="btn blue thickbox" title='添加新客户' href="@Url.Action("Create","Customer")?TB_iframe=true&height=600&width=600"><i class="icon-plus icon-white"></i>新增</a>
-                </span>
-                <span>
-                    <a class="btn red" id="delete" href="javascript:;"><i class="icon-trash icon-white"></i>删除</a>
-                </span>
-            </div>
+            <span><button id="btnsubmit" type="button" class="btn blue" style="width:78px;height:29px;">搜索<i class="icon-search"></i></button><i style=""></i></span>
+            <span>
+                <a class="btn blue thickbox" style="width:78px;height:29px;text-align:center;line-height:30px" title='添加新客户' href="@Url.Action("Create","Customer")?TB_iframe=true&height=600&width=600">
+                    <i class="icon-plus icon-white">新增</i>
+                </a>
+            </span>
+            <span>
+                <button class="btn red" id="deletecustomer" style="width:78px;height:29px;line-height:30px" onclick="postDelete()">
+                    <i class="icon-trash icon-white">删除</i>
+                </button>
+            </span>
         </div>
-        <br />
         <div class="serchtype">
-
             <span>分管领导：@Html.DropDownList("Leaders", ViewData["Leaders"] as SelectList, "--请选择--", new { @class = "selects" })</span>
-            <span>&nbsp;办&nbsp;事&nbsp;处&nbsp;：@Html.DropDownList("Suboffice", ViewData["Suboffice"] as SelectList, "--请选择--", new { @class = "selects" })</span>
+            <span>&nbsp;办&nbsp;事&nbsp;处：@Html.DropDownList("Suboffice", ViewData["Suboffice"] as SelectList, "--请选择--", new { @class = "selects" })</span>
 
-            <span>&nbsp;业&nbsp;务&nbsp;员：@Html.DropDownList("StaffID", ViewData["Staffs"] as SelectList, "--请选择--", new { @class = "selects" })</span>
+            <span>&nbsp;业&nbsp;务&nbsp;员&nbsp;：@Html.DropDownList("StaffID", ViewData["Staffs"] as SelectList, "--请选择--", new { @class = "selects" })</span>
             <span>业务员类型：@Html.DropDownList("EnumPosition", ViewData["EnumPosition"] as SelectList, "--请选择--", new { @class = "selects" })</span>
+            <span>公司名称：@Html.DropDownList("CustomerId", ViewData["CustomerId"] as SelectList, "--请选择--", new { @class = "selects" })</span>
+            <span>&nbsp;类&nbsp;别&nbsp;：@Html.DropDownList("Category", ViewData["Category"] as SelectList, "--请选择--", new { @class = "selects" })</span>
         </div>
         <div class="serchtype">
-            <span>公司名称：@Html.DropDownList("CustomerId", ViewData["CustomerId"] as SelectList, "--请选择--", new { @class = "selects" })</span>
-            <span>类别：@Html.DropDownList("Category", ViewData["Category"] as SelectList, "--请选择--", new { @class = "selects" })</span>
-            <span>合&nbsp;作&nbsp;渠&nbsp;道：@Html.DropDownList("Channel", ViewData["Channel"] as SelectList, "--请选择--", new { @class = "selects" })</span>
+
+            <span>合作渠道：@Html.DropDownList("Channel", ViewData["Channel"] as SelectList, "--请选择--", new { @class = "selects" })</span>
             <span>商业类型：@Html.DropDownList("BusinessType", ViewData["BusinessType"] as SelectList, "--请选择--", new { @class = "selects" })</span>
+            <span>连锁合作方式：@Html.DropDownList("ChainType", ViewData["ChainType"] as SelectList, "--请选择--", new { @class = "selects" })</span>
+            <span>
+                是否合作：<select id="CooperationOrNot" class="selects">
+                    <option>请选择</option>
+                    <option value="true">是</option>
+                    <option value="false">否</option>
+                </select>
+            </span>
+            <span>合作品种：@Html.DropDownList("CooperationKinds", ViewData["CooperationKinds"] as SelectList, "--请选择--", new { @class = "selects" })</span>
             <span id="perlength">
-                显示 <select id="tablelength">
+                显示 <select id="tablelength" style="width:60px! important;">
                     <option value="10">10</option>
                     <option value="25">25</option>
                     <option value="50">50</option>

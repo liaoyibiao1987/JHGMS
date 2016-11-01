@@ -42,6 +42,17 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
                 JsonRequestBehavior = behavior
             };
         }
+
+        [HttpPost]
+        public ActionResult DeleteCustomers(List<int> ids)
+        {
+            if (ids != null && ids.Count > 0)
+            {
+                this.CrmService.DeleteCustomer(ids);
+            }
+            return RedirectToAction("Index");
+        }
+
         [HttpPost]
         public JsonResult GetAllBranch()
         {
@@ -82,6 +93,12 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
 
             List<Staff> liststaff = GetCurrentUserStaffs();
             ViewData.Add("Staffs", new SelectList(liststaff.Select(c => new { Id = c.ID, Name = c.Name }), "Id", "Name", UserContext.LoginInfo.StaffID));
+
+            ViewData.Add("ChainType", new SelectList(EnumHelper.GetItemValueList<EnumChainType>(), "Key", "Value"));
+
+            IEnumerable<Cooperations> listCoop = AccountService.GetCooperationsList(new Request { PageIndex = 0, PageSize = int.MaxValue });
+            ViewData.Add("CooperationKinds", new SelectList(listCoop, "ID", "Name"));
+
             RenderLeader();
         }
         private void RenderLeader()

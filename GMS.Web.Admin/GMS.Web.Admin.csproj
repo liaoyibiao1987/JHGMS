@@ -147,6 +147,9 @@
     <Content Include="Areas\Crm\Views\Business\Create.cshtml">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="Content\Images\dotted.png" />
+    <Content Include="Content\Images\grip.png" />
+    <Content Include="Content\Images\th.png" />
     <Content Include="Assets\bootstrap-colorpicker\css\colorpicker.css" />
     <Content Include="Assets\bootstrap-colorpicker\img\alpha.png" />
     <Content Include="Assets\bootstrap-colorpicker\img\hue.png" />
@@ -1213,6 +1216,7 @@
     <Content Include="Content\Images\logo.png" />
     <Content Include="Content\Images\no_picture.jpg" />
     <Content Include="Content\Scripts\admin.edit.js" />
+    <Content Include="Content\Scripts\colResizable.js" />
     <Content Include="Content\Scripts\flashupload.js" />
     <Content Include="Content\Scripts\highcharts.exporting.js" />
     <Content Include="Content\Scripts\highcharts.js" />
