@@ -66,6 +66,8 @@ namespace GMS.Crm.Contract
             }
         }
 
+        public string PerPayment { get; set; }
+
         private string cityName;
         public string CityName
         {

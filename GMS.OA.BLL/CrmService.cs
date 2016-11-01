@@ -301,7 +301,7 @@ namespace GMS.Crm.BLL
         public PagedList<BusinessVM> GetBusinessList(BusinessPostParameter parm, List<int> staffids)
         {
             if (parm == null || parm.startdate == null || parm.enddate == null || parm == null) return null;
-
+            string perpaymentmonth = parm.enddate.Value.ToString("yyyyMM");
             using (var dbContext = new CrmDbContext())
             {
                 var query = (//from a in dbContext.Customers.Include("Cooperations").Include("Staff").Include("City")
@@ -311,7 +311,7 @@ namespace GMS.Crm.BLL
 
                             join d in dbContext.Staffs on (a.StaffID) equals d.ID into y
                             join e in dbContext.Citys on (a.CityId) equals e.ID into z
-
+                            join f in dbContext.Payments on a.ID equals f.CustomerID into zz
                             where staffids.Contains(a.StaffID == null ? -1 : a.StaffID.Value)
                             orderby a.ID descending
                             select new BusinessVM
@@ -320,7 +320,8 @@ namespace GMS.Crm.BLL
                                 Business = t.Where(p => (p.CreateTime > parm.startdate.Value && p.CreateTime < parm.enddate.Value)).OrderBy(aa => aa.CreateTime),
                                 Provienc = x.FirstOrDefault() == null ? "" : x.FirstOrDefault().Name,
                                 CityName = z.FirstOrDefault() == null ? "" : z.FirstOrDefault().Name,
-                                Staff = y.FirstOrDefault()
+                                Staff = y.FirstOrDefault(),
+                                PerPayment = (zz.FirstOrDefault(p => p.Durring == perpaymentmonth) == null && zz.FirstOrDefault(p => p.Durring == perpaymentmonth).PredictPayment.HasValue == true) ? "" : zz.FirstOrDefault(p => p.Durring == perpaymentmonth).PredictPayment.ToString()
                             });
 
                 query = query.OrderByDescending(u => u.Customer.ID);
@@ -419,7 +420,7 @@ namespace GMS.Crm.BLL
                     (p.CreateTime == entity.CreateTime
                     && p.StaffID == entity.StaffID
                     && p.CustomerID == entity.CustomerID)).Delete();
-                UpdateOrCreatePayment(-1, business.CreateTime.ToString("yyyyMM"), entity.CurrentPayment, entity.PredictPayment);
+                UpdateOrCreatePayment(entity.CustomerID.Value, business.CreateTime.ToString("yyyyMM"), entity.CurrentPayment, entity.PredictPayment);
                 dbContext.Insert<Business>(business);
             }
         }
