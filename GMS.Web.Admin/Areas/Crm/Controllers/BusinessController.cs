@@ -82,9 +82,32 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
 
             List<Staff> liststaff = GetCurrentUserStaffs();
             ViewData.Add("Staffs", new SelectList(liststaff.Select(c => new { Id = c.ID, Name = c.Name }), "Id", "Name", UserContext.LoginInfo.StaffID));
+            RenderLeader();
         }
-
-
+        private void RenderLeader()
+        {
+            BranchRequest br = new BranchRequest { PageIndex = 0, PageSize = 64 };
+            IEnumerable<Branch> selected = OAService.GetBranchList(br);
+            List<Branch> leader = new List<Branch>();
+            List<Branch> suboffice = new List<Branch>();
+            if (selected != null && selected.Count() > 0)
+            {
+                foreach (var item in selected)
+                {
+                    if (item.ID == 0) continue;
+                    if (selected.Where(p => p.ParentId == item.ID).Count() > 0)
+                    {
+                        leader.Add(item);
+                    }
+                    else
+                    {
+                        suboffice.Add(item);
+                    }
+                }
+            }
+            ViewData.Add("Leaders", new SelectList(leader.Select(c => new { Id = c.ID, Name = c.Name }), "Id", "Name"));
+            ViewData.Add("Suboffice", new SelectList(suboffice.Select(c => new { Id = c.ID, Name = c.Name }), "Id", "Name"));
+        }
 
         /// <summary>
         /// 日历菜单

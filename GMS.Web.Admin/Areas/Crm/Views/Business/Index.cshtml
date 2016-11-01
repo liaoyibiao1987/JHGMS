@@ -15,13 +15,21 @@
 
     <style type="text/css">
         body {
-            line-height: 12px;
             padding: 0px;
             margin: 0px;
             font-size: 9px !important;
         }
 
-        table td, th {
+        #top {
+            display: none;
+            height: 0px;
+            visibility: collapse;
+        }
+
+        table td, header th, header td {
+            padding: 5px !important;
+            margin: 2px !important;
+            line-height: 12px;
             margin: 3px !important;
             padding: 3px !important;
         }
@@ -160,14 +168,15 @@
                 "scrollY": '70vh',
                 "autoWidth": false,
                 "scrollCollapse": true,
-                "ordering": false,
+                "ordering": true,
+                "dom": '<"#top.selects"l><"#tbbody"rt><"bottom"ifp><"clear">',
                 "serverSide": true,//服务端处理分页
                 'bPaginate': true,  //是否分页。
                 'bFilter': false,  //是否使用内置的过滤功能
-                'bLengthChange': false, //是否允许自定义每页显示条数.
+                'bLengthChange': true, //是否允许自定义每页显示条数.
                 "processing": true, //DataTables载入数据时，是否显示‘进度’提示
                 "Paginate": false,  //是否分页。
-                //"lengthMenu": [[10, 25, 50, 100, 500, 1000, 10000], ["10", "25", "50", "100", "500", "1K", "1W"]],
+                "lengthMenu": [[10, 25, 50, 100, 500, 1000, 10000], ["10", "25", "50", "100", "500", "1K", "1W"]],
                 "sPaginationType": "full_numbers",
                 "ajax": {
                     "url": "GetBusinessByAjax",
@@ -209,10 +218,15 @@
                     aoData.Channel = $("#Channel").val();
                     aoData.BusinessType = $("#BusinessType").val();
                     aoData.EnumPosition = $("#EnumPosition").val();
+
+                    aoData.CustomerId = $("#CustomerId").val();
+                    aoData.Leaders = $("#Leaders").val();
+                    aoData.Suboffice = $("#Suboffice").val();
                 }
                 , "columns": [
                             {
                                 data: 'Customer.ID'
+                                       , title: "编辑"
                                        , "render": function (data, type, full, meta) {
                                            var url = '@Url.Action("Edit", "Customer")';
                                            var html = "";
@@ -247,6 +261,7 @@
                             }
                            , {
                                data: 'Staff.BranchId'
+                               , title: "分管领导"
                                , "defaultContent": "未知"
                                , "width": "20px"
                                , "type": "date"
@@ -269,6 +284,7 @@
                            }
                            , {
                                data: 'Staff.BranchId'
+                               , title: "办事处"
                                , "defaultContent": "未知"
                                 , "className": "customername"
                                , "render": function (data, type, full, meta) {
@@ -278,12 +294,14 @@
                            }
                            , {
                                data: 'Provienc'
+                               , title: "省份"
                                , "render": function (data, type, full, meta) {
                                    return '<span class="customername">' + data + '</span>';
                                }
                            }
                            , {
                                data: 'CityName'
+                               , title: "地市"
                                , "defaultContent": "未知"
                                , "render": function (data, type, full, meta) {
                                    return '<span class="customername">' + data + '</span>';
@@ -292,6 +310,7 @@
                            }
                            , {
                                data: 'Customer.Name'
+                               , title: "公司名称"
                                , "render": function (data, type, row) {
                                    var showdata = data;
                                    var htmls = "";
@@ -310,6 +329,7 @@
                            }
                        , {
                            data: 'Customer.Category'
+                           , title: "类别"
                            , "defaultContent": "未知"
                            , "render": function (data, type, full, meta) {
                                var ret;
@@ -337,18 +357,32 @@
                                //}
                            }
                        }
-                       , { data: 'Customer.Contacter' }
-                       , { data: 'Customer.Tel' }
-                       , { data: 'Customer.ShowChannel' }
-                       , { data: 'Customer.ShowBusinessType' }
+                       , {
+                           data: 'Customer.Contacter'
+                       , title: "联系人"
+                       }
+                       , {
+                           data: 'Customer.Tel'
+                       , title: "联系电话"
+                       }
+                       , {
+                           data: 'Customer.ShowChannel'
+                       , title: "合作渠道"
+                       }
+                       , {
+                           data: 'Customer.ShowBusinessType'
+                       , title: "商业类型"
+                       }
                        , {
                            data: 'Customer.ChainCount'
+                           , title: "连锁店数量"
                            , "render": function (data, type, full, meta) {
                                return (data != null && data > 0) ? data : "";
                            }
                        }
                        , {
                            data: 'Customer.ChainType'
+                           , title: "连锁合作方式"
                            , "type": "string"
                            , "render": function (data, type, full, meta) {
                                var ret;
@@ -372,6 +406,7 @@
                        }
                        , {
                            data: 'Staff.Name'
+                           , title: "业务员"
                            , "defaultContent": "未知"
                            , "className": "customername"
                            , "render": function (data, type, full, meta) {
@@ -387,6 +422,7 @@
                        }
                        , {
                            data: 'Staff.Position'
+                           , title: "业务员类型"
                            , "defaultContent": "未知"
                            , "type": "int"
                            , "render": function (data, type, full, meta) {
@@ -426,10 +462,12 @@
                        }
                        , {
                            data: 'Customer.UnitName'
+                           , title: "单位名称"
                            , "defaultContent": "无"
                        }
                        , {
                            data: 'Customer.CooperationOrNot'
+                           , title: "是否合作"
                            , "defaultContent": "未知"
                            , "width": "20px"
                            , "type": "Boolean"
@@ -442,9 +480,13 @@
                            }
                            , "searchable": false
                        }
-                       , { data: 'Customer.CustomerCooperShow' }
+                       , {
+                           data: 'Customer.CustomerCooperShow'
+                       , title: "合作种类"
+                       }
                        , {
                            data: 'Business'
+                           , title: "业务统计"
                            , "defaultContent": "未知"
                            , "render": function (data, type, full, meta) {
                                if (data != null && data !== undefined && data.length > 0) {
@@ -522,7 +564,8 @@
                     var str = "时间段：" + dstart.format("yyyy年  (MM-dd ") + "至" + dend.format(" M-dd)");
                     //headhtml += "<td class='w60'>" + str + "</td>";
                     //headhtml += "</tr></table>";
-                    $("#lasthead", thead).html(str);
+                    $("th:last", thead).html(str);
+                    $("th:last", thead).css("width", "200px");
                 }
                 , "footerCallback": function (tfoot, data, start, end, display) {
                     //var str = "时间段：" + dstart.format("yyyy年 (MM-dd ") + "至" + dend.format(" M-dd)");
@@ -535,6 +578,8 @@
                     //$("#lastfoot", tfoot).html(str);
                 }
                 , "initComplete": function (settings, json) {
+                    //var temp = $("#example_length").clone();
+                    //temp.appendTo("#perlength");
                     //tb_init('a.thickbox');
                 }
             });
@@ -573,12 +618,13 @@
             //});
             //$("#Suboffice").focus().autocomplete({
             //    source: function (request, response) {
-            //        var matcher = new RegExp("^" + $.ui.autocomplete.escapeRegex(request.term), "i");
+            //        var matcher = new RegExp($.ui.autocomplete.escapeRegex(request.term), "ig");
+            //        debugger;
             //        response($.map(suboffice, function (item) {
             //            var value = item.Name || item.value || item;
-            //            if (matcher.test(item) == true) {
+            //            if (matcher.test(value) == true) {
             //                console.log("------------------------------------" + item.Name);
-            //                return { label: item.Name, value: item.ID };
+            //                return { label: item.Name, value: item.Name };
             //            }
             //        }));
             //        //response($.map(suboffice, function (item) {
@@ -586,12 +632,16 @@
             //        //}));
             //    },
             //    minLength: 1,
+            //    formatItem: function (item) {
+            //        return item.Name;
+            //    },
             //    select: function (event, ui) {
+            //        alert(1);
             //    }
             //});
 
 
-            var dates = $("#Category, #Channel, #BusinessType, #EnumPosition").change(function () {
+            var dates = $(".selects").change(function () {
                 refeshTable();
             });
         }
@@ -648,7 +698,10 @@
             $("#btnsubmit").live("click", function () {
                 refeshTable();
             });
-
+            $("#tablelength").change(function (e) {
+                $("select[name='example_length']").val($("#tablelength").val());
+                $("select[name='example_length']").change();
+            });
 
             //$('#tbbusiness').dataTable().fnDestroy();
         });
@@ -688,17 +741,29 @@
         </div>
         <br />
         <div class="serchtype">
-            <span>分管领导：@Html.TextBox("Leader", "", new { })</span>
-            <span>&nbsp;办&nbsp;事&nbsp;处&nbsp;：@Html.TextBox("Suboffice", "", new { })</span>
 
-            <span>&nbsp;业&nbsp;务&nbsp;员：@Html.DropDownList("StaffID", ViewData["Staffs"] as SelectList, "--请选择--", new { })</span>
-            <span>业务员类型：@Html.DropDownList("EnumPosition", ViewData["EnumPosition"] as SelectList, "--请选择--", new { })</span>
+            <span>分管领导：@Html.DropDownList("Leaders", ViewData["Leaders"] as SelectList, "--请选择--", new { @class = "selects" })</span>
+            <span>&nbsp;办&nbsp;事&nbsp;处&nbsp;：@Html.DropDownList("Suboffice", ViewData["Suboffice"] as SelectList, "--请选择--", new { @class = "selects" })</span>
+
+            <span>&nbsp;业&nbsp;务&nbsp;员：@Html.DropDownList("StaffID", ViewData["Staffs"] as SelectList, "--请选择--", new { @class = "selects" })</span>
+            <span>业务员类型：@Html.DropDownList("EnumPosition", ViewData["EnumPosition"] as SelectList, "--请选择--", new { @class = "selects" })</span>
         </div>
         <div class="serchtype">
-            <span>公司名称：@Html.DropDownList("CustomerId", ViewData["CustomerId"] as SelectList, "--请选择--", new { })</span>
-            <span>类别：@Html.DropDownList("Category", ViewData["Category"] as SelectList, "--请选择--", new { })</span>
-            <span>合&nbsp;作&nbsp;渠&nbsp;道：@Html.DropDownList("Channel", ViewData["Channel"] as SelectList, "--请选择--", new { })</span>
-            <span>商业类型：@Html.DropDownList("BusinessType", ViewData["BusinessType"] as SelectList, "--请选择--", new { })</span>
+            <span>公司名称：@Html.DropDownList("CustomerId", ViewData["CustomerId"] as SelectList, "--请选择--", new { @class = "selects" })</span>
+            <span>类别：@Html.DropDownList("Category", ViewData["Category"] as SelectList, "--请选择--", new { @class = "selects" })</span>
+            <span>合&nbsp;作&nbsp;渠&nbsp;道：@Html.DropDownList("Channel", ViewData["Channel"] as SelectList, "--请选择--", new { @class = "selects" })</span>
+            <span>商业类型：@Html.DropDownList("BusinessType", ViewData["BusinessType"] as SelectList, "--请选择--", new { @class = "selects" })</span>
+            <span id="perlength">
+                显示 <select id="tablelength">
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                    <option value="500">500</option>
+                    <option value="1000">1000</option>
+                    <option value="10000">10000</option>
+                </select> 条
+            </span>
         </div>
         <img style="display:inline-block;" id="processing" src="~/Assets/img/loading.gif" />
     </div>
@@ -736,5 +801,4 @@
             </th>
         </tr>
     </thead>
-    <tbody></tbody>
 </table>

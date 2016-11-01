@@ -31,6 +31,11 @@ namespace GMS.OA.Contract.Model
         public int? BusinessType { get; set; }
         public int? EnumPosition { get; set; }
 
+
+        public int? CustomerId { get; set; }
+        public int? Leaders { get; set; }
+        public int? Suboffice { get; set; }
+
         /// <summary>
         /// 排序列的数量
         /// </summary>
