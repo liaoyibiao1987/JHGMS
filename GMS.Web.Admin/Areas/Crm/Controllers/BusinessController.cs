@@ -67,6 +67,7 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
                 MaxJsonLength = Int32.MaxValue
             };
         }
+
         private void RenderMyViewData()
         {
             ViewData.Add("Category", new SelectList(EnumHelper.GetItemValueList<EnumCategory>(), "Key", "Value", 0));
@@ -76,7 +77,7 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
 
             int currentstaffid = UserContext.LoginInfo.StaffID.HasValue ? UserContext.LoginInfo.StaffID.Value : -1;
             var customerList = this.CrmService.GetCustomerList(GetCurrentUserStaffs(currentstaffid)).ToList();
-            customerList.ForEach(c => c.Name = string.Format("{0}({1})", c.Name, c.Tel));
+            customerList.ForEach(c => c.Name = string.Format("{0}({1})", c.Name, c.Contacter));
             ViewData.Add("CustomerId", new SelectList(customerList, "Id", "Name"));
 
             List<Staff> liststaff = GetCurrentUserStaffs();

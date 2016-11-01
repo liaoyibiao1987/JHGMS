@@ -55,6 +55,10 @@
                     PredictPayment: {
                         //required: true,
                         number: true
+                    },
+                    Message: {
+                        required: true,
+                        maxlength: 2000
                     }
                 },
                 messages: {
@@ -69,6 +73,10 @@
                     PredictPayment: {
                         // required: "请输入预计回款",
                         number: "请输入正确的数字"
+                    },
+                    Message: {
+                        required: "请输入拜访信息",
+                        maxlength: "长度不能超过2000个字"
                     }
                 },
                 submitHandler: function (form) {
@@ -109,11 +117,6 @@
 @section MainContent{
     <div class="portlet-body form-horizontal form-bordered form-row-stripped">
         <div class="row-fluid">
-            <div class="alert alert-info">
-                <button class="close" data-dismiss="alert"></button>
-                <strong>注意：</strong>
-                如果还没添加任何客户，请先转到客户管理频道，添加新的客户！
-            </div>
             <div class="control-group">
                 <label class="control-label"><span class="required">*</span>我的客户：</label>
                 <div class="controls">
@@ -135,22 +138,22 @@
             <div class="control-group">
                 <label class="control-label"><span class="required">*</span>填写信息：</label>
                 <div class="controls">
-                    @Html.TextAreaFor(m => m.Message, 8, 40, new { @class = "m-wrap input-xlarge", @placeholder = "输入详细信息" })
+                    @Html.TextAreaFor(m => m.Message, 6, 40, new { @class = "m-wrap input-xlarge", @placeholder = "输入详细信息" })
                     <span class="help-inline">@Html.ValidationMessageFor(m => m.Message)</span>
                 </div>
             </div>
-            @*<div class="control-group">
-                    <div class="controls">
-                        <div style="width:48%;display:inline-block">
+            <div class="control-group">
+                <div class="controls">
+                    @*<div style="width:48%;display:inline-block">
                             <label>本月回款:</label>
                             @Html.TextBoxFor(m => m.CurrentPayment, "{0:###,#.00}", new { style = "width:50%;", @class = "m-wrap small" })
-                        </div>
-                        <div style="width:48%;display:inline-block">
-                            <label>本月预计回款:</label>
-                            @Html.TextBoxFor(m => m.PredictPayment, "{0:###,#.00}", new { style = "width:50%;", @class = "m-wrap small" })
-                        </div>
+                        </div>*@
+                    <div style="width:48%;display:inline-block">
+                        <label>本月预计回款:</label>
+                        @Html.TextBoxFor(m => m.PredictPayment, "{0:###,#.00}", new { style = "width:50%;", @class = "m-wrap small" })
                     </div>
-                </div>*@
+                </div>
+            </div>
         </div>
     </div>
 }

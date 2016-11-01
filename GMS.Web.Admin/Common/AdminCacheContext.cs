@@ -40,7 +40,6 @@ namespace GMS.Web.Admin.Common
                 });
             }
         }
-
         public Dictionary<int, Province> ProvinceDic
         {
             get

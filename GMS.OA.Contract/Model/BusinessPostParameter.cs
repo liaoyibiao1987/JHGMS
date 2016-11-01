@@ -17,7 +17,7 @@ namespace GMS.OA.Contract.Model
         /// <summary>
         /// 过滤文本
         /// </summary>
-        public object search { get; set; }
+        public dynamic search { get; set; }
 
         /// <summary>
         /// 每页显示的数量
@@ -34,12 +34,12 @@ namespace GMS.OA.Contract.Model
         /// <summary>
         /// 排序列的数量
         /// </summary>
-        public object order { get; set; }
+        public dynamic order { get; set; }
 
         /// <summary>
         /// 逗号分割所有的列
         /// </summary>
-        public object columns { get; set; }
+        public dynamic columns { get; set; }
 
         public int startpage
         {
