@@ -21,9 +21,9 @@
                     <i class="icon-angle-down"></i>
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a href="extra_profile.html"><i class="icon-user"></i> 我的信息</a></li>
-                    <li><a href="calendar.html"><i class="icon-calendar"></i> 我的日历</a></li>
-                    <li><a href="#"><i class="icon-tasks"></i> 我的任务</a></li>
+                    @*<li><a href="extra_profile.html"><i class="icon-user"></i> 我的信息</a></li>*@
+                    <li><a href="@Url.Action("Create", "Business", new { Area = "CRM" })"><i class="icon-calendar"></i> 我的日历</a></li>
+                    @*<li><a href="#"><i class="icon-tasks"></i> 我的任务</a></li>*@
                     <li class="divider"></li>
                     <li><a href="@Url.Action("ModifyPwd", "Auth", new { Area = "Account" })?TB_iframe=true&KeepThis=true&height=380&width=500" class="thickbox" title="修改密码"><i class="icon-key"></i> 修改密码</a></li>
                     <li><a href="@Url.Action("Logout", "Auth", new { Area = "Account"})"><i class="icon-signout"></i> 退出系统</a></li>

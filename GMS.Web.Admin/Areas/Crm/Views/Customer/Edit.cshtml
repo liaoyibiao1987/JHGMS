@@ -49,18 +49,27 @@
                 rules: {
                     Email: {
                         email: true
-                    },
-                    ChainCount: {
+                    }                    
+                    , ChainCount: {
                         number: true
                     }
+                    //, Name: {
+                    //    required: true,
+                    //    maxlength: 50
+                    //}
                 },
                 messages: {
                     Email: {
                         email: "请输入正确的Email格式"
-                    },
-                    ChainCount: {
+                    }
+                    , ChainCount: {
                         number: "请输入正确的数字"
                     }
+                    //, Name: {
+                    //    required: "请输入公司名称",
+                    //    maxlength: "名称不能超过50个字符"
+                    //}
+
                 },
                 submitHandler: function (form) {
                     form.submit();

@@ -304,8 +304,12 @@ namespace GMS.Crm.BLL
             string perpaymentmonth = parm.enddate.Value.ToString("yyyyMM");
             using (var dbContext = new CrmDbContext())
             {
+
+                var fristquery = dbContext.Customers.Include("Cooperations").Include("Staff").Where(p => 1 == 1); ;
+                GetFilter(parm, ref fristquery);
+
                 var query = (//from a in dbContext.Customers.Include("Cooperations").Include("Staff").Include("City")
-                            from a in dbContext.Customers
+                            from a in fristquery
                             join b in dbContext.Business on new { Cus = a.ID, Stf = a.StaffID } equals new { Cus = b.CustomerID == null ? 0 : b.CustomerID.Value, Stf = b.StaffID } into t
                             join c in dbContext.Provinces on (a.CityId == null ? 0 : a.City.ProvinceID) equals c.ID into x
 
@@ -324,54 +328,230 @@ namespace GMS.Crm.BLL
                                 PerPayment = (zz.FirstOrDefault(p => p.Durring == perpaymentmonth) == null && zz.FirstOrDefault(p => p.Durring == perpaymentmonth).PredictPayment.HasValue == true) ? "" : zz.FirstOrDefault(p => p.Durring == perpaymentmonth).PredictPayment.ToString()
                             });
 
-                query = query.OrderByDescending(u => u.Customer.ID);
-                if (parm.Category.HasValue == true)
-                {
-                    query = query.Where(p => p.Customer.Category == (parm.Category.HasValue ? parm.Category.Value : p.Customer.Category));
-                }
-                if (parm.Channel.HasValue == true)
-                {
-                    query = query.Where(p => p.Customer.Channel == (parm.Channel.HasValue ? parm.Channel.ToString() : p.Customer.Channel));
-                }
-                if (parm.BusinessType.HasValue == true)
-                {
-                    query = query.Where(p => p.Customer.BusinessType.Contains((parm.BusinessType.HasValue ? parm.BusinessType.Value.ToString() : p.Customer.BusinessType)));
-                }
+                //query = query.OrderByDescending(u => u.Customer.ID);
+
+                GetSortting(parm, ref query);
+                //GetFilter(parm, ref query);
+
                 if (parm.EnumPosition.HasValue == true)
                 {
                     query = query.Where(p => p.Staff.Position == (parm.EnumPosition.HasValue ? parm.EnumPosition.Value : p.Staff.Position));
                 }
 
-
-                if (parm.CustomerId.HasValue == true)
+                if (parm.StaffID.HasValue == true)
                 {
-                    query = query.Where(p => p.Customer.ID == (parm.CustomerId.HasValue ? parm.CustomerId.Value : p.Customer.ID));
+                    query = query.Where(p => p.Staff.ID == (parm.StaffID.HasValue ? parm.StaffID.Value : p.Staff.ID));
                 }
                 if (parm.Leaders.HasValue == true)
                 {
                     var tempquery = dbContext.Branchs.Where(p => (p.ID == parm.Leaders.Value || p.ParentId == parm.Leaders.Value)).Select(x => x.ID);
-                    query = query.Where(p => tempquery.Contains(parm.Leaders.HasValue ? parm.Leaders.Value : p.Staff.ID));
+                    query = query.Where(p => tempquery.Contains(p.Staff.BranchId.HasValue ? p.Staff.BranchId.Value : -1));
                 }
                 if (parm.Suboffice.HasValue == true)
                 {
-                    var tempquery = dbContext.Branchs.Where(p => (p.ID == parm.Leaders.Value)).Select(x => x.ID);
-                    query = query.Where(p => tempquery.Contains(parm.Leaders.HasValue ? parm.Leaders.Value : p.Staff.ID));
+                    var tempquery = dbContext.Branchs.Where(p => (p.ID == parm.Suboffice.Value)).Select(x => x.ID).FirstOrDefault();
+                    query = query.Where(p => tempquery == p.Staff.BranchId);
                 }
-                if (parm.ChainType.HasValue == true)
-                {
-                    query = query.Where(p => p.Customer.ChainType == (parm.ChainType.HasValue ? parm.ChainType.Value : p.Customer.ChainType));
-                }
-                if (parm.CooperationOrNot.HasValue == true)
-                {
-                    query = query.Where(p => p.Customer.CooperationOrNot == (parm.CooperationOrNot.HasValue ? parm.CooperationOrNot.Value : p.Customer.CooperationOrNot));
-                }
-                if (parm.CooperationKinds.HasValue == true)
-                {
-                    query = query.Where(p => p.Customer.CooperationKinds.Contains(parm.CooperationKinds.Value.ToString()));
-                }
+
 
                 return query.ToPagedList(parm.startpage, parm.length);
             }
+        }
+
+        private void GetFilter(BusinessPostParameter parm, ref IQueryable<Customer> query)
+        {
+            if (parm.Category.HasValue == true)
+            {
+                query = query.Where(p => p.Category == (parm.Category.HasValue ? parm.Category.Value : p.Category));
+            }
+            if (parm.Channel.HasValue == true)
+            {
+                query = query.Where(p => p.Channel == (parm.Channel.HasValue ? parm.Channel.ToString() : p.Channel));
+            }
+            if (parm.BusinessType.HasValue == true)
+            {
+                query = query.Where(p => p.BusinessType.Contains((parm.BusinessType.HasValue ? parm.BusinessType.Value.ToString() : p.BusinessType)));
+            }
+            if (parm.CustomerId.HasValue == true)
+            {
+                query = query.Where(p => p.ID == (parm.CustomerId.HasValue ? parm.CustomerId.Value : p.ID));
+            }
+            if (parm.ChainType.HasValue == true)
+            {
+                query = query.Where(p => p.ChainType == (parm.ChainType.HasValue ? parm.ChainType.Value : p.ChainType));
+            }
+            if (parm.CooperationOrNot.HasValue == true)
+            {
+                query = query.Where(p => p.CooperationOrNot == (parm.CooperationOrNot.HasValue ? parm.CooperationOrNot.Value : p.CooperationOrNot));
+            }
+            if (parm.CooperationKinds.HasValue == true)
+            {
+                query = query.Where(p => p.CooperationKinds.Contains(parm.CooperationKinds.Value.ToString()));
+            }
+        }
+
+        private void GetSortting(BusinessPostParameter parm, ref IQueryable<BusinessVM> query)
+        {
+            OrderParm order = parm.order.FirstOrDefault();
+            if (order != null)
+            {
+                switch (order.column)
+                {
+                    case 6:
+                        if (order.dir == "asc")
+                        {
+                            query = query.OrderBy(p => p.Customer.Name);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(p => p.Customer.Name);
+                        }
+                        break;
+                    case 7:
+                        if (order.dir == "asc")
+                        {
+                            query = query.OrderBy(p => p.Customer.Category);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(p => p.Customer.Category);
+                        }
+                        break;
+                    case 8:
+                        if (order.dir == "asc")
+                        {
+                            query = query.OrderBy(p => p.Customer.Contacter);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(p => p.Customer.Contacter);
+                        }
+                        break;
+                    case 9:
+                        if (order.dir == "asc")
+                        {
+                            query = query.OrderBy(p => p.Customer.Tel);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(p => p.Customer.Tel);
+                        }
+                        break;
+                    case 10:
+                        if (order.dir == "asc")
+                        {
+                            query = query.OrderBy(p => p.Customer.Channel);
+                        }
+                        else
+                        {
+                            query.OrderByDescending(p => p.Customer.Channel);
+                        }
+                        break;
+                    case 11:
+                        if (order.dir == "asc")
+                        {
+                            query = query.OrderBy(p => p.Customer.BusinessType);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(p => p.Customer.BusinessType);
+                        }
+                        break;
+                    case 12:
+                        if (order.dir == "asc")
+                        {
+                            query = query.OrderBy(p => p.Customer.ChainCount);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(p => p.Customer.ChainCount);
+                        }
+                        break;
+                    case 13:
+                        if (order.dir == "asc")
+                        {
+                            query = query.OrderBy(p => p.Customer.ChainType);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(p => p.Customer.ChainType);
+                        }
+                        break;
+                    case 14:
+                        if (order.dir == "asc")
+                        {
+                            query = query.OrderBy(p => p.Customer.StaffID);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(p => p.Customer.StaffID);
+                        }
+                        break;
+                    case 15:
+                        if (order.dir == "asc")
+                        {
+                            query = query.OrderBy(p => p.Staff.Position);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(p => p.Staff.Position);
+                        }
+                        break;
+                    case 16:
+                        if (order.dir == "asc")
+                        {
+                            query = query.OrderBy(p => p.Customer.UnitName);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(p => p.Customer.UnitName);
+                        }
+                        break;
+                    case 17:
+                        if (order.dir == "asc")
+                        {
+                            query = query.OrderBy(p => p.Customer.CooperationOrNot);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(p => p.Customer.CooperationOrNot);
+                        }
+                        break;
+                    case 18:
+                        if (order.dir == "asc")
+                        {
+                            query = query.OrderBy(p => p.Customer.CooperationKinds);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(p => p.Customer.CooperationKinds);
+                        }
+                        break;
+                    case 19:
+                        if (order.dir == "asc")
+                        {
+                            query = query.OrderBy(p => p.Business.Count());
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(p => p.Business.Count());
+                        }
+                        break;
+                    case 20:
+                        if (order.dir == "asc")
+                        {
+                            query = query.OrderBy(p => p.PerPayment);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(p => p.PerPayment);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+
         }
         //private Branch GetParentBranch(CrmDbContext dbContext, int? staffid)
         //{

@@ -111,7 +111,9 @@
 @*@functions
     {
     }*@
-
+@{
+    var permissions = GMS.Web.Admin.Common.AdminUserContext.Current.LoginInfo.BusinessPermissionList.Select(p => p.ToString());
+}
 @section PageSpecificJavascriptIncludes{
     <script type="text/javascript" src="@Url.StaticFile("/assets/jquery-validation/dist/jquery.validate.min.js")"></script>
     <script type="text/javascript" src="@Url.StaticFile("/assets/js/GMS.js")"></script>
@@ -220,6 +222,7 @@
                     aoData.BusinessType = $("#BusinessType").val();
                     aoData.EnumPosition = $("#EnumPosition").val();
 
+                    aoData.StaffID = $("#StaffID").val();
                     aoData.CustomerId = $("#CustomerId").val();
                     aoData.Leaders = $("#Leaders").val();
                     aoData.Suboffice = $("#Suboffice").val();
@@ -519,7 +522,7 @@
                            , "cellType": "td"
                            , "render": function (data, type, full, meta) {
                                if (data != null && data !== undefined && data.length > 0) {
-                                   return "￥" +formatCurrency(data);
+                                   return "￥" + formatCurrency(data);
                                } else {
                                    return "无";
                                }
@@ -796,17 +799,20 @@
                 </button>
             </span>
         </div>
+        <br />
         <div class="serchtype">
-            <span>分管领导：@Html.DropDownList("Leaders", ViewData["Leaders"] as SelectList, "--请选择--", new { @class = "selects" })</span>
-            <span>&nbsp;办&nbsp;事&nbsp;处：@Html.DropDownList("Suboffice", ViewData["Suboffice"] as SelectList, "--请选择--", new { @class = "selects" })</span>
+            @if (permissions.Contains(GMS.Account.Contract.EnumBusinessPermission.CrmManage_Belongs.ToString()))
+            {
+                <span>分管领导：@Html.DropDownList("Leaders", ViewData["Leaders"] as SelectList, "--请选择--", new { @class = "selects" })</span>
+                <span>&nbsp;办&nbsp;事&nbsp;处：@Html.DropDownList("Suboffice", ViewData["Suboffice"] as SelectList, "--请选择--", new { @class = "selects" })</span>
 
-            <span>&nbsp;业&nbsp;务&nbsp;员&nbsp;：@Html.DropDownList("StaffID", ViewData["Staffs"] as SelectList, "--请选择--", new { @class = "selects" })</span>
-            <span>业务员类型：@Html.DropDownList("EnumPosition", ViewData["EnumPosition"] as SelectList, "--请选择--", new { @class = "selects" })</span>
+                <span>&nbsp;业&nbsp;务&nbsp;员&nbsp;：@Html.DropDownList("StaffID", ViewData["Staffs"] as SelectList, "--请选择--", new { @class = "selects" })</span>
+                <span>业务员类型：@Html.DropDownList("EnumPosition", ViewData["EnumPosition"] as SelectList, "--请选择--", new { @class = "selects" })</span>
+            }
+
+
             <span>公司名称：@Html.DropDownList("CustomerId", ViewData["CustomerId"] as SelectList, "--请选择--", new { @class = "selects" })</span>
             <span>&nbsp;类&nbsp;别&nbsp;：@Html.DropDownList("Category", ViewData["Category"] as SelectList, "--请选择--", new { @class = "selects" })</span>
-        </div>
-        <div class="serchtype">
-
             <span>合作渠道：@Html.DropDownList("Channel", ViewData["Channel"] as SelectList, "--请选择--", new { @class = "selects" })</span>
             <span>商业类型：@Html.DropDownList("BusinessType", ViewData["BusinessType"] as SelectList, "--请选择--", new { @class = "selects" })</span>
             <span>连锁合作方式：@Html.DropDownList("ChainType", ViewData["ChainType"] as SelectList, "--请选择--", new { @class = "selects" })</span>
@@ -817,7 +823,7 @@
                     <option value="false">否</option>
                 </select>
             </span>
-            <span>合作品种：@Html.DropDownList("CooperationKinds", ViewData["CooperationKinds"] as SelectList, "--请选择--", new { @class = "selects" })</span>
+            <span>合作种类：@Html.DropDownList("CooperationKinds", ViewData["CooperationKinds"] as SelectList, "--请选择--", new { @class = "selects" })</span>
             <span id="perlength">
                 显示 <select id="tablelength" style="width:60px! important;">
                     <option value="10">10</option>
@@ -830,6 +836,7 @@
                 </select> 条
             </span>
         </div>
+
         <img style="display:inline-block;" id="processing" src="~/Assets/img/loading.gif" />
     </div>
 </div>

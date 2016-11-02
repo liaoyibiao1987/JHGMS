@@ -92,7 +92,7 @@ namespace GMS.OA.Contract.Model
 
     public class OrderParm
     {
-        public string column { get; set; }
+        public int column { get; set; }
         public string dir { get; set; }
     }
 }
