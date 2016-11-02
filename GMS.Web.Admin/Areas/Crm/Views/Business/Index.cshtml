@@ -12,7 +12,7 @@
 }
 @section PageSpecificStyleSheetIncludes{
     <link rel="stylesheet" type="text/css" href="@Url.StaticFile("/Assets/data-tables/css/dataTables.jqueryui.min.css")" />
-
+    <link rel="stylesheet" href="@Url.StaticFile("/Assets/select2/select2.min.css")">
     <style type="text/css">
         body {
             padding: 0px;
@@ -60,8 +60,13 @@
 
         .serchtype select {
             width: 80px !important;
+            font-size: 1em;
             margin: 3px !important;
             padding: 3px !important;
+        }
+
+        option {
+            font-size: 13px;
         }
 
         .serchtype {
@@ -105,6 +110,26 @@
         .custom-combobox a {
             height: 30px;
         }
+
+        .bsns {
+            font-size: 8px;
+            padding: 5px;
+            width: 100%;
+            display: inline-block;
+            word-break: break-all;
+        }
+
+            .bsns span {
+                background-color: lightblue;
+                word-break: keep-all;
+                width: 100%;
+                height: 100%;
+                display: inline-block;
+            }
+
+        .bigdrop {
+            width: 230px !important;
+        }
     </style>
 }
 
@@ -117,7 +142,7 @@
 @section PageSpecificJavascriptIncludes{
     <script type="text/javascript" src="@Url.StaticFile("/assets/jquery-validation/dist/jquery.validate.min.js")"></script>
     <script type="text/javascript" src="@Url.StaticFile("/assets/js/GMS.js")"></script>
-
+    <script type="text/javascript" src="@Url.StaticFile("/Assets/select2/select2.full.min.js")"></script>
     <script type="text/javascript">
         var table;
         var dstart;
@@ -127,6 +152,40 @@
 
         var leaders = new Array();
         var suboffice = new Array();
+
+        var opts = {
+            language: {
+                inputTooShort: function (args) {
+                    // args.minimum is the minimum required length
+                    // args.input is the user-typed text
+                    return "Type more stuff";
+                },
+                inputTooLong: function (args) {
+                    // args.maximum is the maximum allowed length
+                    // args.input is the user-typed text
+                    return "You typed too much";
+                },
+                errorLoading: function () {
+                    return "Error loading results";
+                },
+                loadingMore: function () {
+                    return "Loading more results";
+                },
+                noResults: function () {
+                    return "No results found";
+                },
+                searching: function () {
+                    return "Searching...";
+                },
+                maximumSelected: function (args) {
+                    // args.maximum is the maximum number of items the user may select
+                    return "Error loading results";
+                }
+            }
+        };
+        $("#CustomerId,#StaffID").select2({
+            dropdownCssClass: "bigdrop"
+        });
 
         function getRoot(id) {
             var parent = getParent(id);
@@ -160,12 +219,12 @@
 
         function InitDatatable() {
             table = $('#example').on('processing.dt', function (e, settings, processing) {
-                if (processing == true) {
-                    $("input,select,#btnsubmit").attr("disabled", "disabled");
-                } else {
-                    $("input,select,#btnsubmit").removeAttr("disabled");
-                }
                 $('#processing').css('display', processing ? 'block' : 'none');
+                if (processing == true) {
+                    $("input[type='text'],button,select,#btnsubmit").attr("disabled", "disabled");
+                } else {
+                    $("input,input[type='text'],button,select,#btnsubmit").removeAttr("disabled");
+                }
             }).DataTable({
                 "scrollX": true,
                 "scrollY": '70vh',
@@ -535,16 +594,16 @@
                            , "cellType": "td"
                            , "orderable": false
                            , "render": function (data, type, full, meta) {
-                               var retvalue = "<div style='font-size:8px;word-break:keep-all;width:100%'>";
+                               var retvalue = "<div class='bsns'>";
                                if (data != null && data !== undefined && data.length > 0) {
                                    for (var j = 0; j < data.length; j++) {
                                        var creat = data[j].CreateTime.toDate();
                                        var msg = data[j].Message;
                                        if (creat != null && msg != null) {
                                            //var msg2 = msg.length > 40 ? msg.substring(0, 37) + "..." : msg;
-                                           var content = "<li > 时间：" + creat.format("yyyy-MM-dd") + "</li>";
+                                           var content = "<li> 时间：" + creat.format("yyyy-MM-dd") + "</li>";
                                            content += "<li> 事件：" + msg + "</li>";
-                                           retvalue += "<span style='display:inline-block;word-break:break-all; background-color:lightblue;padding:5px;margin:1px;width:100%'>" + content + "</span>";
+                                           retvalue += "<span>" + content + "</span>";
                                        }
 
                                    }
@@ -674,7 +733,7 @@
             //});
 
 
-            var dates = $(".selects").change(function () {
+            var dates = $("select").change(function () {
                 refeshTable();
             });
         }
