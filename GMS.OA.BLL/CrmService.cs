@@ -304,8 +304,7 @@ namespace GMS.Crm.BLL
             string perpaymentmonth = parm.enddate.Value.ToString("yyyyMM");
             using (var dbContext = new CrmDbContext())
             {
-
-                var fristquery = dbContext.Customers.Include("Cooperations").Include("Staff").Where(p => 1 == 1); ;
+                var fristquery = dbContext.Customers.AsQueryable(); ;
                 GetFilter(parm, ref fristquery);
 
                 var query = (//from a in dbContext.Customers.Include("Cooperations").Include("Staff").Include("City")
@@ -337,11 +336,6 @@ namespace GMS.Crm.BLL
                 {
                     query = query.Where(p => p.Staff.Position == (parm.EnumPosition.HasValue ? parm.EnumPosition.Value : p.Staff.Position));
                 }
-
-                if (parm.StaffID.HasValue == true)
-                {
-                    query = query.Where(p => p.Staff.ID == (parm.StaffID.HasValue ? parm.StaffID.Value : p.Staff.ID));
-                }
                 if (parm.Leaders.HasValue == true)
                 {
                     var tempquery = dbContext.Branchs.Where(p => (p.ID == parm.Leaders.Value || p.ParentId == parm.Leaders.Value)).Select(x => x.ID);
@@ -360,6 +354,10 @@ namespace GMS.Crm.BLL
 
         private void GetFilter(BusinessPostParameter parm, ref IQueryable<Customer> query)
         {
+            if (parm.StaffID.HasValue == true)
+            {
+                query = query.Where(p => p.Staff.ID == (parm.StaffID.HasValue ? parm.StaffID.Value : p.Staff.ID));
+            }
             if (parm.Category.HasValue == true)
             {
                 query = query.Where(p => p.Category == (parm.Category.HasValue ? parm.Category.Value : p.Category));

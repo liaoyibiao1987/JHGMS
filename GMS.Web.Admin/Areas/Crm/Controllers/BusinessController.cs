@@ -64,7 +64,10 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
         {
             //Fetch.Post("");
             int currentstaffid = UserContext.LoginInfo.StaffID.HasValue ? UserContext.LoginInfo.StaffID.Value : -1;
-            PagedList<BusinessVM> list = CrmService.GetBusinessList(aoData, GetCurrentUserStaffs(currentstaffid));
+            List<int> staffids = GetCurrentUserStaffs(currentstaffid);
+
+            PagedList<BusinessVM> list = CrmService.GetBusinessList(aoData, staffids);
+
             return new JsonResult()
             {
                 Data = new
@@ -92,7 +95,7 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
             ViewData.Add("CustomerId", new SelectList(customerList, "Id", "Name"));
 
             List<Staff> liststaff = GetCurrentUserStaffs();
-            ViewData.Add("Staffs", new SelectList(liststaff.Select(c => new { Id = c.ID, Name = c.Name }), "Id", "Name", UserContext.LoginInfo.StaffID));
+            ViewData.Add("Staffs", new SelectList(liststaff.Select(c => new { Id = c.ID, Name = c.Name }), "Id", "Name"));
 
             ViewData.Add("ChainType", new SelectList(EnumHelper.GetItemValueList<EnumChainType>(), "Key", "Value"));
 

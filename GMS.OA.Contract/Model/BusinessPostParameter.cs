@@ -88,6 +88,12 @@ namespace GMS.OA.Contract.Model
                 return start / length + 1;
             }
         }
+
+
+        public override string ToString()
+        {
+            return string.Format("startdate {0} enddate {1} Category {2} Channel {3} BusinessType {4} StaffID {5} EnumPosition {6} CustomerId {7} Leaders {8} Suboffice {9} ChainType {10} CooperationKinds {11} CooperationOrNot {12}", startdate, enddate, Category, Channel, BusinessType, StaffID, EnumPosition, CustomerId, Leaders, Suboffice, ChainType, CooperationKinds, CooperationOrNot);
+        }
     }
 
     public class OrderParm

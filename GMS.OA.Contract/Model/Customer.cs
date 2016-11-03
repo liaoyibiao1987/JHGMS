@@ -19,8 +19,8 @@ namespace GMS.Crm.Contract
             this.CustomerCooperationsIds = new List<int>();
             Gender = 0;
         }
-        [StringLength(50, ErrorMessage = "客户名不能超过50个字")]
-        [Required(ErrorMessage = "客户名不能为空")]
+        //[StringLength(50, ErrorMessage = "客户名不能超过50个字")]
+        //[Required(ErrorMessage = "客户名不能为空")]
         public string Name { get; set; }
 
         public string Contacter { get; set; }

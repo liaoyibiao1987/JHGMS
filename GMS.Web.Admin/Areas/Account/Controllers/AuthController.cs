@@ -30,26 +30,33 @@ namespace GMS.Web.Admin.Areas.Account.Controllers
                 ModelState.AddModelError("error", "验证码错误");
                 return View();
             }
-
-            var loginInfo = this.AccountService.Login(username, password);
-            if (loginInfo.StaffID.HasValue == false)
+            if (string.IsNullOrEmpty(username) == true || string.IsNullOrEmpty(password) == true)
             {
-                ModelState.AddModelError("error", "改用户没有员工号。");
                 return View();
-            }
-            if (loginInfo != null)
-            {
-                this.CookieContext.UserToken = loginInfo.LoginToken;
-                this.CookieContext.UserName = loginInfo.LoginName;
-                this.CookieContext.UserId = loginInfo.UserID;
-                this.CookieContext.StaffID = loginInfo.StaffID.Value;
-                return RedirectToAction("Index");
             }
             else
             {
-                ModelState.AddModelError("error", "用户名或密码错误");
-                return View();
+                var loginInfo = this.AccountService.Login(username, password);
+                if (loginInfo != null)
+                {
+                    if (loginInfo.StaffID.HasValue == false)
+                    {
+                        ModelState.AddModelError("error", "改用户没有员工号。");
+                        return View();
+                    }
+                    this.CookieContext.UserToken = loginInfo.LoginToken;
+                    this.CookieContext.UserName = loginInfo.LoginName;
+                    this.CookieContext.UserId = loginInfo.UserID;
+                    this.CookieContext.StaffID = loginInfo.StaffID.Value;
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    ModelState.AddModelError("error", "用户名或密码错误");
+                    return View();
+                }
             }
+
         }
 
         public ActionResult Logout()
