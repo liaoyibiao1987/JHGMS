@@ -17,7 +17,7 @@ namespace GMS.OA.BLL
         #region Staff CURD
         public Staff GetStaff(int id)
         {
-            using (var dbContext = new OADbContext())
+            using (var dbContext = new CRMOAContext())
             {
                 return dbContext.Staffs.Include("Branch").Include("User").FirstOrDefault(a => a.ID == id);
             }
@@ -26,7 +26,7 @@ namespace GMS.OA.BLL
         public IEnumerable<Staff> GetStaffList(StaffRequest request = null)
         {
             request = request ?? new StaffRequest();
-            using (var dbContext = new OADbContext())
+            using (var dbContext = new CRMOAContext())
             {
                 IQueryable<Staff> staffs = dbContext.Staffs.Include("Branch").Include("User");
                 if (!string.IsNullOrEmpty(request.Name))
@@ -41,7 +41,7 @@ namespace GMS.OA.BLL
 
         public IEnumerable<Staff> GetAllStaffList()
         {
-            using (var dbContext = new OADbContext())
+            using (var dbContext = new CRMOAContext())
             {
                 IEnumerable<Staff> staffs = dbContext.Staffs.Include("Branch").Include("User").ToList();
                 return staffs.OrderByDescending(u => u.ID);
@@ -50,7 +50,7 @@ namespace GMS.OA.BLL
 
         public void SaveStaff(Staff staff)
         {
-            using (var dbContext = new OADbContext())
+            using (var dbContext = new CRMOAContext())
             {
 
                 if (staff.ID > 0)
@@ -76,7 +76,7 @@ namespace GMS.OA.BLL
 
         public void DeleteStaff(List<int> ids)
         {
-            using (var dbContext = new OADbContext())
+            using (var dbContext = new CRMOAContext())
             {
                 Func<User, User> fun = new Func<User, User>((p) =>
                 {
@@ -127,7 +127,7 @@ namespace GMS.OA.BLL
         }
         public List<Staff> GetBelongsStaffEntity(int id)
         {
-            using (var dbContext = new OADbContext())
+            using (var dbContext = new CRMOAContext())
             {
                 var staff = dbContext.Staffs.FirstOrDefault(a => a.ID == id);
 
@@ -174,7 +174,7 @@ namespace GMS.OA.BLL
 
         private IEnumerable<Branch> GetSonBranch(int BranchID)
         {
-            using (var dbContext = new OADbContext())
+            using (var dbContext = new CRMOAContext())
             {
                 var query = from c in dbContext.Branchs
                             where c.ParentId.Equals(BranchID)
@@ -184,7 +184,7 @@ namespace GMS.OA.BLL
         }
         private IEnumerable<Branch> GetParentBranch(int BranchID)
         {
-            using (var dbContext = new OADbContext())
+            using (var dbContext = new CRMOAContext())
             {
                 Branch branch = dbContext.Branchs.FirstOrDefault(p => p.ID == BranchID);
                 var query = from c in dbContext.Branchs
@@ -199,7 +199,7 @@ namespace GMS.OA.BLL
         #region Branch CURD
         public Branch GetBranch(int id)
         {
-            using (var dbContext = new OADbContext())
+            using (var dbContext = new CRMOAContext())
             {
                 return dbContext.Find<Branch>(id);
             }
@@ -208,7 +208,7 @@ namespace GMS.OA.BLL
         public IEnumerable<Branch> GetBranchList(BranchRequest request = null)
         {
             request = request ?? new BranchRequest();
-            using (var dbContext = new OADbContext())
+            using (var dbContext = new CRMOAContext())
             {
                 IQueryable<Branch> branchs = dbContext.Branchs;
 
@@ -221,7 +221,7 @@ namespace GMS.OA.BLL
 
         public void SaveBranch(Branch branch)
         {
-            using (var dbContext = new OADbContext())
+            using (var dbContext = new CRMOAContext())
             {
                 if (branch.ID > 0)
                 {
@@ -236,7 +236,7 @@ namespace GMS.OA.BLL
 
         public void DeleteBranch(List<int> ids)
         {
-            using (var dbContext = new OADbContext())
+            using (var dbContext = new CRMOAContext())
             {
                 dbContext.Branchs.Where(u => ids.Contains(u.ID)).Delete();
             }
@@ -249,7 +249,7 @@ namespace GMS.OA.BLL
         /// <returns></returns>
         public Branch GetOrg()
         {
-            using (var dbContext = new OADbContext())
+            using (var dbContext = new CRMOAContext())
             {
                 var branchs = dbContext.Branchs.ToList();
                 var staffs = dbContext.Staffs.ToList();
@@ -274,7 +274,7 @@ namespace GMS.OA.BLL
         /// <param name="rootBranch"></param>
         public void SaveOrg(Branch rootBranch)
         {
-            using (var dbContext = new OADbContext())
+            using (var dbContext = new CRMOAContext())
             {
                 var branchs = dbContext.Branchs.ToList();
                 branchs.ForEach(b => b.ParentId = 0);

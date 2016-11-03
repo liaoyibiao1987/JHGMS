@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using GMS.Cms.Contract;
-using GMS.Cms.DAL;
 using GMS.Framework.Utility;
 using System.Data.Entity;
 using GMS.Framework.Contract;
 using EntityFramework.Extensions;
 using GMS.Core.Cache;
+using GMS.OA.DAL;
 
 namespace GMS.Cms.BLL
 {
@@ -17,7 +17,7 @@ namespace GMS.Cms.BLL
         #region Article CURD
         public Article GetArticle(int id)
         {
-            using (var dbContext = new CmsDbContext())
+            using (var dbContext = new CRMOAContext())
             {
                 return dbContext.Articles.Include("Tags").FirstOrDefault(a=>a.ID == id);
             }

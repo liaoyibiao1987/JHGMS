@@ -87,6 +87,12 @@ namespace GMS.Web.Admin.Areas.Account.Controllers
 
             return this.RefreshParent();
         }
+        [HttpPost]
+        public JsonResult ModifyLoginName(int id, string name)
+        {
+            bool ret = this.AccountService.UpdateUserLoginName(id, name);
+            return Json(new { result = ret });
+        }
 
         // POST: /Account/User/Delete/5
 

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using GMS.Account.Contract;
-using GMS.Account.DAL;
 using GMS.Framework.Utility;
 using GMS.Framework.Contract;
 using EntityFramework.Extensions;
@@ -11,6 +10,8 @@ using GMS.Core.Cache;
 using GMS.Core.Config;
 using GMS.Crm.Contract;
 using System.Data.Entity.Core.Objects;
+using GMS.OA.DAL;
+using GMS.OA.BLL;
 
 namespace GMS.Account.BLL
 {
@@ -24,7 +25,7 @@ namespace GMS.Account.BLL
         {
             return CacheHelper.Get<LoginInfo>(string.Format(_LoginInfoKeyFormat, token), () =>
             {
-                using (var dbContext = new AccountDbContext())
+                using (var dbContext = new CRMOAContext())
                 {
                     //如果有超时的，启动超时处理
                     var timeoutList = dbContext.FindAll<LoginInfo>(p => EntityFunctions.DiffMinutes(DateTime.Now, p.LastAccessTime) > _UserLoginTimeoutMinutes);
@@ -56,7 +57,7 @@ namespace GMS.Account.BLL
             password = Encrypt.MD5(password);
             loginName = loginName.Trim();
 
-            using (var dbContext = new AccountDbContext())
+            using (var dbContext = new CRMOAContext())
             {
                 var user = dbContext.Users.Include("Roles").Where(u => u.LoginName == loginName && u.Password == password && u.IsActive).FirstOrDefault();
                 if (user != null)
@@ -82,7 +83,7 @@ namespace GMS.Account.BLL
 
         public void Logout(Guid token)
         {
-            using (var dbContext = new AccountDbContext())
+            using (var dbContext = new CRMOAContext())
             {
                 var loginInfo = dbContext.FindAll<LoginInfo>(l => l.LoginToken == token).FirstOrDefault();
                 if (loginInfo != null)
@@ -98,7 +99,7 @@ namespace GMS.Account.BLL
         {
             user.Password = Encrypt.MD5(user.Password);
 
-            using (var dbContext = new AccountDbContext())
+            using (var dbContext = new CRMOAContext())
             {
                 if (dbContext.Users.Any(l => l.ID == user.ID && user.Password == l.Password))
                 {
@@ -113,10 +114,26 @@ namespace GMS.Account.BLL
                 }
             }
         }
+        public bool UpdateUserLoginName(int id, string name)
+        {
+            using (var dbContext = new CRMOAContext())
+            {
+                var p = dbContext.Users.Where(u => u.ID == id).SingleOrDefault();
+                if (p != null)
+                {
+                    p.LoginName = name;
+                    return dbContext.Update<User>(p) != null;
+                }
+                else
+                {
+                    return false;
+                }
 
+            }
+        }
         public User GetUser(int id)
         {
-            using (var dbContext = new AccountDbContext())
+            using (var dbContext = new CRMOAContext())
             {
                 var p = dbContext.Users.Include("Roles").Where(u => u.ID == id).SingleOrDefault();
                 return p;
@@ -127,7 +144,7 @@ namespace GMS.Account.BLL
         {
             request = request ?? new UserRequest();
 
-            using (var dbContext = new AccountDbContext())
+            using (var dbContext = new CRMOAContext())
             {
                 IQueryable<User> users = dbContext.Users.Include("Roles");
 
@@ -144,7 +161,7 @@ namespace GMS.Account.BLL
         public IEnumerable<User> GetActivedUserList(int staffid = 0)
         {
             //IEnumerable<User> ret;
-            using (var dbContext = new AccountDbContext())
+            using (var dbContext = new CRMOAContext())
             {
                 IQueryable<User> users;
                 users = dbContext.Users;
@@ -157,7 +174,7 @@ namespace GMS.Account.BLL
 
         public void SaveUser(User user)
         {
-            using (var dbContext = new AccountDbContext())
+            using (var dbContext = new CRMOAContext())
             {
                 if (user.ID > 0)
                 {
@@ -188,7 +205,7 @@ namespace GMS.Account.BLL
 
         public void DeleteUser(List<int> ids)
         {
-            using (var dbContext = new AccountDbContext())
+            using (var dbContext = new CRMOAContext())
             {
                 dbContext.Users.Include("Roles").Where(u => ids.Contains(u.ID)).ToList().ForEach(a => { a.Roles.Clear(); dbContext.Users.Remove(a); });
                 dbContext.SaveChanges();
@@ -197,7 +214,7 @@ namespace GMS.Account.BLL
 
         public Role GetRole(int id)
         {
-            using (var dbContext = new AccountDbContext())
+            using (var dbContext = new CRMOAContext())
             {
                 return dbContext.Find<Role>(id);
             }
@@ -206,7 +223,7 @@ namespace GMS.Account.BLL
         public IEnumerable<Role> GetRoleList(RoleRequest request = null)
         {
             request = request ?? new RoleRequest();
-            using (var dbContext = new AccountDbContext())
+            using (var dbContext = new CRMOAContext())
             {
                 IQueryable<Role> roles = dbContext.Roles;
 
@@ -221,7 +238,7 @@ namespace GMS.Account.BLL
 
         public void SaveRole(Role role)
         {
-            using (var dbContext = new AccountDbContext())
+            using (var dbContext = new CRMOAContext())
             {
                 if (role.ID > 0)
                 {
@@ -236,7 +253,7 @@ namespace GMS.Account.BLL
 
         public void DeleteRole(List<int> ids)
         {
-            using (var dbContext = new AccountDbContext())
+            using (var dbContext = new CRMOAContext())
             {
                 dbContext.Roles.Include("Users").Where(u => ids.Contains(u.ID)).ToList().ForEach(a => { a.Users.Clear(); dbContext.Roles.Remove(a); });
                 dbContext.SaveChanges();
@@ -248,7 +265,7 @@ namespace GMS.Account.BLL
             if (string.IsNullOrWhiteSpace(verifyCodeText))
                 throw new BusinessException("verifyCode", "输入的验证码不能为空！");
 
-            using (var dbContext = new AccountDbContext())
+            using (var dbContext = new CRMOAContext())
             {
                 var verifyCode = new VerifyCode() { VerifyText = verifyCodeText, Guid = Guid.NewGuid() };
                 dbContext.Insert<VerifyCode>(verifyCode);
@@ -258,7 +275,7 @@ namespace GMS.Account.BLL
 
         public bool CheckVerifyCode(string verifyCodeText, Guid guid)
         {
-            using (var dbContext = new AccountDbContext())
+            using (var dbContext = new CRMOAContext())
             {
                 var verifyCode = dbContext.FindAll<VerifyCode>(v => v.Guid == guid && v.VerifyText == verifyCodeText).LastOrDefault();
                 if (verifyCode != null)
@@ -281,7 +298,7 @@ namespace GMS.Account.BLL
 
         public bool AddProvinceByName(string name)
         {
-            using (var dbContext = new AccountDbContext())
+            using (var dbContext = new CRMOAContext())
             {
                 if (string.IsNullOrEmpty(name) == false)
                 {
@@ -307,7 +324,7 @@ namespace GMS.Account.BLL
 
         public bool AddCityByName(int provinceId, string name)
         {
-            using (var dbContext = new AccountDbContext())
+            using (var dbContext = new CRMOAContext())
             {
                 if (string.IsNullOrEmpty(name) == false)
                 {
@@ -332,7 +349,7 @@ namespace GMS.Account.BLL
 
         public bool AddAreaByName(int cityId, string name)
         {
-            using (var dbContext = new AccountDbContext())
+            using (var dbContext = new CRMOAContext())
             {
                 if (string.IsNullOrEmpty(name) == false)
                 {
@@ -358,7 +375,7 @@ namespace GMS.Account.BLL
         public IEnumerable<City> GetCityList(Request request = null)
         {
             request = request ?? new Request();
-            using (var dbContext = new AccountDbContext())
+            using (var dbContext = new CRMOAContext())
             {
                 IQueryable<City> citys = dbContext.Citys;
                 return citys.OrderByDescending(u => u.ID).ToList();
@@ -368,7 +385,7 @@ namespace GMS.Account.BLL
         public IEnumerable<Area> GetAreaList(Request request = null)
         {
             request = request ?? new Request();
-            using (var dbContext = new AccountDbContext())
+            using (var dbContext = new CRMOAContext())
             {
                 IQueryable<Area> areas = dbContext.Areas;
                 return areas.OrderByDescending(u => u.ID).ToList();
@@ -377,7 +394,7 @@ namespace GMS.Account.BLL
         public IEnumerable<Province> GetProvinceList(Request request = null)
         {
             request = request ?? new Request();
-            using (var dbContext = new AccountDbContext())
+            using (var dbContext = new CRMOAContext())
             {
                 IQueryable<Province> areas = dbContext.Provinces;
                 return areas.OrderByDescending(u => u.ID).ToList();
@@ -386,7 +403,7 @@ namespace GMS.Account.BLL
         public IEnumerable<Cooperations> GetCooperationsList(Request request = null)
         {
             request = request ?? new Request();
-            using (var dbContext = new AccountDbContext())
+            using (var dbContext = new CRMOAContext())
             {
                 IQueryable<Cooperations> cooperationsKinds = dbContext.Cooperations;
                 return cooperationsKinds.OrderByDescending(u => u.ID).ToList();
@@ -395,7 +412,7 @@ namespace GMS.Account.BLL
         public bool DeleteCooperations(List<int> ids)
         {
             if (ids == null || ids.Count < 1) return false;
-            using (var dbContext = new AccountDbContext())
+            using (var dbContext = new CRMOAContext())
             {
                 IQueryable<Cooperations> cooperationsKinds = dbContext.Cooperations;
                 int ret = cooperationsKinds.Delete(p => ids.Contains(p.ID));
@@ -406,7 +423,7 @@ namespace GMS.Account.BLL
 
         public bool AddOrEidtCooperation(int id, string name)
         {
-            using (var dbContext = new AccountDbContext())
+            using (var dbContext = new CRMOAContext())
             {
                 if (id > 0)
                 {

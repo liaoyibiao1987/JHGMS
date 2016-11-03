@@ -11,9 +11,63 @@
 }
 @section PageSpecificJavascriptIncludes{
     <script type="text/javascript">
+        var isModifyName = false;
+        var oldName;
         $(document).ready(function () {
+            $("#btnModifyName").click(function () {
+                if (isModifyName == false) {
+                    oldName =  $('#LoginName').val();
+                    $('#LoginName').removeAttr("disabled");
+                    $('#btnSubmitName').show(200);
+                    $("#btnModifyName").val("取消");
 
-        });
+                } else {
+                    $('#LoginName').val(oldName);
+                    $('#LoginName').attr("disabled", "disabled");
+                    $('#btnSubmitName').hide(200);
+                    $("#btnModifyName").val("更改用户名");
+                }
+                isModifyName = !isModifyName;
+            });
+            $("#btnSubmitName").click(function () {
+                if (confirm("确定修改用登陆名称?") == true) {
+                    $.ajax({
+                        cache: false,
+                        type: "POST",
+                        data: {
+                            id: @Model.ID ,
+                            name: $('#LoginName').val()
+                        },
+                        url: "/Account/User/ModifyLoginName",
+                        dataType: "json",
+                        error:function(e)
+                        {
+                            alert("修改失败");
+                            console.log("修改失败:" + e);
+                        },
+                        timeout: function(e)
+                        {
+                            alert("修改失败");
+                            console.log("修改失败:" + e);
+                        },
+                        success: function (data) {
+                            oldName =  $('#LoginName').val();
+                            if(data.result == true)
+                            {
+                                isModifyName=false;
+                                alert("修改成功");
+                                $("#btnModifyName").val("更改用户名");
+                                $('#btnSubmitName').hide(200);
+                                $('#LoginName').attr("disabled", "disabled");
+                            }else
+                            {
+                                alert("修改失败");
+                            }
+                        }
+                    });
+                }
+            });
+        })
     </script>
 }
 @section MainContent{
@@ -30,10 +84,11 @@
                     }
                     else
                     {
-                        @Html.TextBoxFor(m => m.LoginName, new { @class = "m-wrap small disabled" })
+                        @Html.TextBoxFor(m => m.LoginName, new { @class = "m-wrap small ", disabled = false })
+                        <input type="button" id="btnModifyName" class="btn blue" value="更改用户名" />
+                        <input type="button" class="btn red" id="btnSubmitName" style="display:none" value="提交更改" />
                     }
-                    <input type="button" id="btnmodifyname" value="更改用户名">
-                    <button id="btnmodifyname">更改用户名</button>
+
                 </div>
             </div>
 

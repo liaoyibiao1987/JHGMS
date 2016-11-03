@@ -13,6 +13,7 @@ namespace GMS.Account.Contract
         void ModifyPwd(User user);
 
         User GetUser(int id);
+        bool UpdateUserLoginName(int id, string name);
         IEnumerable<User> GetUserList(UserRequest request = null);
         IEnumerable<User> GetActivedUserList(int staffid = 0);
         void SaveUser(User user);
