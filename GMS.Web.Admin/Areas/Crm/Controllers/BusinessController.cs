@@ -59,6 +59,15 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
             IEnumerable<Branch> all = OAService.GetBranchList();
             return Json(all);
         }
+
+        [HttpPost]
+        public JsonResult GetPayment(int ID, string BDate)
+        {
+            Payment p = CrmService.GetPayment(ID, BDate);
+            return Json(new { Payment = p });
+        }
+
+
         [HttpPost]
         public JsonResult GetBusinessByAjax(BusinessPostParameter aoData)
         {

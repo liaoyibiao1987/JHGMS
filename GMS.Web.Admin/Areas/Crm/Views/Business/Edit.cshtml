@@ -90,14 +90,18 @@
                 defaultDate: "w",
                 changeMonth: true,
                 numberOfMonths: 2,
-                onSelect: function (selectedDate) {
+                onSelect: function (selectedDate, obj) {
                     var option = this.id == "CreateDate" ? "minDate" : "maxDate",
                     instance = $(this).data("datepicker"),
                     date = $.datepicker.parseDate(
                         instance.settings.dateFormat ||
                         $.datepicker._defaults.dateFormat,
                         selectedDate, instance.settings);
+                    if (obj.lastVal.substring(0, 7) != selectedDate.substring(0, 7)) {
+                        GetPrePayment();
+                    }
                     dates.not(this).datepicker("option", option, date);
+
                 }
             });
 
@@ -107,9 +111,35 @@
                 increaseArea: '20%' // optional
 
             });
-            $("#CustomerId").combobox();
-
+            $("#CustomerId").combobox(
+                 {
+                     select: function (recoder) {
+                         GetPrePayment();
+                     }
+                 });
+            GetPrePayment();
         });
+
+        function GetPrePayment() {
+            var custID = $("#CustomerId").val();
+            $.ajax({
+                type: "POST",
+                url: "/Crm/Business/GetPayment",
+                data: {
+                    ID: custID,
+                    BDate: $("#CreateTime").datepicker("getDate").format("yyyyMM")
+                },
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined && data.Payment != undefined) {
+                        $("#PredictPayment").val(data.Payment.PredictPayment);
+                    }
+                    else {
+                        $("#PredictPayment").val("");
+                    }
+                }
+            });
+        }
     </script>
 
 }

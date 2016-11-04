@@ -320,7 +320,7 @@ namespace GMS.Crm.BLL
                             select new BusinessVM
                             {
                                 Customer = a,
-                                Business = t.Where(p => (p.CreateTime > parm.startdate.Value && p.CreateTime < parm.enddate.Value)).OrderBy(aa => aa.CreateTime),
+                                Business = t.Where(p => (p.CreateTime >= parm.startdate.Value && p.CreateTime < parm.enddate.Value)).OrderBy(aa => aa.CreateTime),
                                 Provienc = x.FirstOrDefault() == null ? "" : x.FirstOrDefault().Name,
                                 CityName = z.FirstOrDefault() == null ? "" : z.FirstOrDefault().Name,
                                 Staff = y.FirstOrDefault(),

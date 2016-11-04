@@ -23,7 +23,7 @@ namespace GMS.Framework.Web
                 return null;
             }
         }
-        
+
         /// <summary>
         /// 分页大小
         /// </summary>
@@ -47,7 +47,7 @@ namespace GMS.Framework.Web
         /// <returns></returns>
         public ContentResult RefreshParent(string alert = null)
         {
-            var script = string.Format("<script>{0}; parent.location.reload(1)</script>", string.IsNullOrEmpty(alert) ? string.Empty : "alert('" + alert + "')");
+            var script = string.Format("<script>{0}; if(top.location != location) parent.location.reload(1)</script>", string.IsNullOrEmpty(alert) ? string.Empty : "alert('" + alert + "')");
             return this.Content(script);
         }
 
@@ -190,7 +190,7 @@ namespace GMS.Framework.Web
 
         protected virtual void LogException(Exception exception, WebExceptionContext exceptionContext = null)
         {
-          //do nothing!
+            //do nothing!
         }
     }
 
