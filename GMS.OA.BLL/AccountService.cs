@@ -131,6 +131,26 @@ namespace GMS.Account.BLL
 
             }
         }
+
+        public bool ResetPW(int id, string password)
+        {
+            using (var dbContext = new CRMOAContext())
+            {
+                var p = dbContext.Users.Where(u => u.ID == id).SingleOrDefault();
+                if (p != null)
+                {
+                    p.Password = password;
+                    return dbContext.Update<User>(p) != null;
+                }
+                else
+                {
+                    return false;
+                }
+
+            }
+        }
+
+
         public User GetUser(int id)
         {
             using (var dbContext = new CRMOAContext())

@@ -14,6 +14,8 @@ namespace GMS.Account.Contract
 
         User GetUser(int id);
         bool UpdateUserLoginName(int id, string name);
+        bool ResetPW(int id, string password);
+
         IEnumerable<User> GetUserList(UserRequest request = null);
         IEnumerable<User> GetActivedUserList(int staffid = 0);
         void SaveUser(User user);

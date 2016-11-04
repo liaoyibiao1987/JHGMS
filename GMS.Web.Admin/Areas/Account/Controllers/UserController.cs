@@ -94,6 +94,14 @@ namespace GMS.Web.Admin.Areas.Account.Controllers
             return Json(new { result = ret });
         }
 
+        [HttpPost]
+        public JsonResult ResetPassword(int id)
+        {
+            string password = Encrypt.MD5("123456");
+
+            bool ret = this.AccountService.ResetPW(id, password);
+            return Json(new { result = ret });
+        }
         // POST: /Account/User/Delete/5
 
         [HttpPost]
