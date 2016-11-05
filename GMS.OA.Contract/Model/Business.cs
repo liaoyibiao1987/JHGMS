@@ -1,4 +1,5 @@
 ﻿using GMS.Framework.Contract;
+using GMS.Framework.Utility;
 using GMS.OA.Contract;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,6 @@ namespace GMS.Crm.Contract
         [Required]
         [StringLength(2000, ErrorMessage = "细节不能超过2000个字符")]
         public string Message { get; set; }
-        public string Log { get; set; }
 
         [NotMapped]
         public string Show_CreateDate
@@ -47,10 +47,74 @@ namespace GMS.Crm.Contract
             {
                 this.PredictPayment = pment.PredictPayment;
                 this.CurrentPayment = pment.CurrentPayment;
+
             }
         }
+
+
+        private string log = "";
+        public string Log
+        {
+            get
+            {
+                if (Logs != null)
+                {
+                    log = SerializationHelper.XmlSerialize(Logs);
+                    return log;
+                }
+                else
+                {
+                    return "";
+                }
+            }
+            set
+            {
+                if (string.IsNullOrEmpty(value) == false)
+                {
+                    Logs = SerializationHelper.XmlDeserialize(typeof(List<BusinessLog>), value) as List<BusinessLog>;
+                }
+                log = value;
+            }
+        }
+
+
+        [NotMapped]
+        public List<BusinessLog> Logs { get; set; }
+
+        /// <summary>
+        /// 自动记录上一条跟单信息
+        /// </summary>
+        public void IncreaseLog()
+        {
+            if (Logs == null)
+            {
+                Logs = new List<BusinessLog>();
+
+            }
+            Logs.Add(new BusinessLog
+            {
+                Create = this.CreateTime,
+                CurrentPayment = this.CurrentPayment.HasValue ? this.CurrentPayment.Value : 0,
+                Message = this.Message,
+                PredictPayment = this.PredictPayment.HasValue ? this.PredictPayment.Value : 0,
+                StaffID = this.StaffID.HasValue ? this.StaffID.Value : 0,
+            });
+        }
+
     }
 
+    [Serializable]
+    public class BusinessLog
+    {
+        public DateTime Create { get; set; }
+
+        public int StaffID { get; set; }
+        public string Message { get; set; }
+
+        public double CurrentPayment { get; set; }
+
+        public double PredictPayment { get; set; }
+    }
     public class BusinessVM
     {
         private Staff staff;

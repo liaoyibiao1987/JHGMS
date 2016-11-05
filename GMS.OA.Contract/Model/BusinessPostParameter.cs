@@ -72,6 +72,11 @@ namespace GMS.OA.Contract.Model
         /// </summary>
         public bool? CooperationOrNot { get; set; }
         /// <summary>
+        ///是否有业务
+        /// </summary>
+        public bool? HasBusiness { get; set; }
+
+        /// <summary>
         /// 排序列的数量
         /// </summary>
         public List<OrderParm> order { get; set; }

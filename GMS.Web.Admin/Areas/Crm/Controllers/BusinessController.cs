@@ -204,6 +204,7 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
             if (ModelState.IsValid)
             {
                 Business business = CrmService.GetBusinessById(ID);
+                business.IncreaseLog();
                 if (business != null)
                 {
                     this.TryUpdateModel<Business>(business);

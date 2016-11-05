@@ -289,6 +289,8 @@
                     aoData.CooperationOrNot = $("#CooperationOrNot").val();
                     aoData.ChainType = $("#ChainType").val();
                     aoData.CooperationKinds = $("#CooperationKinds").val();
+
+                    aoData.HasBusiness = $("#HasBusiness").val();
                 }
                , "order": [[6, "desc"]]
                , "columns": [
@@ -883,6 +885,13 @@
                 </select>
             </span>
             <span>合作种类：@Html.DropDownList("CooperationKinds", ViewData["CooperationKinds"] as SelectList, "--请选择--", new { @class = "selects" })</span>
+            <span>
+                业务统计：<select id="HasBusiness" class="selects">
+                    <option>全部</option>
+                    <option value="true">存在</option>
+                    <option value="false">不存在</option>
+                </select>
+            </span>
             <span id="perlength">
                 显示 <select id="tablelength" style="width:60px! important;">
                     <option value="10">10</option>

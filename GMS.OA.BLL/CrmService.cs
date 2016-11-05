@@ -309,7 +309,7 @@ namespace GMS.Crm.BLL
 
                 var query = (//from a in dbContext.Customers.Include("Cooperations").Include("Staff").Include("City")
                             from a in fristquery
-                            join b in dbContext.Business on new { Cus = a.ID, Stf = a.StaffID } equals new { Cus = b.CustomerID == null ? 0 : b.CustomerID.Value, Stf = b.StaffID } into t
+                            join b in dbContext.Business on new { Cus = a.ID } equals new { Cus = b.CustomerID == null ? 0 : b.CustomerID.Value } into t
                             join c in dbContext.Provinces on (a.CityId == null ? 0 : a.City.ProvinceID) equals c.ID into x
 
                             join d in dbContext.Staffs on (a.StaffID) equals d.ID into y
@@ -331,6 +331,18 @@ namespace GMS.Crm.BLL
 
                 GetSortting(parm, ref query);
                 //GetFilter(parm, ref query);
+
+                if (parm.HasBusiness.HasValue == true)
+                {
+                    if (parm.HasBusiness.Value == true)
+                    {
+                        query = query.Where(p => p.Business.Count() > 0);
+                    }
+                    else
+                    {
+                        query = query.Where(p => (p.Business.Count() == 0));
+                    }
+                }
 
                 if (parm.EnumPosition.HasValue == true)
                 {
