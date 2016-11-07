@@ -7,6 +7,7 @@ using GMS.OA.Contract.Model;
 using GMS.Web.Admin.Common;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Web;
@@ -286,6 +287,40 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
             ViewData.Add("CustomerId", new SelectList(customerList, "Id", "Name", customid));
         }
 
+
+
+
+        private void GentExcel(BusinessPostParameter aoData)
+        {
+
+            int currentstaffid = UserContext.LoginInfo.StaffID.HasValue ? UserContext.LoginInfo.StaffID.Value : -1;
+            List<int> staffids = GetCurrentUserStaffs(currentstaffid);
+            FileInfo outputFile = new FileInfo(Path.Combine(Server.MapPath("~/excel/" + DateTime.Now.ToString("yyyMMdd")), @"/" + Guid.NewGuid().ToString() + ".xlsx"));
+            PagedList<BusinessVM> list = CrmService.GetBusinessList(aoData, staffids);
+            using (FastExcel fastExcel = new FastExcel(outputFile))
+            {
+                Worksheet worksheet = new Worksheet();
+                List<Row> rows = new List<Row>();
+
+                for (int rowNumber = 1; rowNumber < list.Count; rowNumber++)
+                {
+                    List<Cell> cells = new List<Cell>();
+                    cells.Add(new Cell(1, list[rowNumber].Customer.CityId));
+                    cells.Add(new Cell(2, list[rowNumber].Customer.CityId));
+                    cells.Add(new Cell(3, list[rowNumber].Customer.CityId));
+                    cells.Add(new Cell(4, list[rowNumber].Customer.CityId));
+                    cells.Add(new Cell(5, list[rowNumber].Customer.CityId));
+                    cells.Add(new Cell(6, list[rowNumber].Customer.CityId));
+                    cells.Add(new Cell(7, "Test 1 " + rowNumber));
+                    cells.Add(new Cell(8, DateTime.Now.ToLongTimeString()));
+
+                    rows.Add(new Row(rowNumber, cells));
+                }
+                worksheet.Rows = rows;
+                fastExcel.Write(worksheet, "sheet1");
+                //fastExcel.Write(objectList, "sheet3", true);
+            }
+        }
 
         public Dictionary<int, City> CityDic
         {

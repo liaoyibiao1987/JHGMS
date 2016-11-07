@@ -46,8 +46,20 @@
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\40-System.IO.Compression.1.0.0.2\lib\net40-client\System.IO.Compression.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.Compression.FileSystem, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\40-System.IO.Compression.FileSystem.1.0.0.2\lib\net40-client\System.IO.Compression.FileSystem.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Shim, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Shim.1.0.0.1\lib\net40-client\System.Shim.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
@@ -63,6 +75,18 @@
     <Compile Include="Encrypt.cs" />
     <Compile Include="EnumHelper.cs" />
     <Compile Include="Exception.cs" />
+    <Compile Include="FastExcel\Cell.cs" />
+    <Compile Include="FastExcel\FastExcel.Add.cs" />
+    <Compile Include="FastExcel\FastExcel.cs" />
+    <Compile Include="FastExcel\FastExcel.Delete.cs" />
+    <Compile Include="FastExcel\FastExcel.Read.cs" />
+    <Compile Include="FastExcel\FastExcel.Update.cs" />
+    <Compile Include="FastExcel\FastExcel.Worksheets.cs" />
+    <Compile Include="FastExcel\FastExcel.Write.cs" />
+    <Compile Include="FastExcel\Row.cs" />
+    <Compile Include="FastExcel\SharedStrings.cs" />
+    <Compile Include="FastExcel\Worksheet.cs" />
+    <Compile Include="FastExcel\WorksheetAddSettings.cs" />
     <Compile Include="Fetch.cs" />
     <Compile Include="FileWatchHelper.cs" />
     <Compile Include="GeoHelper.cs" />
@@ -98,6 +122,9 @@
     <Compile Include="ValidateCode\ValidateCode_Style8.cs" />
     <Compile Include="ValidateCode\ValidateCode_Style9.cs" />
     <Compile Include="WcfServiceProxy.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
