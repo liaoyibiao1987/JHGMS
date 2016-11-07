@@ -289,15 +289,18 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
 
 
 
-
-        private void GentExcel(BusinessPostParameter aoData)
+        [HttpPost]
+        public void GentExcel(BusinessPostParameter aoData)
         {
-
             int currentstaffid = UserContext.LoginInfo.StaffID.HasValue ? UserContext.LoginInfo.StaffID.Value : -1;
             List<int> staffids = GetCurrentUserStaffs(currentstaffid);
-            FileInfo outputFile = new FileInfo(Path.Combine(Server.MapPath("~/excel/" + DateTime.Now.ToString("yyyMMdd")), @"/" + Guid.NewGuid().ToString() + ".xlsx"));
-            PagedList<BusinessVM> list = CrmService.GetBusinessList(aoData, staffids);
-            using (FastExcel fastExcel = new FastExcel(outputFile))
+
+            string temFilepath = Path.Combine(Request.PhysicalApplicationPath, "Template" + ".xlsx");
+            string outputFilepath = Path.Combine(Request.PhysicalApplicationPath, "outputFilepath" + ".xlsx");
+            FileInfo temFile = new FileInfo(temFilepath);
+            FileInfo outputFil = new FileInfo(outputFilepath);
+            List<BusinessVM> list = CrmService.GetBusinessDownload(aoData, staffids);
+            using (FastExcel fastExcel = new FastExcel(temFile, outputFil))
             {
                 Worksheet worksheet = new Worksheet();
                 List<Row> rows = new List<Row>();

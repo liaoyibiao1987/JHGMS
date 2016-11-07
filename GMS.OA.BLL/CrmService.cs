@@ -297,7 +297,65 @@ namespace GMS.Crm.BLL
             }
             return output;
         }
+        public List<BusinessVM> GetBusinessDownload(BusinessPostParameter parm, List<int> staffids)
+        {
+            if (parm == null || parm.startdate == null || parm.enddate == null || parm == null) return null;
+            string perpaymentmonth = parm.enddate.Value.ToString("yyyyMM");
+            using (var dbContext = new CRMOAContext())
+            {
+                var fristquery = dbContext.Customers.AsQueryable(); ;
+                GetFilter(parm, ref fristquery);
 
+                var query = (//from a in dbContext.Customers.Include("Cooperations").Include("Staff").Include("City")
+                            from a in fristquery
+                            join b in dbContext.Business on new { Cus = a.ID } equals new { Cus = b.CustomerID == null ? 0 : b.CustomerID.Value } into t
+                            join c in dbContext.Provinces on (a.CityId == null ? 0 : a.City.ProvinceID) equals c.ID into x
+
+                            join d in dbContext.Staffs on (a.StaffID) equals d.ID into y
+                            join e in dbContext.Citys on (a.CityId) equals e.ID into z
+                            join f in dbContext.Payments on a.ID equals f.CustomerID into zz
+                            where staffids.Contains(a.StaffID == null ? -1 : a.StaffID.Value)
+                            orderby a.ID descending
+                            select new BusinessVM
+                            {
+                                Customer = a,
+                                Business = t.Where(p => (p.CreateTime >= parm.startdate.Value && p.CreateTime < parm.enddate.Value)).OrderBy(aa => aa.CreateTime),
+                                Provienc = x.FirstOrDefault() == null ? "" : x.FirstOrDefault().Name,
+                                CityName = z.FirstOrDefault() == null ? "" : z.FirstOrDefault().Name,
+                                Staff = y.FirstOrDefault(),
+                                PerPayment = (zz.FirstOrDefault(p => p.Durring == perpaymentmonth) == null && zz.FirstOrDefault(p => p.Durring == perpaymentmonth).PredictPayment.HasValue == true) ? "" : zz.FirstOrDefault(p => p.Durring == perpaymentmonth).PredictPayment.ToString()
+                            });
+
+                if (parm.HasBusiness.HasValue == true)
+                {
+                    if (parm.HasBusiness.Value == true)
+                    {
+                        query = query.Where(p => p.Business.Count() > 0);
+                    }
+                    else
+                    {
+                        query = query.Where(p => (p.Business.Count() == 0));
+                    }
+                }
+
+                if (parm.EnumPosition.HasValue == true)
+                {
+                    query = query.Where(p => p.Staff.Position == (parm.EnumPosition.HasValue ? parm.EnumPosition.Value : p.Staff.Position));
+                }
+                if (parm.Leaders.HasValue == true)
+                {
+                    var tempquery = dbContext.Branchs.Where(p => (p.ID == parm.Leaders.Value || p.ParentId == parm.Leaders.Value)).Select(x => x.ID);
+                    query = query.Where(p => tempquery.Contains(p.Staff.BranchId.HasValue ? p.Staff.BranchId.Value : -1));
+                }
+                if (parm.Suboffice.HasValue == true)
+                {
+                    var tempquery = dbContext.Branchs.Where(p => (p.ID == parm.Suboffice.Value)).Select(x => x.ID).FirstOrDefault();
+                    query = query.Where(p => tempquery == p.Staff.BranchId);
+                }
+
+                return query.ToList();
+            }
+        }
         public PagedList<BusinessVM> GetBusinessList(BusinessPostParameter parm, List<int> staffids)
         {
             if (parm == null || parm.startdate == null || parm.enddate == null || parm == null) return null;

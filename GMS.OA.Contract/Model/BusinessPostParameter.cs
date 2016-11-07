@@ -90,6 +90,7 @@ namespace GMS.OA.Contract.Model
         {
             get
             {
+                if (length == 0) return 0;
                 return start / length + 1;
             }
         }
