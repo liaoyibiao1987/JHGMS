@@ -1504,6 +1504,9 @@
     <Content Include="Content\Xheditor\xheditor_skin\vista\img\wmp.gif" />
     <Content Include="Content\Xheditor\xheditor_skin\vista\ui.css" />
     <Content Include="crossdomain.xml" />
+    <Content Include="Download\readme.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Global.asax" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -1556,6 +1559,7 @@
     <Content Include="Areas\Account\Views\Settings\ProvinceSelect.cshtml" />
     <Content Include="Areas\Crm\Views\Customer\CitySelect.cshtml" />
     <Content Include="Areas\Crm\Views\Business\Index-back.cshtml" />
+    <Content Include="Areas\Crm\Views\Business\Create-Back.cshtml" />
     <None Include="Assets\bootstrap-colorpicker\less\colorpicker.less" />
     <None Include="Assets\bootstrap-datepicker\less\datepicker.less" />
     <None Include="Assets\bootstrap-daterangepicker\README.md" />
@@ -1768,6 +1772,7 @@
     <Content Include="packages.config" />
     <None Include="Properties\PublishProfiles\publishPPL.pubxml" />
     <None Include="Properties\PublishProfiles\xx.pubxml" />
+    <Content Include="Template.xlsx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GMS.Core.Cache\GMS.Core.Cache.csproj">

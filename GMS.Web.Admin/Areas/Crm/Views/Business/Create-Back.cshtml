@@ -104,6 +104,13 @@
     <script type='text/javascript'>
 
         $(document).ready(function () {
+            @*$("#Customer_Name").autocomplete({
+                source: '@Url.Action("GetCustomerNames", "Ajax")',
+                minLength: 1,
+                select: function (event, ui) {
+                }
+            });*@
+
             var date = new Date();
             var d = date.getDate();
             var m = date.getMonth();
@@ -125,6 +132,24 @@
                 },
                 loading: function (isloading, view) {
                     if (isloading) {
+                        //$("#loading").dialog({
+                        //    bgiframe: true,
+                        //    resizable: false,
+                        //    height: 140,
+                        //    modal: true,
+                        //    overlay: {
+                        //        backgroundColor: '#000',
+                        //        opacity: 0.5
+                        //    },
+                        //    buttons: {
+                        //        '确定': function () {
+                        //            $(this).dialog('close');
+                        //        },
+                        //       '取消': function () {
+                        //            $(this).dialog('close');
+                        //        }
+                        //    }
+                        //});
                     }
                     else {
                         $('#loading').hide();
@@ -133,6 +158,27 @@
                 selectable: true,
                 selectHelper: true,
                 select: function (start, end, allDay) {
+                    //选中一段时间
+                    @*var t = "输入记录信息";
+                    var a = '@Url.Action("EditByID")' + "?id=" + date.CustomerID + '&TB_iframe=true&height=480&width=600';
+                    var a = '@Url.Action("Edit", new { id = 8 })?TB_iframe=true&height=600&width=600';
+                    var g = false;
+                    tb_show(t, a, g);
+                    this.blur();
+                    return false;*@
+
+                    //var title = prompt('Event Title:');
+                    //if (title) {
+                    //    calendar.fullCalendar('renderEvent',
+                    //        {
+                    //            title: title,
+                    //            start: start,
+                    //            end: end,
+                    //            allDay: allDay
+                    //        },
+                    //        true // make the event "stick"
+                    //    );
+                    //}
                     calendar.fullCalendar('unselect');
                 },
                 titleFormat: "yyyy年-MM月",
@@ -210,6 +256,91 @@
                         }
                     });
                 },
+                //eventClick: function (event) {
+                //    var fstart = $.fullCalendar.formatDate(event.start, "HH:mm");
+                //    var fend = $.fullCalendar.formatDate(event.end, "HH:mm");
+                //    //  var schdata = { sid: event.sid, deleted: 1, uid: event.uid };
+                //    var selectdate = $.fullCalendar.formatDate(event.start, "yyyy-MM-dd");
+                //    $("#start").val(fstart);;
+                //    $("#end").datetimepicker('setDate', event.end);
+                //    $("#title").val(event.title); //标题
+                //    $("#details").val(event.description); //内容
+                //    $("#chengdu").val(event.confname); //重要程度
+                //    $("#reservebox").dialog({
+                //        autoOpen: false,
+                //        height: 450,
+                //        width: 400,
+                //        title: 'Reserve meeting room on ',
+                //        modal: true,
+                //        position: "center",
+                //        draggable: false,
+                //        beforeClose: function (event, ui) {
+                //            //$.validationEngine.closePrompt("#meeting");
+                //            //$.validationEngine.closePrompt("#start");
+                //            //$.validationEngine.closePrompt("#end");
+                //            $("#start").val(''); //开始时间
+                //            $("#end").val(''); //结束时间
+                //            $("#title").val(''); //标题
+                //            $("#details").val(''); //内容
+                //            $("#chengdu").val(''); //重要程度
+                //        },
+                //        timeFormat: 'HH:mm{ - HH:mm}',
+                //        buttons: {
+                //            "删除": function () {
+                //                var aa = window.confirm("警告：确定要删除记录，删除后无法恢复！");
+                //                if (aa) {
+                //                    var para = { id: event.id };
+                //                    $.ajax({
+                //                        type: "POST", //使用post方法访问后台
+
+                //                        url: "http://www.cnblogs.com/sr/removedate.ashx", //要访问的后台地址
+                //                        data: para, //要发送的数据
+                //                        success: function (data) {
+                //                            //对话框里面的数据提交完成，data为操作结果
+                //                            $('#calendar').fullCalendar('removeEvents', event.id);
+                //                        }
+                //                    });
+
+                //                }
+                //                $(this).dialog("close");
+                //            },
+                //            "reserve": function () {
+
+                //                var startdatestr = $("#start").val(); //开始时间
+                //                var enddatestr = $("#end").val(); //结束时间
+                //                var confid = $("#title").val(); //标题
+                //                var det = $("#details").val(); //内容
+                //                var cd = $("#chengdu").val(); //重要程度
+                //                var startdate = $.fullCalendar.parseDate(selectdate + "T" + startdatestr);
+                //                var enddate = $.fullCalendar.parseDate(enddatestr);
+
+                //                event.fullname = confid;
+                //                event.confname = cd;
+                //                event.start = startdate;
+                //                event.end = enddate;
+                //                event.description = det;
+                //                var id2;
+
+                //                var schdata = { title: confid, fullname: confid, description: det, confname: cd, confshortname: 'M1', start: selectdate + ' ' + startdatestr, end: enddatestr, id: event.id };
+                //                $.ajax({
+                //                    type: "POST", //使用post方法访问后台
+                //                    url: "http://www.cnblogs.com/sr/Updateinfo.ashx", //要访问的后台地址
+                //                    data: schdata, //要发送的数据
+                //                    success: function (data) {
+                //                        //对话框里面的数据提交完成，data为操作结果
+
+                //                        var schdata2 = { title: confid, fullname: confid, description: det, confname: cd, confshortname: 'M1', start: selectdate + ' ' + startdatestr, end: enddatestr, id: event.id };
+                //                        $('#calendar').fullCalendar('updateEvent', event);
+                //                    }
+                //                });
+                //                $(this).dialog("close");
+                //            }
+
+                //        }
+                //    });
+                //    $("#reservebox").dialog("open");
+                //    return false;
+                //},
                 events: function (start, end, callback) {
                     $.ajax({
                         type: "POST",
@@ -231,8 +362,8 @@
                             $.each(json, function (i, item) {
                                 var myDate = new Date(Date.parse(item.Show_CreateDate));
                                 var obj = new Object();
-                                obj.title = item.Customer.Name || item.Customer.Contacter || "";
-                                obj.message = item.Message || "";
+                                obj.title = item.Customer.Name;
+                                obj.message = item.Message;
                                 obj.textColor = "#ff0000";
                                 obj.CustomerID = item.Customer.ID;
                                 obj.ID = item.ID;

@@ -29,6 +29,7 @@ namespace GMS.Crm.Contract
         //IEnumerable<Business> GetBusinessList(BusinessRequest request, int staffID);
         void CreateBusiness(CreateBusinessEntity entity);
         bool UpdateBusiness(Business entity);
+        bool ModifyStaffs(List<int> customersID, int newstaffID);
         Business GetBusinessById(int businessID);
 
         Payment GetPayment(int customerid, string durring);

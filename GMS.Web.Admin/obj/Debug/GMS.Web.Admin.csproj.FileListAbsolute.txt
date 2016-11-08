@@ -232,3 +232,4 @@ C:\Users\Administrator\git\JHDMS\JHGMS\GMS.Web.Admin\bin\log4net.xml
 C:\Users\Administrator\git\JHDMS\JHGMS\GMS.Web.Admin\obj\Debug\GMS.Web.Admin.csprojResolveAssemblyReference.cache
 C:\Users\Administrator\git\JHDMS\JHGMS\GMS.Web.Admin\obj\Debug\GMS.Web.Admin.dll
 C:\Users\Administrator\git\JHDMS\JHGMS\GMS.Web.Admin\obj\Debug\GMS.Web.Admin.pdb
+E:\Users\平平\git\GMS\GMS.Web.Admin\bin\Download\readme.txt

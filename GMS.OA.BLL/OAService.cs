@@ -219,6 +219,15 @@ namespace GMS.OA.BLL
             }
         }
 
+        public IEnumerable<Branch> GetAllBranchList()
+        {
+            using (var dbContext = new CRMOAContext())
+            {
+                IQueryable<Branch> branchs = dbContext.Branchs;
+                return branchs.OrderByDescending(u => u.ID).ToList();
+            }
+        }
+
         public void SaveBranch(Branch branch)
         {
             using (var dbContext = new CRMOAContext())

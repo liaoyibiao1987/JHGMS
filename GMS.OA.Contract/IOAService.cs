@@ -14,6 +14,7 @@ namespace GMS.OA.Contract
         List<Staff> GetBelongsStaffEntity(int id);
         List<Branch> GetBelongsToBranch(int BranchID);
         Branch GetBranch(int id);
+        IEnumerable<Branch> GetAllBranchList();
         IEnumerable<Branch> GetBranchList(BranchRequest request = null);
         void SaveBranch(Branch branch);
         void DeleteBranch(List<int> ids);

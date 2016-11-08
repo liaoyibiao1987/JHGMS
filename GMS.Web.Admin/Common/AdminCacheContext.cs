@@ -5,6 +5,7 @@ using System.Text;
 using GMS.Core.Cache;
 using GMS.Framework.Utility;
 using GMS.Crm.Contract;
+using GMS.OA.Contract;
 
 namespace GMS.Web.Admin.Common
 {
@@ -50,6 +51,17 @@ namespace GMS.Web.Admin.Common
                 });
             }
         }
+        public Dictionary<int, Branch> BranchDic
+        {
+            get
+            {
+                return CacheHelper.Get<Dictionary<int, Branch>>("BranchDic", () =>
+                {
+                    return ServiceContext.Current.OAService.GetBranchList().ToDictionary(a => a.ID);
+                });
+            }
+        }
+
 
         public IEnumerable<Cooperations> Cooperations
         {

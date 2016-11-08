@@ -306,13 +306,10 @@ namespace GMS.Crm.BLL
                 var fristquery = dbContext.Customers.AsQueryable(); ;
                 GetFilter(parm, ref fristquery);
 
-                var query = (//from a in dbContext.Customers.Include("Cooperations").Include("Staff").Include("City")
+                var query = (
                             from a in fristquery
                             join b in dbContext.Business on new { Cus = a.ID } equals new { Cus = b.CustomerID == null ? 0 : b.CustomerID.Value } into t
-                            join c in dbContext.Provinces on (a.CityId == null ? 0 : a.City.ProvinceID) equals c.ID into x
-
                             join d in dbContext.Staffs on (a.StaffID) equals d.ID into y
-                            join e in dbContext.Citys on (a.CityId) equals e.ID into z
                             join f in dbContext.Payments on a.ID equals f.CustomerID into zz
                             where staffids.Contains(a.StaffID == null ? -1 : a.StaffID.Value)
                             orderby a.ID descending
@@ -320,8 +317,8 @@ namespace GMS.Crm.BLL
                             {
                                 Customer = a,
                                 Business = t.Where(p => (p.CreateTime >= parm.startdate.Value && p.CreateTime < parm.enddate.Value)).OrderBy(aa => aa.CreateTime),
-                                Provienc = x.FirstOrDefault() == null ? "" : x.FirstOrDefault().Name,
-                                CityName = z.FirstOrDefault() == null ? "" : z.FirstOrDefault().Name,
+                                Provienc = "",
+                                CityName = "",
                                 Staff = y.FirstOrDefault(),
                                 PerPayment = (zz.FirstOrDefault(p => p.Durring == perpaymentmonth) == null && zz.FirstOrDefault(p => p.Durring == perpaymentmonth).PredictPayment.HasValue == true) ? "" : zz.FirstOrDefault(p => p.Durring == perpaymentmonth).PredictPayment.ToString()
                             });
@@ -702,6 +699,30 @@ namespace GMS.Crm.BLL
             }
             return ret;
         }
+
+
+        public bool ModifyStaffs(List<int> customersID, int newstaffID)
+        {
+            bool ret = false;
+            using (var dbContext = new CRMOAContext())
+            {
+                try
+                {
+                    var query = dbContext.Customers.Where(p => customersID.Contains(p.StaffID.HasValue ? -1 : p.StaffID.Value)).Update(c => new Customer { StaffID = newstaffID });
+
+                    dbContext.SaveChanges();
+                    ret = true;
+                }
+                catch (Exception ss)
+                {
+                    ret = false;
+                }
+
+            }
+            return ret;
+        }
+
+
         public Business GetBusinessById(int businessID)
         {
             if (businessID > 0)
@@ -737,7 +758,7 @@ namespace GMS.Crm.BLL
             request = request ?? new Request();
             using (var dbContext = new CRMOAContext())
             {
-                IQueryable<City> citys = dbContext.Citys;
+                IQueryable<City> citys = dbContext.Citys.Include("Province");
                 return citys.OrderByDescending(u => u.ID).ToPagedList(request.PageIndex, request.PageSize);
             }
         }

@@ -183,7 +183,7 @@
                 }
             }
         };
-        $("#CustomerId,#StaffID").select2({
+        $("#CustomerId,#StaffID,#ModifyStaffID").select2({
             dropdownCssClass: "bigdrop"
         });
 
@@ -221,9 +221,9 @@
             table = $('#example').on('processing.dt', function (e, settings, processing) {
                 $('#processing').css('display', processing ? 'block' : 'none');
                 if (processing == true) {
-                    $("input[type='text'],button,select,#btnsubmit").attr("disabled", "disabled");
+                    $("input[type='text'],button,select,#btnsubmit,#createcustomer,#deletecustomer,#modifystaffs").attr("disabled", "disabled");
                 } else {
-                    $("input,input[type='text'],button,select,#btnsubmit").removeAttr("disabled");
+                    $("input,input[type='text'],button,select,#btnsubmit,#createcustomer,#deletecustomer,#modifystaffs").removeAttr("disabled");
                 }
             }).DataTable({
                 "scrollX": true,
@@ -735,7 +735,7 @@
             //});
 
 
-            var dates = $("select").change(function () {
+            var dates = $("select").not(".norefresh").change(function () {
                 refeshTable();
             });
         }
@@ -840,6 +840,56 @@
                 return false;
             }
         }
+        function modifyStaffs() {
+            var message = "你确定要批量修改所选记录吗?";
+            if ($("input:checkbox[name='ids'][checked]").length > 0) {
+                var datas = new Array();
+                $("input:checkbox[name='ids'][checked]").each(function (i, item) {
+                    datas.push(item.value);
+                })
+                $("#dialog-modifyStaff").dialog({
+                    hide: {
+                        effect: "explode",
+                        duration: 200
+                    },
+                    buttons: {
+                        "确定": function () {
+                            var posturl = '@Url.Action("ModifyStaffs", "Business")';
+                            $.ajax({
+                                cache: false,
+                                type: "POST",
+                                data: {
+                                    customerids: datas,
+                                    newstaffid: $("#ModifyStaffID").val()
+                                },
+                                url: posturl,
+                                dataType: "json",
+                                error: function (e) {
+                                    alert("更新失败");
+                                },
+                                timeout: function (d) {
+                                    alert("更新失败");
+                                },
+                                success: function (data) {
+                                    if (data == true) {
+                                        refeshTable();
+                                    } else {
+                                        alert("更新失败");
+                                    }
+                                }
+                            });
+                            $(this).dialog("close");
+                        }
+                    }
+                });
+
+
+            } else {
+                alert("必须勾选一些记录。");
+                return false;
+            }
+        }
+
 
         function exportExcel() {
             var parm = new Object();
@@ -877,6 +927,13 @@
                 },
                 buttons: {
                     "确定": function () {
+                        $("#dialog-downloading").dialog({
+                            hide: {
+                                effect: "explode",
+                                duration: 200
+                            }
+                        });
+
                         $.ajax({
                             cache: false,
                             type: "POST",
@@ -897,11 +954,10 @@
                                         }
                                     }
                                 });
-                                $("#dialog-confirm").dialog("close");
                                 console.log("下载失败:" + e);
+                                $("#dialog-downloading").dialog("close");
                             },
                             timeout: function (e) {
-                                $("#dialog-confirm").dialog("close");
                                 $("#dialog-Fail").dialog({
                                     hide: {
                                         effect: "explode",
@@ -914,8 +970,10 @@
                                     }
                                 });
                                 console.log("下载失败:" + e);
+                                $("#dialog-downloading").dialog("close");
                             },
                             success: function (data) {
+                                $("#dialog-downloading").dialog("close");
                                 if (data.result == true) {
                                     $("#dialog-Success").dialog({
                                         hide: {
@@ -928,7 +986,9 @@
                                             }
                                         }
                                     });
-                                    $("#dialog-confirm").dialog("close");
+                                    var url = '@Url.Action("Downloadfile","Business")';
+                                    fouceWindowOpen(url + '?strFile=' + data.filepath, "_blank");
+                                    $("#dialog-Success").dialog("close");
                                 } else {
                                     $("#dialog-Fail").dialog({
                                         hide: {
@@ -941,10 +1001,11 @@
                                             }
                                         }
                                     });
-                                    $("#dialog-confirm").dialog("close");
+
                                 }
                             }
                         });
+                        $(this).dialog("close");
                     },
                     "取消": function () {
                         $(this).dialog("close");
@@ -962,15 +1023,30 @@
         </span>这可能会等待几分钟的时间。开始导出并下载？
     </p>
 </div>
-<div id="dialog-Success" title="修改结果" style="display:none">
+<div id="dialog-downloading" title="下载中" style="display:none">
     <p>
         <span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span>
-        正在下载。。。。
+        正在生成文件......
     </p>
 </div>
-<div id="dialog-Fail" title="修改结果" style="display:none">
+<div id="dialog-Success" title="下载结果" style="display:none">
     <p>
-        <b>下载失败</b>.
+        <span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span>
+        生成成功，开始下载......
+    </p>
+</div>
+
+<div id="dialog-modifyStaff" title="重新指配业务员" style="display:none">
+    <p>
+        <div>
+            业务员:&nbsp; @Html.DropDownList("ModifyStaffID", ViewData["Staffs"] as SelectList, "--请选择--", new { @class = "selects norefresh" })
+        </div>
+    </p>
+</div>
+
+<div id="dialog-Fail" title="下载结果" style="display:none">
+    <p>
+        <b>生成失败</b>.
     </p>
 </div>
 <div class="row-fluid" style="font-size:9px; margin-bottom:9px;">
@@ -980,7 +1056,7 @@
             <span>结束时间：@Html.TextBox("end", "", new { })&nbsp;</span>
             <span><button id="btnsubmit" type="button" class="btn blue" style="width:78px;height:29px;">搜索<i class="icon-search"></i></button><i style=""></i></span>
             <span>
-                <a class="btn blue thickbox" style="width:78px;height:29px;text-align:center;line-height:30px" title='添加新客户' href="@Url.Action("Create","Customer")?TB_iframe=true&height=600&width=600">
+                <a class="btn blue thickbox" id="createcustomer" style="width:78px;height:29px;text-align:center;line-height:30px" title='添加新客户' href="@Url.Action("Create","Customer")?TB_iframe=true&height=600&width=600">
                     <i class="icon-plus icon-white">新增</i>
                 </a>
             </span>
@@ -989,11 +1065,20 @@
                     <i class="icon-trash icon-white">删除</i>
                 </button>
             </span>
+            @if (permissions.Contains(GMS.Account.Contract.EnumBusinessPermission.CrmManage_Belongs.ToString()))
+            {
+                <span>
+                    <button class="btn red" id="modifystaffs" style="width:100px;height:29px;line-height:30px" onclick="modifyStaffs()">
+                        <i class="icon-edit icon-white">批量修改</i>
+                    </button>
+                </span>
+            }
             <span>
                 <button class="btn" id="exportExcel" style="width:78px;height:29px;line-height:30px" onclick="exportExcel()">
                     <i class="icon-white">导出Excel</i>
                 </button>
             </span>
+
         </div>
         <br />
         <div class="serchtype">
