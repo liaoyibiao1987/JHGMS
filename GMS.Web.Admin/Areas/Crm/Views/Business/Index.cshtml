@@ -1013,6 +1013,12 @@
                 }
             });
         }
+
+        function test() {
+            var x = $("#lie").val();
+            $('table tr').find('td:eq(' + x + ')').hide(100);
+            $('table th:eq(' + x + ')').hide(100);
+        }
     </script>
 
 }
@@ -1126,6 +1132,8 @@
         </div>
 
         <img style="display:inline-block;" id="processing" src="~/Assets/img/loading.gif" />
+        <input id="lie" />
+        <button onclick="test()">隐藏</button>
     </div>
 
 </div>

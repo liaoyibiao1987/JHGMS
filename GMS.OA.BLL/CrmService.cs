@@ -708,8 +708,7 @@ namespace GMS.Crm.BLL
             {
                 try
                 {
-                    var query = dbContext.Customers.Where(p => customersID.Contains(p.StaffID.HasValue ? -1 : p.StaffID.Value)).Update(c => new Customer { StaffID = newstaffID });
-
+                    var query = dbContext.Customers.Where(p => customersID.Contains(p.ID)).Update(c => new Customer { StaffID = newstaffID });
                     dbContext.SaveChanges();
                     ret = true;
                 }
