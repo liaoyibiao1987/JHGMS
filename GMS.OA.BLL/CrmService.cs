@@ -80,7 +80,8 @@ namespace GMS.Crm.BLL
             using (var dbContext = new CRMOAContext())
             {
                 //IQueryable<Customer> queryList = dbContext.Customers.Include("VisitRecords").Include("Staff");
-                IQueryable<Customer> queryList = dbContext.Customers.Include("Cooperations").Include("Staff").Include("City").Where(p => staffids.Contains(p.StaffID.Value));
+                //IQueryable<Customer> queryList = dbContext.Customers.Include("Cooperations").Include("Staff").Include("City").Where(p => staffids.Contains(p.StaffID.Value));
+                IQueryable<Customer> queryList = dbContext.Customers.Where(p => staffids.Contains(p.StaffID.Value));
                 //var rec = from a in queryList
                 //          join b in dbContext.Provinces on a.City.ProvinceID equals b.ID
                 //          select a;
