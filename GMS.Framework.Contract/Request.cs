@@ -10,7 +10,7 @@ namespace GMS.Framework.Contract
     {
         public Request()
         {
-            PageSize = 5000;
+            PageSize = int.MaxValue;
         }
 
         public int Top
@@ -21,7 +21,7 @@ namespace GMS.Framework.Contract
                 this.PageIndex = 1;
             }
         }
-        
+
         public int PageSize { get; set; }
         public int PageIndex { get; set; }
     }

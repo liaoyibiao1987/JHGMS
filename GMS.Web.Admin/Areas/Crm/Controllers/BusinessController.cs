@@ -182,8 +182,9 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
         {
             if (ModelState.IsValid)
             {
+                collection.Remove("");
                 CreateBusinessEntity entity = new CreateBusinessEntity();
-                this.TryUpdateModel<CreateBusinessEntity>(entity);
+                this.TryUpdateModel<CreateBusinessEntity>(entity, collection.AllKeys);
                 entity.StaffID = UserContext.LoginInfo.StaffID.HasValue ? UserContext.LoginInfo.StaffID.Value : -1;
                 try
                 {
@@ -208,7 +209,7 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
                 business.IncreaseLog();
                 if (business != null)
                 {
-                    this.TryUpdateModel<Business>(business);
+                    this.TryUpdateModel<Business>(business, collection.AllKeys);
                     business.StaffID = UserContext.LoginInfo.StaffID.HasValue ? UserContext.LoginInfo.StaffID.Value : -1;
                     try
                     {

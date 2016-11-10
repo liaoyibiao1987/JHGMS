@@ -8,7 +8,7 @@
 <!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->
 <!--[if !IE]><!-->
 <html lang="en">
- <!--<![endif]-->
+<!--<![endif]-->
 <!-- BEGIN HEAD -->
 <head>
     <meta charset="utf-8" />
@@ -32,10 +32,7 @@
 
         @RenderSection("MainContent", required: false)
         @RenderBody()
-
-        <div style="height:80px;"></div>
-
-        <div class="form-actions navbar-fixed-bottom">
+        <div class="form-actions">
             <button type="submit" id="submit" class="btn blue"><i class="icon-ok"></i> 提交</button>
             <span id="submitloading" style="display:none;"><img src='@Url.StaticFile("~/content/images/loading.gif")' /></span>
             <button type="button" class="btn" id="cancel">撤销</button>

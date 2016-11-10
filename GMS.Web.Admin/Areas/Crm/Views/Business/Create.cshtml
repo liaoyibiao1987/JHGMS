@@ -140,7 +140,7 @@
                 dayNamesShort: ['星期天', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
                 dayClick: function (date, allDay, jsEvent, view) {
                     var t = "输入记录信息";
-                    var a = '@Url.Action("AddByDate")' + "?CreateDate=" + date.format("yyyy-MM-dd") + '&TB_iframe=true&height=480&width=600';
+                    var a = '@Url.Action("AddByDate")' + "?CreateDate=" + date.format("yyyy-MM-dd") + '&TB_iframe=true&height=430&width=580';
                     var g = false;
                     tb_show(t, a, g);
                     this.blur();
@@ -148,7 +148,7 @@
                 },
                 eventClick: function (calEvent, jsEvent, view) {
                     var t = "输入记录信息";
-                    var a = '@Url.Action("EditByID")' + "/" + calEvent.ID + '?TB_iframe=true&height=480&width=600';
+                    var a = '@Url.Action("EditByID")' + "/" + calEvent.ID + '?TB_iframe=true&height=430&width=580';
                     var g = false;
                     tb_show(t, a, g);
                     this.blur();

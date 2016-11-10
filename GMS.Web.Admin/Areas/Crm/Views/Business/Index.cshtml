@@ -303,7 +303,7 @@
                                            html += "<a class='btn mini purple thickbox' style='width:39px' title='编辑客户内容' href=";
                                            html += url + "/";
                                            html += data;
-                                           html += '?&TB_iframe=true&height=600&width=600><i class="icon-edit"></i>编辑</a>';
+                                           html += '?&TB_iframe=true&height=500&width=600><i class="icon-edit"></i>编辑</a>';
                                            return html;
                                        }
                                            , "searchable": false
@@ -1062,7 +1062,7 @@
             <span>结束时间：@Html.TextBox("end", "", new { })&nbsp;</span>
             <span><button id="btnsubmit" type="button" class="btn blue" style="width:78px;height:29px;">搜索<i class="icon-search"></i></button><i style=""></i></span>
             <span>
-                <a class="btn blue thickbox" id="createcustomer" style="width:78px;height:29px;text-align:center;line-height:30px" title='添加新客户' href="@Url.Action("Create","Customer")?TB_iframe=true&height=600&width=600">
+                <a class="btn blue thickbox" id="createcustomer" style="width:78px;height:29px;text-align:center;line-height:30px" title='添加新客户' href="@Url.Action("Create","Customer")?TB_iframe=true&height=500&width=600">
                     <i class="icon-plus icon-white">新增</i>
                 </a>
             </span>
@@ -1132,8 +1132,8 @@
         </div>
 
         <img style="display:inline-block;" id="processing" src="~/Assets/img/loading.gif" />
-        <input id="lie" />
-        <button onclick="test()">隐藏</button>
+        @*<input id="lie" />
+        <button onclick="test()">隐藏</button>*@
     </div>
 
 </div>
