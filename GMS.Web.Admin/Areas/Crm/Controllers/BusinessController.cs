@@ -112,6 +112,7 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
             IEnumerable<Cooperations> listCoop = AccountService.GetCooperationsList(new Request { PageIndex = 0, PageSize = int.MaxValue });
             ViewData.Add("CooperationKinds", new SelectList(listCoop, "ID", "Name"));
 
+            ViewData.Add("Coops", listCoop);
             RenderLeader();
         }
         private void RenderLeader()

@@ -13,7 +13,7 @@ namespace GMS.Crm.Contract
         [StringLength(50)]
         public string Name { get; set; }
 
-        public virtual ICollection<Customer> Customers { get; set; }
+        public virtual List<Customer> Customers { get; set; }
     }
 
 }

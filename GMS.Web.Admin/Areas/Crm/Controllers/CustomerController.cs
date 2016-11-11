@@ -39,7 +39,7 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
             var model = new Customer();
 
             this.RenderMyViewData(model);
-            this.ViewBag.CustomerCooperationsIds = new SelectList(this.Cooperations, "ID", "Name", string.Join(",", model.Cooperations.Select(p => p.ID)));
+            this.ViewBag.CooperationsIds = new SelectList(this.Cooperations, "ID", "Name", string.Join(",", model.Cooperations.Select(p => p.ID)));
             return View("Edit", model);
         }
 
@@ -76,7 +76,7 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
         {
             var model = this.CrmService.GetCustomer(id);
 
-            this.ViewBag.CustomerCooperationsIds = new SelectList(this.Cooperations, "ID", "Name", string.Join(",", model.Cooperations.Select(p => p.ID)));
+            this.ViewBag.CooperationsIds = new SelectList(this.Cooperations, "ID", "Name", string.Join(",", model.Cooperations.Select(p => p.ID)));
             this.RenderMyViewData(model);
             return View(model);
         }

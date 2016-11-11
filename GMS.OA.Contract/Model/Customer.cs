@@ -16,7 +16,7 @@ namespace GMS.Crm.Contract
         public Customer()
         {
             this.Cooperations = new List<Cooperations>();
-            this.CustomerCooperationsIds = new List<int>();
+            this.CooperationsIds = new List<int>();
             Gender = 0;
         }
         //[StringLength(50, ErrorMessage = "客户名不能超过50个字")]
@@ -45,42 +45,6 @@ namespace GMS.Crm.Contract
 
 
         public string CooperationKinds { get; set; }
-
-        [NotMapped]
-        public List<int> CustomerCooperationsIds
-        {
-            get
-            {
-                List<int> ret = new List<int>();
-                if (CooperationKinds != null)
-                {
-                    string[] x = CooperationKinds.Split(',');
-                    if (x != null && x.Count() > 0)
-                    {
-                        int outp = 0;
-                        foreach (var item in x)
-                        {
-                            int.TryParse(item, out outp);
-                            ret.Add(outp);
-                        }
-                    }
-                }
-
-                return ret;
-            }
-            set
-            {
-                if (value != null && value.Count > 0)
-                {
-                    CooperationKinds = string.Join(",", value);
-                }
-                else
-                {
-                    CooperationKinds = "";
-                }
-            }
-        }
-
 
         [NotMapped]
         public float? AvePayment { get; set; }
@@ -150,6 +114,7 @@ namespace GMS.Crm.Contract
         }
         public virtual Staff Staff { get; set; }
 
+
         [NotMapped]
         public string CustomerCooperShow
         {
@@ -167,10 +132,45 @@ namespace GMS.Crm.Contract
             }
         }
 
+
+        [NotMapped]
+        public List<int> CooperationsIds
+        {
+            get
+            {
+                List<int> ret = new List<int>();
+                if (CooperationKinds != null)
+                {
+                    string[] x = CooperationKinds.Split(',');
+                    if (x != null && x.Count() > 0)
+                    {
+                        int outp = 0;
+                        foreach (var item in x)
+                        {
+                            int.TryParse(item, out outp);
+                            ret.Add(outp);
+                        }
+                    }
+                }
+
+                return ret;
+            }
+            set
+            {
+                if (value != null && value.Count > 0)
+                {
+                    CooperationKinds = string.Join(",", value);
+                }
+                else
+                {
+                    CooperationKinds = "";
+                }
+            }
+        }
         /// <summary>
         /// 合作产品列表
         /// </summary>
-        public virtual ICollection<Cooperations> Cooperations { get; set; }
+        public virtual List<Cooperations> Cooperations { get; set; }
 
 
         //public virtual ICollection<Business> Business { get; set; }

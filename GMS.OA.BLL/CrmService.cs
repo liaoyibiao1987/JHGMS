@@ -111,10 +111,10 @@ namespace GMS.Crm.BLL
                     //if (dbContext.Customers.Any(c => c.Tel == customer.Tel && c.ID != customer.ID))
                     //    throw new BusinessException("Tel", "已存在此电话的客户！");
 
-
                     dbContext.Update<Customer>(customer);
-                    List<Cooperations> customercooperations = dbContext.Cooperations.Where(r => customer.CustomerCooperationsIds.Contains(r.ID)).ToList();
-                    customer.Cooperations = customercooperations;
+
+                    List<Cooperations> cooperations = dbContext.Cooperations.Where(r => customer.CooperationsIds.Contains(r.ID)).ToList();
+                    customer.Cooperations = cooperations;
                     dbContext.SaveChanges();
                 }
                 else
@@ -360,13 +360,16 @@ namespace GMS.Crm.BLL
             string perpaymentmonth = parm.enddate.Value.ToString("yyyyMM");
             using (var dbContext = new CRMOAContext())
             {
-                var fristquery = dbContext.Customers.AsQueryable(); ;
+                var fristquery = dbContext.Customers.AsQueryable();
+
                 GetFilter(parm, ref fristquery);
 
                 var query = (//from a in dbContext.Customers.Include("Cooperations").Include("Staff").Include("City")
-                            from a in fristquery
+                            from a in fristquery.AsQueryable<Customer>()
                             join b in dbContext.Business on new { Cus = a.ID } equals new { Cus = b.CustomerID == null ? 0 : b.CustomerID.Value } into t
                             join c in dbContext.Provinces on (a.CityId == null ? 0 : a.City.ProvinceID) equals c.ID into x
+
+
 
                             join d in dbContext.Staffs on (a.StaffID) equals d.ID into y
                             join e in dbContext.Citys on (a.CityId) equals e.ID into z
@@ -463,6 +466,16 @@ namespace GMS.Crm.BLL
             {
                 switch (order.column)
                 {
+                    case 5:
+                        if (order.dir == "asc")
+                        {
+                            query = query.OrderBy(p => p.CityName);
+                        }
+                        else
+                        {
+                            query = query.OrderByDescending(p => p.CityName);
+                        }
+                        break;
                     case 6:
                         if (order.dir == "asc")
                         {

@@ -153,39 +153,40 @@
         var leaders = new Array();
         var suboffice = new Array();
 
-        var opts = {
-            language: {
-                inputTooShort: function (args) {
-                    // args.minimum is the minimum required length
-                    // args.input is the user-typed text
-                    return "Type more stuff";
-                },
-                inputTooLong: function (args) {
-                    // args.maximum is the maximum allowed length
-                    // args.input is the user-typed text
-                    return "You typed too much";
-                },
-                errorLoading: function () {
-                    return "Error loading results";
-                },
-                loadingMore: function () {
-                    return "Loading more results";
-                },
-                noResults: function () {
-                    return "No results found";
-                },
-                searching: function () {
-                    return "Searching...";
-                },
-                maximumSelected: function (args) {
-                    // args.maximum is the maximum number of items the user may select
-                    return "Error loading results";
-                }
-            }
-        };
         $("#CustomerId,#StaffID,#ModifyStaffID").select2({
             dropdownCssClass: "bigdrop"
         });
+
+        $("#hideColum").select2({
+            dropdownCssClass: "bigdrop"
+        }).on("select2:select", function (e) {
+            e.preventDefault();
+            var column = table.column($(this).attr('data-column'));
+            column.visible(!column.visible());
+        }).on("select2:unselect", function (e) { e.preventDefault();
+            var column = table.column($(this).attr('data-column'));
+            column.visible(!column.visible());
+        });
+
+
+        var Coops = @Html.Raw(Json.Encode(ViewData["Coops"]));
+
+        function GetCoopStr(str) {
+            var retstr = '';
+            if (Coops != null && Coops != undefined && str != null && str != undefined) {
+                for (var i = 0; i < str.length; i++) {
+                    for (var j = 0; j < Coops.length; j++) {
+                        if (Coops[j].ID == str[i]) {
+                            retstr += Coops[j].Name + ",";
+                        }
+                    }
+                }
+            }
+            if (retstr != '') {
+                retstr = retstr.substring(0, retstr.length - 1);
+            }
+            return retstr;
+        }
 
         function getRoot(id) {
             var parent = getParent(id);
@@ -377,7 +378,7 @@
                            , {
                                data: 'CityName'
                                , title: "地市"
-                               , "orderable": false
+                               //, "orderable": false
                                , "defaultContent": "未知"
                                , "render": function (data, type, full, meta) {
                                    return '<span class="customername">' + data + '</span>';
@@ -560,7 +561,15 @@
                            , "searchable": false
                        }
                        , {
-                           data: 'Customer.CustomerCooperShow'
+                           data: 'Customer.CooperationsIds'
+                           , "render": function (data, type, full, meta) {
+                               if (data != null && data !== undefined && data.length > 0) {
+                                   return GetCoopStr(data);
+                               } else {
+                                   return "无";
+                               }
+
+                           }
                        , title: "合作种类"
                        }
                        , {
@@ -1041,7 +1050,6 @@
         生成成功，开始下载......
     </p>
 </div>
-
 <div id="dialog-modifyStaff" title="重新指配业务员" style="display:none">
     <p>
         <div>
@@ -1055,6 +1063,9 @@
         <b>生成失败</b>.
     </p>
 </div>
+
+
+
 <div class="row-fluid" style="font-size:9px; margin-bottom:9px;">
     <div class="form-inline" style="word-break:keep-all;overflow:auto">
         <div class="serchtype">
@@ -1129,11 +1140,36 @@
                     <option value="10000">10000</option>
                 </select> 条
             </span>
+            <span style="display:block">
+                隐藏显示:
+                <select id="hideColum" style="width:300px! important;" class="norefresh" multiple="multiple">
+                    <option class="toggle-vis" data-column="0">编辑</option>
+                    <option class="toggle-vis" data-column="1">选择</option>
+                    <option class="toggle-vis" data-column="2">分管领导</option>
+                    <option class="toggle-vis" data-column="3">办事处</option>
+                    <option class="toggle-vis" data-column="4">省份</option>
+                    <option class="toggle-vis" data-column="5">地市</option>
+                    <option class="toggle-vis" data-column="6">公司名称</option>
+                    <option class="toggle-vis" data-column="7">类别</option>
+                    <option class="toggle-vis" data-column="8">联系人</option>
+                    <option class="toggle-vis" data-column="9">联系电话</option>
+                    <option class="toggle-vis" data-column="10">合作渠道</option>
+                    <option class="toggle-vis" data-column="11">商业类型</option>
+                    <option class="toggle-vis" data-column="12">连锁店数量</option>
+                    <option class="toggle-vis" data-column="13">连锁合作方式</option>
+                    <option class="toggle-vis" data-column="14">业务员</option>
+                    <option class="toggle-vis" data-column="15">业务员类型</option>
+                    <option class="toggle-vis" data-column="16">单位名称</option>
+                    <option class="toggle-vis" data-column="17">是否合作</option>
+                    <option class="toggle-vis" data-column="18">业务统计</option>
+                    <option class="toggle-vis" data-column="19">预计回款</option>
+                </select>
+            </span>
         </div>
 
         <img style="display:inline-block;" id="processing" src="~/Assets/img/loading.gif" />
         @*<input id="lie" />
-        <button onclick="test()">隐藏</button>*@
+            <button onclick="test()">隐藏</button>*@
     </div>
 
 </div>
