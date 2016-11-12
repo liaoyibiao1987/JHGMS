@@ -233,3 +233,4 @@ C:\Users\Administrator\git\JHDMS\JHGMS\GMS.Web.Admin\obj\Debug\GMS.Web.Admin.csp
 C:\Users\Administrator\git\JHDMS\JHGMS\GMS.Web.Admin\obj\Debug\GMS.Web.Admin.dll
 C:\Users\Administrator\git\JHDMS\JHGMS\GMS.Web.Admin\obj\Debug\GMS.Web.Admin.pdb
 E:\Users\平平\git\GMS\GMS.Web.Admin\bin\Download\readme.txt
+C:\Users\Administrator\git\JHDMS\JHGMS\GMS.Web.Admin\bin\Download\readme.txt
