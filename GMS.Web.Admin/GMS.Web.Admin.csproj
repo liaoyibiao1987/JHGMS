@@ -147,6 +147,7 @@
     <Content Include="Areas\Crm\Views\Business\Create.cshtml">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="Assets\data-tables\js\oPagination.js" />
     <Content Include="Content\Images\dotted.png" />
     <Content Include="Content\Images\grip.png" />
     <Content Include="Content\Images\th.png" />

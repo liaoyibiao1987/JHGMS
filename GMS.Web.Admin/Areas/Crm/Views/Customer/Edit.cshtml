@@ -5,6 +5,11 @@
 @model Customer
 @{
     Layout = "~/Views/Shared/_Layout.Edit.cshtml";
+    Dictionary<bool, string> listcop = new Dictionary<bool, string>();
+    listcop.Add(true, "是");
+    listcop.Add(false, "否");
+
+    SelectList iscoopration = new SelectList(listcop, "key", "value");
 }
 @section PageSpecificStyleSheetIncludes{
     <link rel="stylesheet" href="@Url.StaticFile("/Assets/select2/select2.min.css")">
@@ -53,10 +58,15 @@
                     , ChainCount: {
                         number: true
                     }
-                    //, Name: {
-                    //    required: true,
-                    //    maxlength: 50
-                    //}
+                    , ProvinceId: {
+                        required: true
+                    }
+                    , CityId: {
+                        required: true
+                    }
+                    , CooperationOrNot: {
+                        required: true
+                    }
                 },
                 messages: {
                     Email: {
@@ -65,11 +75,15 @@
                     , ChainCount: {
                         number: "请输入正确的数字"
                     }
-                    //, Name: {
-                    //    required: "请输入公司名称",
-                    //    maxlength: "名称不能超过50个字符"
-                    //}
-
+                    , ProvinceId: {
+                        required: "请输入省"
+                    }
+                    , CityId: {
+                        required: "请输入市"
+                    }
+                    , CooperationOrNot: {
+                        required: "是否合作"
+                    }
                 }
                 //,submitHandler: function (form) {
                 //    form.submit();
@@ -100,10 +114,10 @@
                 </div>
             </div>
             <div class="control-group">
-                <label class="control-label">联系人性别：</label>
+                <label class="control-label">客户电话：</label>
                 <div class="controls">
-                    @Html.RadioBoxList("Gender")
-                    <span class="help-inline">@Html.ValidationMessageFor(m => m.Gender)</span>
+                    @Html.TextBoxFor(m => m.Tel, new { @class = "m-wrap" })
+                    <span class="help-inline">@Html.ValidationMessageFor(m => m.Tel)</span>
                 </div>
             </div>
             <div class="control-group">
@@ -115,7 +129,7 @@
             </div>
 
             <div class="control-group">
-                <label class="control-label">省/市：</label>
+                <label class="control-label"><span class="required">*</span>省/市：</label>
                 <div class="controls">
                     @Html.DropDownList("ProvinceId", ViewData["ProvinceIds"] as SelectList, "--请选择--", new { @class = "select2" })
                 </div>
@@ -179,9 +193,9 @@
                 </div>
             </div>
             <div class="control-group">
-                <label class="control-label">是否合作：</label>
+                <label class="control-label"><span class="required">*</span>是否合作：</label>
                 <div class="controls">
-                    @Html.CheckBox("CooperationOrNot")
+                    @Html.DropDownListFor(m => m.CooperationOrNot, iscoopration, "--请选择--", new { @class = "select2" })
                 </div>
             </div>
             <div class="control-group">
@@ -190,13 +204,7 @@
                     @Html.CheckBoxList("CooperationsIds")
                 </div>
             </div>
-            <div class="control-group">
-                <label class="control-label">客户电话：</label>
-                <div class="controls">
-                    @Html.TextBoxFor(m => m.Tel, new { @class = "m-wrap" })
-                    <span class="help-inline">@Html.ValidationMessageFor(m => m.Tel)</span>
-                </div>
-            </div>
+
         </div>
     </div>
 }

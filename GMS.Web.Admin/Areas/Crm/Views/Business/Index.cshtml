@@ -143,6 +143,10 @@
     <script type="text/javascript" src="@Url.StaticFile("/assets/jquery-validation/dist/jquery.validate.min.js")"></script>
     <script type="text/javascript" src="@Url.StaticFile("/assets/js/GMS.js")"></script>
     <script type="text/javascript" src="@Url.StaticFile("/Assets/select2/select2.full.min.js")"></script>
+    @*<script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.12/pagination/extjs.js"></script>*@
+
+    <script type="text/javascript" src="@Url.StaticFile("/Assets/data-tables/js/oPagination.js")"></script>
+
     <script type="text/javascript">
         var table;
         var dstart;
@@ -240,15 +244,18 @@
                 'bLengthChange': true, //是否允许自定义每页显示条数.
                 "processing": true, //DataTables载入数据时，是否显示‘进度’提示
                 "Paginate": false,  //是否分页。
+                "stateSave": true,
                 "lengthMenu": [[10, 25, 50, 100, 500, 1000, 10000], ["10", "25", "50", "100", "500", "1K", "1W"]],
-                "sPaginationType": "full_numbers",
+                "sPaginationType": "oPagination",
                 "ajax": {
                     "url": "GetBusinessByAjax",
                     "type": "POST",
                     "dataSrc": 'Data',
                     "dataType": 'json',
-                    //"data": aoData
-                    //"success": "fnCallback"
+                    //"data": function(f){
+                    //    //debugger;
+                    //}//,
+                    //"success":
                 }
                 , "oLanguage": { //国际化配置
                     "sProcessing": "正在获取数据，请稍后...",
@@ -682,18 +689,17 @@
                     //$("#lastfoot", tfoot).html(str);
                 }
                 , "initComplete": function (settings, json) {
-                    //var temp = $("#example_length").clone();
-                    //temp.appendTo("#perlength");
-                    //tb_init('a.thickbox');
                 }
             });
         }
 
+        //转到第几页
+        //$('#example').dataTable().fnPageChange(index);
         function refeshTable() {
             dstart = $("#start").datepicker("getDate");
             dend = $("#end").datepicker("getDate");
             $('#example').dataTable().fnClearTable(false);
-            $('#example').DataTable().draw();
+            $('#example').DataTable().columns.adjust().draw();
         }
 
         function Initselect() {
@@ -807,6 +813,9 @@
                 $("select[name='example_length']").change();
             });
             //$('#tbbusiness').dataTable().fnDestroy();
+
+
+
         });
 
 
@@ -1023,12 +1032,6 @@
                 }
             });
         }
-
-        function test() {
-            var x = $("#lie").val();
-            $('table tr').find('td:eq(' + x + ')').hide(100);
-            $('table th:eq(' + x + ')').hide(100);
-        }
     </script>
 
 }
@@ -1141,7 +1144,7 @@
                     <option value="10000">10000</option>
                 </select> 条
             </span>
-            <span >
+            <span>
                 隐藏显示:
                 <select id="hideColum" class="norefresh" style="min-width:350px !important;display:inline-block" multiple="multiple">
                     <option class="toggle-vis" value="0">编辑</option>
