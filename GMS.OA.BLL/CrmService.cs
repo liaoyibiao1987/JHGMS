@@ -304,12 +304,14 @@ namespace GMS.Crm.BLL
             string perpaymentmonth = parm.enddate.Value.ToString("yyyyMM");
             using (var dbContext = new CRMOAContext())
             {
-                var fristquery = dbContext.Customers.AsQueryable(); ;
+                var fristquery = dbContext.Customers.AsQueryable();
+                var fristbusiness = dbContext.Business.Where(p => (p.CreateTime >= parm.startdate.Value && p.CreateTime < parm.enddate.Value && staffids.Contains(p.CustomerID == null ? -1 :
+                    p.CustomerID.Value))).OrderBy(aa => aa.CreateTime);
                 GetFilter(parm, ref fristquery);
 
                 var query = (
                             from a in fristquery
-                            join b in dbContext.Business on new { Cus = a.ID } equals new { Cus = b.CustomerID == null ? 0 : b.CustomerID.Value } into t
+                            join b in fristbusiness on new { Cus = a.ID } equals new { Cus = b.CustomerID == null ? 0 : b.CustomerID.Value } into t
                             join d in dbContext.Staffs on (a.StaffID) equals d.ID into y
                             join f in dbContext.Payments on a.ID equals f.CustomerID into zz
                             where staffids.Contains(a.StaffID == null ? -1 : a.StaffID.Value)
@@ -317,13 +319,14 @@ namespace GMS.Crm.BLL
                             select new BusinessVM
                             {
                                 Customer = a,
-                                Business = t.Where(p => (p.CreateTime >= parm.startdate.Value && p.CreateTime < parm.enddate.Value)).OrderBy(aa => aa.CreateTime),
+                                Business = t,
                                 Provienc = "",
                                 CityName = "",
                                 Staff = y.FirstOrDefault(),
                                 PerPayment = (zz.FirstOrDefault(p => p.Durring == perpaymentmonth) == null && zz.FirstOrDefault(p => p.Durring == perpaymentmonth).PredictPayment.HasValue == true) ? "" : zz.FirstOrDefault(p => p.Durring == perpaymentmonth).PredictPayment.ToString()
                             });
-
+                //这句还必须加，不加不知道什么鬼了
+                query = query.OrderByDescending(p => p.Customer.ID);
                 if (parm.HasBusiness.HasValue == true)
                 {
                     if (parm.HasBusiness.Value == true)

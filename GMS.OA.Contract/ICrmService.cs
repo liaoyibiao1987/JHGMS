@@ -24,7 +24,6 @@ namespace GMS.Crm.Contract
 
         List<BusinessVM> GetBusinessDownload(BusinessPostParameter parm, List<int> staffids);
         PagedList<BusinessVM> GetBusinessList(BusinessPostParameter request, List<int> staffIDs);
-        IEnumerable<BusinessVM> GetBusinessList(BusinessRequest request, List<int> staffIDs);
         IEnumerable<Business> GetBusinessList(BusinessRequest request, int staffID);
         //IEnumerable<Business> GetBusinessList(BusinessRequest request, int staffID);
         void CreateBusiness(CreateBusinessEntity entity);
