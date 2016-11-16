@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace GMS.Framework.Utility
 {
-   public  class StringHelper
+    public class StringHelper
     {
-       /// <summary>
-       /// 获取中文全拼
-       /// </summary>
-       public static string GetQuanPin(string x)
-       {
+        /// <summary>
+        /// 获取中文全拼
+        /// </summary>
+        public static string GetQuanPin(string x)
+        {
 
-           int[] iA = new int[]
+            int[] iA = new int[]
 
              {
 
@@ -100,7 +100,7 @@ namespace GMS.Framework.Utility
 
              };
 
-           string[] sA = new string[]
+            string[] sA = new string[]
 
          {
 
@@ -232,49 +232,85 @@ namespace GMS.Framework.Utility
 
          };
 
-           byte[] B = new byte[2];
+            byte[] B = new byte[2];
 
-           string s = "";
+            string s = "";
 
-           char[] c = x.ToCharArray();
+            char[] c = x.ToCharArray();
 
-           for (int j = 0; j < c.Length; j++)
-           {
+            for (int j = 0; j < c.Length; j++)
+            {
 
-               B = System.Text.Encoding.Default.GetBytes(c[j].ToString());
+                B = System.Text.Encoding.Default.GetBytes(c[j].ToString());
 
-               if ((int)(B[0]) <= 160 && (int)(B[0]) >= 0)
-               {
+                if ((int)(B[0]) <= 160 && (int)(B[0]) >= 0)
+                {
 
-                   s += c[j];
+                    s += c[j];
 
-               }
+                }
 
-               else
-               {
+                else
+                {
 
-                   for (int i = (iA.Length - 1); i >= 0; i--)
-                   {
+                    for (int i = (iA.Length - 1); i >= 0; i--)
+                    {
 
-                       if (iA[i] <= (int)(B[0]) * 256 + (int)(B[1]) - 65536)
-                       {
+                        if (iA[i] <= (int)(B[0]) * 256 + (int)(B[1]) - 65536)
+                        {
 
-                           s += sA[i];
+                            s += sA[i];
 
-                           break;
+                            break;
 
-                       }
+                        }
 
-                   }
+                    }
 
-               }
+                }
 
-           }
+            }
 
 
 
-           return s;
+            return s;
 
-       }
+        }
+
+
+        /// <summary>
+        /// 替换xml特殊字符
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static string XmlStringReplace(string str)
+        {
+            if (string.IsNullOrEmpty(str) == false)
+            {
+                str = str.Replace("&", "&amp;");
+                str = str.Replace("<", "&lt;");
+                str = str.Replace(">", "&gt;");
+                str = str.Replace("'", "&apos;");
+                str = str.Replace("\"", "&quot;");
+            }
+            return str;
+        }
+        /// <summary>
+        /// 还原xml特殊字符
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static string XmlString(string str)
+        {
+            if (string.IsNullOrEmpty(str) == false)
+            {
+                str = str.Replace("&lt;", "<");
+                str = str.Replace("&gt;", ">");
+                str = str.Replace("&apos;", "'");
+                str = str.Replace("&quot;", "\"");
+                str = str.Replace("&quot;", "&");
+            }
+            return str;
+        }
     }
 }

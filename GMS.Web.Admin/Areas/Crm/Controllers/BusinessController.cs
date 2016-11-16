@@ -315,111 +315,130 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
             FileInfo outputFil = new FileInfo(outputFilepath);
             List<BusinessVM> list = CrmService.GetBusinessDownload(aoData, staffids);
             bool returnval = false;
-            try
+            if (list != null && list.Count > 0)
             {
-                using (FastExcel fastExcel = new FastExcel(temFile, outputFil))
+                try
                 {
-                    Worksheet worksheet = new Worksheet();
-                    List<Row> rows = new List<Row>();
-                    List<Cell> fristcells = new List<Cell>();
-
-                    fristcells.Add(new Cell(1, "分管领导"));
-                    fristcells.Add(new Cell(2, "办事处"));
-                    fristcells.Add(new Cell(3, "省份"));
-                    fristcells.Add(new Cell(4, "地市"));
-                    fristcells.Add(new Cell(5, "公司名称"));
-                    fristcells.Add(new Cell(6, "类别"));
-                    fristcells.Add(new Cell(7, "联系人"));
-                    fristcells.Add(new Cell(8, "联系方式"));
-                    fristcells.Add(new Cell(9, "渠道"));
-                    fristcells.Add(new Cell(10, "商业类型"));
-                    fristcells.Add(new Cell(11, "连锁门店数量"));
-                    fristcells.Add(new Cell(12, "连锁合作方式"));
-                    fristcells.Add(new Cell(13, "业务员"));
-                    fristcells.Add(new Cell(14, "业务员类型"));
-                    fristcells.Add(new Cell(15, "是否合作"));
-                    fristcells.Add(new Cell(16, "合作品种"));
-                    fristcells.Add(new Cell(17, "预计回款"));
-                    for (int i = 0; i < days; i++)
+                    using (FastExcel fastExcel = new FastExcel(temFile, outputFil))
                     {
-                        DateTime now = aoData.startdate.Value.AddDays(i);
-                        fristcells.Add(new Cell(18 + i, now.ToString("MM月dd日")));
-                    }
-                    rows.Add(new Row(1, fristcells));
+                        Worksheet worksheet = new Worksheet();
+                        List<Row> rows = new List<Row>();
+                        List<Cell> fristcells = new List<Cell>();
 
-                    for (int rowNumber = 0; rowNumber < list.Count; rowNumber++)
-                    {
-                        List<Cell> cells = new List<Cell>();
-                        int branch = list[rowNumber].Staff.BranchId.HasValue ? list[rowNumber].Staff.BranchId.Value : -1;
-                        int cityid = list[rowNumber].Customer.CityId.HasValue ? list[rowNumber].Customer.CityId.Value : -1;
-                        cells.Add(new Cell(1, GetParentBranch(branch)));
-                        cells.Add(new Cell(2, GetBranch(branch)));
-                        cells.Add(new Cell(3, GetProvinceName(cityid)));
-                        cells.Add(new Cell(4, GetCityName(cityid)));
-                        cells.Add(new Cell(5, string.IsNullOrEmpty(list[rowNumber].Customer.Name) ? "" : list[rowNumber].Customer.Name));
-                        cells.Add(new Cell(6, GetCategory(list[rowNumber].Customer.Category)));
-                        cells.Add(new Cell(7, list[rowNumber].Customer.Contacter));
-                        cells.Add(new Cell(8, list[rowNumber].Customer.Tel));
-                        cells.Add(new Cell(9, list[rowNumber].Customer.ShowChannel));
-                        cells.Add(new Cell(10, list[rowNumber].Customer.ShowBusinessType));
-
-                        object chaincout;
-                        if (list[rowNumber].Customer.ChainCount.HasValue == false || list[rowNumber].Customer.ChainCount.Value < 1)
-                        {
-                            chaincout = null;
-                        }
-                        else
-                        {
-                            chaincout = list[rowNumber].Customer.ChainCount.Value;
-                        }
-                        cells.Add(new Cell(11, chaincout));
-
-                        int chainType = list[rowNumber].Customer.ChainType.HasValue ? list[rowNumber].Customer.ChainType.Value : 0;
-                        cells.Add(new Cell(12, EnumHelper.GetEnumTitle((EnumChainType)chainType)));
-
-                        cells.Add(new Cell(13, list[rowNumber].Staff != null ? list[rowNumber].Staff.Name : ""));
-                        cells.Add(new Cell(14, list[rowNumber].Staff != null ? EnumHelper.GetEnumTitle((EnumPosition)list[rowNumber].Staff.Position) : ""));
-
-                        bool iscop = list[rowNumber].Customer.CooperationOrNot.HasValue ? list[rowNumber].Customer.CooperationOrNot.Value : false;
-                        cells.Add(new Cell(15, iscop == true ? "是" : "否"));
-
-                        cells.Add(new Cell(16, list[rowNumber].Customer.CustomerCooperShow));
-
-                        cells.Add(new Cell(17, list[rowNumber].PerPayment));
-
+                        fristcells.Add(new Cell(1, "分管领导"));
+                        fristcells.Add(new Cell(2, "办事处"));
+                        fristcells.Add(new Cell(3, "省份"));
+                        fristcells.Add(new Cell(4, "地市"));
+                        fristcells.Add(new Cell(5, "公司名称"));
+                        fristcells.Add(new Cell(6, "类别"));
+                        fristcells.Add(new Cell(7, "联系人"));
+                        fristcells.Add(new Cell(8, "联系方式"));
+                        fristcells.Add(new Cell(9, "渠道"));
+                        fristcells.Add(new Cell(10, "商业类型"));
+                        fristcells.Add(new Cell(11, "连锁门店数量"));
+                        fristcells.Add(new Cell(12, "连锁合作方式"));
+                        fristcells.Add(new Cell(13, "业务员"));
+                        fristcells.Add(new Cell(14, "业务员类型"));
+                        fristcells.Add(new Cell(15, "是否合作"));
+                        fristcells.Add(new Cell(16, "合作品种"));
+                        fristcells.Add(new Cell(17, "预计回款"));
                         for (int i = 0; i < days; i++)
                         {
                             DateTime now = aoData.startdate.Value.AddDays(i);
-                            if (list[rowNumber].Business != null && list[rowNumber].Business.Count() > 0)
+                            fristcells.Add(new Cell(18 + i, now.ToString("MM月dd日")));
+                        }
+                        rows.Add(new Row(1, fristcells));
+
+                        for (int rowNumber = 0; rowNumber < list.Count; rowNumber++)
+                        {
+                            List<Cell> cells = new List<Cell>();
+                            int branch = list[rowNumber].Staff.BranchId.HasValue ? list[rowNumber].Staff.BranchId.Value : -1;
+                            int cityid = list[rowNumber].Customer.CityId.HasValue ? list[rowNumber].Customer.CityId.Value : -1;
+                            cells.Add(new Cell(1, GetParentBranch(branch)));
+                            cells.Add(new Cell(2, GetBranch(branch)));
+                            cells.Add(new Cell(3, GetProvinceName(cityid)));
+                            cells.Add(new Cell(4, GetCityName(cityid)));
+                            cells.Add(new Cell(5, string.IsNullOrEmpty(list[rowNumber].Customer.Name) ? "" : list[rowNumber].Customer.Name));
+                            cells.Add(new Cell(6, GetCategory(list[rowNumber].Customer.Category)));
+                            cells.Add(new Cell(7, StringHelper.XmlStringReplace((list[rowNumber].Customer.Contacter))));
+                            cells.Add(new Cell(8, StringHelper.XmlStringReplace(list[rowNumber].Customer.Tel)));
+                            cells.Add(new Cell(9, list[rowNumber].Customer.ShowChannel));
+                            cells.Add(new Cell(10, list[rowNumber].Customer.ShowBusinessType));
+
+                            object chaincout;
+                            if (list[rowNumber].Customer.ChainCount.HasValue == false || list[rowNumber].Customer.ChainCount.Value < 1)
                             {
-                                var x = list[rowNumber].Business.FirstOrDefault(p => p.CreateTime == now);
-                                if (x != null)
+                                chaincout = null;
+                            }
+                            else
+                            {
+                                chaincout = list[rowNumber].Customer.ChainCount.Value;
+                            }
+                            cells.Add(new Cell(11, chaincout));
+
+                            int chainType = list[rowNumber].Customer.ChainType.HasValue ? list[rowNumber].Customer.ChainType.Value : 0;
+                            cells.Add(new Cell(12, EnumHelper.GetEnumTitle((EnumChainType)chainType)));
+
+                            cells.Add(new Cell(13, list[rowNumber].Staff != null ? list[rowNumber].Staff.Name : ""));
+                            cells.Add(new Cell(14, list[rowNumber].Staff != null ? EnumHelper.GetEnumTitle((EnumPosition)list[rowNumber].Staff.Position) : ""));
+
+                            bool iscop = list[rowNumber].Customer.CooperationOrNot.HasValue ? list[rowNumber].Customer.CooperationOrNot.Value : false;
+                            cells.Add(new Cell(15, iscop == true ? "是" : "否"));
+
+                            cells.Add(new Cell(16, StringHelper.XmlStringReplace(list[rowNumber].Customer.CustomerCooperShow)));
+
+                            string strperpayment = list[rowNumber].PerPayment;
+                            if (string.IsNullOrEmpty(strperpayment) == false)
+                            {
+                                double dperpay = 0d;
+                                double.TryParse(strperpayment, out dperpay);
+                                cells.Add(new Cell(17, dperpay));
+                            }
+                            else
+                            {
+                                cells.Add(new Cell(17, strperpayment));
+                            }
+
+
+                            for (int i = 0; i < days; i++)
+                            {
+                                DateTime now = aoData.startdate.Value.AddDays(i);
+                                if (list[rowNumber].Business != null && list[rowNumber].Business.Count() > 0)
                                 {
-                                    cells.Add(new Cell(18 + i, x.Message));
+                                    var x = list[rowNumber].Business.FirstOrDefault(p => p.CreateTime == now);
+                                    if (x != null)
+                                    {
+                                        cells.Add(new Cell(18 + i, StringHelper.XmlStringReplace(x.Message)));
+                                    }
+                                    else
+                                    {
+                                        cells.Add(new Cell(18 + i, ""));
+                                    }
                                 }
                                 else
                                 {
                                     cells.Add(new Cell(18 + i, ""));
                                 }
                             }
-                            else
-                            {
-                                cells.Add(new Cell(18 + i, ""));
-                            }
+                            rows.Add(new Row(rowNumber + 2, cells));
                         }
-                        rows.Add(new Row(rowNumber + 2, cells));
+                        worksheet.Rows = rows;
+                        fastExcel.Write(worksheet, "sheet1");
                     }
-                    worksheet.Rows = rows;
-                    fastExcel.Write(worksheet, "sheet1");
+                    returnval = true;
                 }
-                returnval = true;
+                catch (Exception es)
+                {
+                    returnval = false;
+                }
+
+                return Json(new { result = returnval, filepath = filename });
             }
-            catch (Exception es)
+            else
             {
-                returnval = false;
+                return Json(new { result = returnval, message = "没有可导出数据." });
             }
 
-            return Json(new { result = returnval, filepath = filename });
         }
 
         public FileResult Downloadfile(string strFile)
@@ -450,7 +469,7 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
         {
             if (BranchDic[branchID] != null)
             {
-                return BranchDic[branchID].ParentBranch.Name;
+                return StringHelper.XmlStringReplace(BranchDic[branchID].ParentBranch.Name);
             }
             else
             {
@@ -461,7 +480,7 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
         {
             if (BranchDic[branchID] != null)
             {
-                return BranchDic[branchID].Name;
+                return StringHelper.XmlStringReplace(BranchDic[branchID].Name);
             }
             else
             {
@@ -473,7 +492,7 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
         {
             if (CityDic.ContainsKey(cityid) && CityDic[cityid] != null)
             {
-                return CityDic[cityid].Name;
+                return StringHelper.XmlStringReplace(CityDic[cityid].Name);
             }
             else
             {
@@ -484,7 +503,7 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
         {
             if (CityDic.ContainsKey(cityid) && CityDic[cityid] != null)
             {
-                return CityDic[cityid].Province == null ? "" : CityDic[cityid].Province.Name;
+                return CityDic[cityid].Province == null ? "" : StringHelper.XmlStringReplace(CityDic[cityid].Province.Name);
             }
             else
             {

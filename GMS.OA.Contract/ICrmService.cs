@@ -22,8 +22,8 @@ namespace GMS.Crm.Contract
         void SaveVisitRecord(VisitRecord visitRecord);
         void DeleteVisitRecord(List<int> ids);
 
-        List<BusinessVM> GetBusinessDownload(BusinessPostParameter parm, List<int> staffids);
-        PagedList<BusinessVM> GetBusinessList(BusinessPostParameter request, List<int> staffIDs);
+        List<BusinessVM> GetBusinessDownload(BusinessPostParameter parm, IEnumerable<int> staffids);
+        PagedList<BusinessVM> GetBusinessList(BusinessPostParameter request, IEnumerable<int> staffIDs);
         IEnumerable<Business> GetBusinessList(BusinessRequest request, int staffID);
         //IEnumerable<Business> GetBusinessList(BusinessRequest request, int staffID);
         void CreateBusiness(CreateBusinessEntity entity);

@@ -550,7 +550,7 @@
                        }
                        , {
                            data: 'Customer.UnitName'
-                           , title: "单位名称"
+                           , title: "备注"
                            , "defaultContent": "无"
                        }
                        , {
@@ -973,7 +973,7 @@
                                         }
                                     }
                                 });
-                                console.log("下载失败:" + e);
+                                $("#alertmessge").text("下载失败:" + e.responseText);
                                 $("#dialog-downloading").dialog("close");
                             },
                             timeout: function (e) {
@@ -988,7 +988,7 @@
                                         }
                                     }
                                 });
-                                console.log("下载失败:" + e);
+                                $("#alertmessge").text("下载失败:请求超时。");
                                 $("#dialog-downloading").dialog("close");
                             },
                             success: function (data) {
@@ -1009,6 +1009,7 @@
                                     fouceWindowOpen(url + '?strFile=' + data.filepath, "_blank");
                                     $("#dialog-Success").dialog("close");
                                 } else {
+                                    $("#alertmessge").text(data.message);
                                     $("#dialog-Fail").dialog({
                                         hide: {
                                             effect: "explode",
@@ -1020,7 +1021,6 @@
                                             }
                                         }
                                     });
-
                                 }
                             }
                         });
@@ -1064,7 +1064,7 @@
 
 <div id="dialog-Fail" title="下载结果" style="display:none">
     <p>
-        <b>生成失败</b>.
+        <b id="alertmessge">生成失败</b>.
     </p>
 </div>
 
@@ -1163,7 +1163,7 @@
                     <option class="toggle-vis" value="13">连锁合作方式</option>
                     <option class="toggle-vis" value="14">业务员</option>
                     <option class="toggle-vis" value="15">业务员类型</option>
-                    <option class="toggle-vis" value="16">单位名称</option>
+                    <option class="toggle-vis" value="16">备注</option>
                     <option class="toggle-vis" value="17">是否合作</option>
                     <option class="toggle-vis" value="18">业务统计</option>
                     <option class="toggle-vis" value="19">预计回款</option>
@@ -1201,7 +1201,7 @@
             <th>连锁合作方式</th>
             <th>业务员</th>
             <th>业务员类型</th>
-            <th>单位名称</th>
+            <th>备注</th>
             <th>是否合作</th>
             <th>合作种类</th>
             <th>业务统计<br />(此时间段)</th>
