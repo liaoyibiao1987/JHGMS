@@ -405,7 +405,7 @@ namespace GMS.Crm.BLL
             }
             if (parm.Channel.HasValue == true)
             {
-                query = query.Where(p => p.Channel == (parm.Channel.HasValue ? parm.Channel.ToString() : p.Channel));
+                query = query.Where(p => p.Channel.Contains(parm.Channel.HasValue ? parm.Channel.ToString() : p.Channel));
             }
             if (parm.BusinessType.HasValue == true)
             {
