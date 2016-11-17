@@ -102,7 +102,15 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
             else
             {
                 model.ChainType = null;
+                model.ChainCount = null;
             }
+
+            if (model.CooperationOrNot == null || model.CooperationOrNot == false)
+            {
+                model.CooperationKinds = null;
+                model.Cooperations = null;
+            }
+
             try
             {
                 this.CrmService.SaveCustomer(model);
@@ -127,11 +135,6 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
                 this.CrmService.DeleteCustomer(ids);
             }
             return RedirectToAction("Index");
-        }
-        private void RenderEditViewData(Customer model)
-        {
-
-
         }
         private void RenderMyViewData(Customer model, bool isBasic = false)
         {

@@ -1,4 +1,5 @@
 ﻿using GMS.Account.Contract;
+using GMS.Core.Cache;
 using GMS.Crm.Contract;
 using GMS.Framework.Contract;
 using GMS.Framework.Utility;
@@ -26,6 +27,7 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
         {
             //RenderMyViewData(rquester);
             RenderMyViewData();
+            CacheHelper.Clear(LoginInfo.LoginName + "__Customers");
             //rquester.StartDate = DateTime.Now.AddDays(-7);
             //rquester.EndDate = DateTime.Now;
             //int currentstaffid = UserContext.LoginInfo.StaffID.HasValue ? UserContext.LoginInfo.StaffID.Value : -1;
@@ -99,10 +101,15 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
             ViewData.Add("BusinessType", new SelectList(EnumHelper.GetItemValueList<EnumBusinessType>(), "Key", "Value", 0));
             ViewData.Add("EnumPosition", new SelectList(EnumHelper.GetItemValueList<EnumPosition>(), "Key", "Value", 0));
 
-            int currentstaffid = UserContext.LoginInfo.StaffID.HasValue ? UserContext.LoginInfo.StaffID.Value : -1;
-            var customerList = CrmService.GetCustomerList(GetCurrentUserStaffs(currentstaffid)).ToList();
-            customerList.ForEach(c => c.Name = string.Format("{0}({1})", c.Name, c.Contacter));
-            ViewData.Add("CustomerId", new SelectList(customerList, "Id", "Name"));
+            //普通业务员，客户不会太多
+            if (GMS.Web.Admin.Common.AdminUserContext.Current.LoginInfo.BusinessPermissionList.Select(p => p.ToString()).Contains(GMS.Account.Contract.EnumBusinessPermission.CrmManage_Belongs.ToString()) == false)
+            {
+                int currentstaffid = UserContext.LoginInfo.StaffID.HasValue ? UserContext.LoginInfo.StaffID.Value : -1;
+                var customerList = CrmService.GetCustomerList(GetCurrentUserStaffs(currentstaffid)).ToList();
+                customerList.ForEach(c => c.Name = string.Format("{0}({1})", c.Name, c.Contacter));
+                ViewData.Add("CustomerId", new SelectList(customerList, "Id", "Name"));
+            }
+
 
             List<Staff> liststaff = GetCurrentUserStaffs();
             ViewData.Add("Staffs", new SelectList(liststaff.Select(c => new { Id = c.ID, Name = c.Name }), "Id", "Name"));
@@ -282,9 +289,6 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
             bool result = CrmService.ModifyStaffs(customerids, newstaffid);
             return Json(result);
         }
-
-
-
         private void RenderMyViewData(int customid)
         {
             var request = new CustomerRequest();
@@ -299,7 +303,18 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
             ViewData.Add("CustomerId", new SelectList(customerList, "Id", "Name", customid));
         }
 
-
+        private string GetCoopString(List<int> ids)
+        {
+            var liststr = this.Cooperations.Where(p => ids.Contains(p.ID));
+            if (liststr != null && liststr.Count() > 0)
+            {
+                return string.Join(",", liststr.Select(x => x.Name));
+            }
+            else
+            {
+                return "";
+            }
+        }
 
         [HttpPost]
         public JsonResult GentExcel(BusinessPostParameter aoData)
@@ -385,7 +400,7 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
                             bool iscop = list[rowNumber].Customer.CooperationOrNot.HasValue ? list[rowNumber].Customer.CooperationOrNot.Value : false;
                             cells.Add(new Cell(15, iscop == true ? "是" : "否"));
 
-                            cells.Add(new Cell(16, StringHelper.XmlStringReplace(list[rowNumber].Customer.CustomerCooperShow)));
+                            cells.Add(new Cell(16, GetCoopString(list[rowNumber].Customer.CooperationsIds)));
 
                             string strperpayment = list[rowNumber].PerPayment;
                             if (string.IsNullOrEmpty(strperpayment) == false)
@@ -488,6 +503,44 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
             }
         }
 
+
+        #region 动态获取客户
+        [HttpPost]
+        public JsonResult GetCustomers(string term)
+        {
+            if (string.IsNullOrEmpty(term) == false)
+            {
+                var x = CacheCustomers.Where(n => ((string.IsNullOrEmpty(n.Name) == false && n.Name.Contains(term))
+                    || (string.IsNullOrEmpty(n.Contacter) == false && n.Contacter.Contains(term))));
+                if (x == null || x.Count() == 0)
+                {
+                    return null;
+                }
+                else
+                {
+                    return Json(x.Select(p => new { id = p.ID, text = p.Name }));
+                }
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public IEnumerable<Customer> CacheCustomers
+        {
+            get
+            {
+                return CacheHelper.Get<IEnumerable<Customer>>(LoginInfo.LoginName + "_Customers", () =>
+                {
+                    int currentstaffid = UserContext.LoginInfo.StaffID.HasValue ? UserContext.LoginInfo.StaffID.Value : -1;
+                    var customerList = CrmService.GetCustomerList(GetCurrentUserStaffs(currentstaffid)).ToList();
+                    customerList.ForEach(c => c.Name = string.Format("{0}({1})", c.Name, c.Contacter));
+                    return customerList;
+                });
+            }
+        }
+        #endregion
         private string GetCityName(int cityid)
         {
             if (CityDic.ContainsKey(cityid) && CityDic[cityid] != null)

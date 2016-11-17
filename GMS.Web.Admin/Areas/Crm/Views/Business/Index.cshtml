@@ -3,6 +3,7 @@
 @using GMS.Framework.Web.Controls
 @using GMS.Framework.Contract
 @using GMS.Framework.Web.Controls
+@using System.Web.Optimization
 @using GMS.Crm.Contract
 @using GMS.Web
 @{
@@ -146,8 +147,20 @@
     @*<script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.12/pagination/extjs.js"></script>*@
 
     <script type="text/javascript" src="@Url.StaticFile("/Assets/data-tables/js/oPagination.js")"></script>
+    @if (permissions.Contains(GMS.Account.Contract.EnumBusinessPermission.CrmManage_Belongs.ToString()))
+    {
+        <script type="text/javascript" src="@Url.StaticFile("/Content/Scripts/SelectCustomerId_Manger.js")"></script>
+        //Scripts.Render(Url.StaticFile("/Content/Scripts/SelectCustomerId_Manger.js"));
+    }
+    else
+    {
+        <script type="text/javascript" src="@Url.StaticFile("/Content/Scripts/SelectCustomerId_Normal.js")"></script>
+        //Scripts.Render(Url.StaticFile("/Content/Scripts/SelectCustomerId_Normal.js"));
+    }
 
     <script type="text/javascript">
+
+
         var table;
         var dstart;
         var dend;
@@ -156,10 +169,6 @@
 
         var leaders = new Array();
         var suboffice = new Array();
-
-        $("#CustomerId,#StaffID,#ModifyStaffID").select2({
-            dropdownCssClass: "bigdrop"
-        });
 
         $("#hideColum").select2({
             dropdownCssClass: "bigdrop"
@@ -244,7 +253,7 @@
                 'bLengthChange': true, //是否允许自定义每页显示条数.
                 "processing": true, //DataTables载入数据时，是否显示‘进度’提示
                 "Paginate": false,  //是否分页。
-                "stateSave": true,
+                //"stateSave": true,
                 "lengthMenu": [[10, 25, 50, 100, 500, 1000, 10000], ["10", "25", "50", "100", "500", "1K", "1W"]],
                 "sPaginationType": "oPagination",
                 "ajax": {
@@ -1111,9 +1120,19 @@
                 <span>&nbsp;业&nbsp;务&nbsp;员&nbsp;：@Html.DropDownList("StaffID", ViewData["Staffs"] as SelectList, "--请选择--", new { @class = "selects" })</span>
                 <span>业务员类型：@Html.DropDownList("EnumPosition", ViewData["EnumPosition"] as SelectList, "--请选择--", new { @class = "selects" })</span>
             }
-
-
-            <span>公司名称：@Html.DropDownList("CustomerId", ViewData["CustomerId"] as SelectList, "--请选择--", new { @class = "selects" })</span>
+            @if (permissions.Contains(GMS.Account.Contract.EnumBusinessPermission.CrmManage_Belongs.ToString()))
+            {
+                <span>
+                    公司名称：
+                    <select id="CustomerId" class="selects">
+                        <option></option>
+                    </select>
+                </span>
+            }
+            else
+            {
+                <span>公司名称：@Html.DropDownList("CustomerId", ViewData["CustomerId"] as SelectList, "--请选择--", new { @class = "selects" })</span>
+            }
             <span>&nbsp;类&nbsp;别&nbsp;：@Html.DropDownList("Category", ViewData["Category"] as SelectList, "--请选择--", new { @class = "selects" })</span>
             <span>合作渠道：@Html.DropDownList("Channel", ViewData["Channel"] as SelectList, "--请选择--", new { @class = "selects" })</span>
             <span>商业类型：@Html.DropDownList("BusinessType", ViewData["BusinessType"] as SelectList, "--请选择--", new { @class = "selects" })</span>
