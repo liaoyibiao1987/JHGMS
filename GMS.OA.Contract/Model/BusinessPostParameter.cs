@@ -67,6 +67,11 @@ namespace GMS.OA.Contract.Model
         /// 合作品种
         /// </summary>
         public int? CooperationKinds { get; set; }
+
+        /// <summary>
+        /// 地市
+        /// </summary>
+        public int? SelectCity { get; set; }
         /// <summary>
         ///是否合作
         /// </summary>

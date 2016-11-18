@@ -113,15 +113,13 @@
                 header: {
                     left: 'prev,next today',
                     center: 'title',
-                    right: 'month'
+                    right: 'month,basicWeek'
                 },
                 buttonText: {
-                    today: '本月',
-                    month: '月',
-                    week: '周',
+                    today: '转到今天',
+                    month: '月视图',
+                    week: '周视图',
                     day: '日',
-                    prev: '上一月',
-                    next: '下一月'
                 },
                 loading: function (isloading, view) {
                     if (isloading) {
@@ -158,18 +156,18 @@
                     var fstart = $.fullCalendar.formatDate(event.start, "yyyy-MM-dd");
                     var fend = $.fullCalendar.formatDate(event.end, "yyyy-MM-dd");
                     var confbg = '';
-                    confbg = confbg + '<span class=""></span>';
+                    confbg = confbg + '<span ></span>';
                     if (view.name == "month") {//按月份
-                        var evtcontent = '<div class="fc-event-vert"><a>';
+                        var evtcontent = '<div class="fc-event-vert"><a style="color:#ffffff">';
                         evtcontent = evtcontent + confbg;
                         //evtcontent = evtcontent + fstart + " - " + fend + "客户" + " : " + event.title;
-                        evtcontent = evtcontent + '<span style="color:#ffffff">' + "&emsp;客户" + " : " + event.title + '</span>';
+                        evtcontent = evtcontent + '<span>' + "&emsp;客户" + " : " + event.title + '</span>';
                         element.html(evtcontent);
-                    } else if (view.name == "agendaWeek") {//按周
-                        var evtcontent = '<a>';
+                    } else if (view.name == "basicWeek") {//按周
+                        var evtcontent = '<a style="color:#ffffff">';
                         evtcontent = evtcontent + confbg;
                         evtcontent = evtcontent + '<span class="fc-event-time">' + fstart + "-" + fend + '</span>';
-                        evtcontent = evtcontent + '<span>' + "客户" + " : " + event.title + '<br/>' + event.fullname + '</span>';
+                        evtcontent = evtcontent + '<span>' + "客户" + " : " + event.title + '<br/>' + (event.message.length > 40 ? event.message.substring(0, 37) + "..." : event.message) + '</span>';
 
                         element.html(evtcontent);
                     } else if (view.name == "agendaDay") {//按日
@@ -233,7 +231,7 @@
                                 var obj = new Object();
                                 obj.title = item.Customer.Name || item.Customer.Contacter || "";
                                 obj.message = item.Message || "";
-                                obj.textColor = "#ff0000";
+                                //obj.textColor = "#ff0000";
                                 obj.CustomerID = item.Customer.ID;
                                 obj.ID = item.ID;
                                 obj.start = myDate;

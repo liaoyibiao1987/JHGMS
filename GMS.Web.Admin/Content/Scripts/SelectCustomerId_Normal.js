@@ -1,3 +1,3 @@
-﻿$("#StaffID,#ModifyStaffID,#CustomerId").select2({
+﻿$("#StaffID,#ModifyStaffID,#CustomerId,#selectprov").select2({
     dropdownCssClass: "bigdrop"
 });

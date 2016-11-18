@@ -43,6 +43,17 @@ namespace GMS.OA.DAL
                     m.MapLeftKey("CustomerID");
                     m.MapRightKey("CooperationsID");
                 });
+
+            //modelBuilder.Entity<Province>()
+            //   .w(e => e.Citys)
+            //   .WithOptional(e => e.ID)
+            //   .Map(m =>
+            //   {
+            //       m.ToTable("CustomerCooperations");
+            //       m.MapLeftKey("CustomerID");
+            //       m.MapRightKey("CooperationsID");
+            //   });
+
             //modelBuilder.Entity<City>().HasKey(e => e.ProvinceID).Map(m =>
             //{
             //    m.ToTable("Province");

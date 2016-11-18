@@ -1,4 +1,4 @@
-﻿$("#StaffID,#ModifyStaffID").select2({
+﻿$("#StaffID,#ModifyStaffID,#selectprov").select2({
     dropdownCssClass: "bigdrop"
 });
 

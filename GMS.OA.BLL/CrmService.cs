@@ -395,6 +395,11 @@ namespace GMS.Crm.BLL
         }
         private void GetFilter(BusinessPostParameter parm, ref IQueryable<Customer> query)
         {
+
+            if (parm.SelectCity.HasValue == true)
+            {
+                query = query.Where(p => p.CityId == (parm.SelectCity.HasValue ? parm.SelectCity.Value : p.CityId));
+            }
             if (parm.StaffID.HasValue == true)
             {
                 query = query.Where(p => p.Staff.ID == (parm.StaffID.HasValue ? parm.StaffID.Value : p.Staff.ID));
@@ -760,7 +765,7 @@ namespace GMS.Crm.BLL
             request = request ?? new Request();
             using (var dbContext = new CRMOAContext())
             {
-                IQueryable<Province> areas = dbContext.Provinces;
+                IQueryable<Province> areas = dbContext.Provinces.Include("Citys");
                 return areas.OrderByDescending(u => u.ID).ToPagedList(request.PageIndex, request.PageSize);
             }
         }

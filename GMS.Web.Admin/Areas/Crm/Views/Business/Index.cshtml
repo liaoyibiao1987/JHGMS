@@ -182,7 +182,6 @@
             column.visible(!column.visible());
         });
 
-
         var Coops = @Html.Raw(Json.Encode(ViewData["Coops"]));
 
         function GetCoopStr(str) {
@@ -253,7 +252,7 @@
                 'bLengthChange': true, //是否允许自定义每页显示条数.
                 "processing": true, //DataTables载入数据时，是否显示‘进度’提示
                 "Paginate": false,  //是否分页。
-                "stateSave": true,
+                //"stateSave": true,
                 "lengthMenu": [[10, 25, 50, 100, 500, 1000, 10000], ["10", "25", "50", "100", "500", "1K", "1W"]],
                 "sPaginationType": "oPagination",
                 "ajax": {
@@ -303,6 +302,7 @@
                     aoData.CustomerId = $("#CustomerId").val();
                     aoData.Leaders = $("#Leaders").val();
                     aoData.Suboffice = $("#Suboffice").val();
+                    aoData.SelectCity= $("#selectprov").val();
 
                     aoData.CooperationOrNot = $("#CooperationOrNot").val();
                     aoData.ChainType = $("#ChainType").val();
@@ -1116,9 +1116,32 @@
             {
                 <span>分管领导：@Html.DropDownList("Leaders", ViewData["Leaders"] as SelectList, "--请选择--", new { @class = "selects" })</span>
                 <span>&nbsp;办&nbsp;事&nbsp;处：@Html.DropDownList("Suboffice", ViewData["Suboffice"] as SelectList, "--请选择--", new { @class = "selects" })</span>
+                <span>
+                    地 市：
+                    <select id="selectprov" class="selects">
+                        <option>--请选择--</option>
+                        @{
+                Dictionary<int, Province> dd = ViewData["Provincs"] as Dictionary<int, Province>;
+                foreach (var item in dd.Values)
+                {
+                    <optgroup label="@(item.Name)"></optgroup>
+                    var x = item.Citys;
+                    if (x != null && x.Count() > 0)
+                    {
+                        foreach (var z in x)
+                        {
+                            <option value="@(z.ID)">@(z.Name)</option>
+                        }
+
+                    }
+                }
+                        }
+                    </select>
+                </span>
 
                 <span>&nbsp;业&nbsp;务&nbsp;员&nbsp;：@Html.DropDownList("StaffID", ViewData["Staffs"] as SelectList, "--请选择--", new { @class = "selects" })</span>
                 <span>业务员类型：@Html.DropDownList("EnumPosition", ViewData["EnumPosition"] as SelectList, "--请选择--", new { @class = "selects" })</span>
+
             }
             @if (permissions.Contains(GMS.Account.Contract.EnumBusinessPermission.CrmManage_Belongs.ToString()))
             {
