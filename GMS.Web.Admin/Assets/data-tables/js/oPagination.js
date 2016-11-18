@@ -51,7 +51,7 @@ $.fn.dataTableExt.oPagination.oPagination = {
         //oPageButton.click({ 'fnCallbackDraw': fnCallbackDraw, 'oSettings': oSettings, 'sPage': '36' }, that.fnClickHandler);
         oPageNumBox.change(function () {
             if ($(this).val() == undefined || $(this).val() == '' || isNaN($(this).val()) == true) {
-                return;
+                pageValue = oSettings.oInstance.fnPagingInfo().iCurrentPage;
             }
             var pageValue = parseInt($(this).val(), 10) - 1; // -1 because pages are 0 indexed, but the UI is 1
             var oPaging = oSettings.oInstance.fnPagingInfo();
@@ -85,7 +85,7 @@ $.fn.dataTableExt.oPagination.oPagination = {
             $('.' + oClasses.sPageFirst, tableWrapper).removeAttr('disabled');
             $('.' + oClasses.sPagePrevious, tableWrapper).removeAttr('disabled');
         }
-        $('.pageinate_input_box', tableWrapper).val(oSettings._iCurrentPage);
+        $('.pageinate_input_box', tableWrapper).val(parseInt(oSettings._iCurrentPage, 10));
         if (oSettings._iTotalPages === 0 || oSettings._iCurrentPage === oSettings._iTotalPages) {
             $('.' + oClasses.sPageNext, tableWrapper).attr('disabled', true);
             $('.' + oClasses.sPageLast, tableWrapper).attr('disabled', true);
