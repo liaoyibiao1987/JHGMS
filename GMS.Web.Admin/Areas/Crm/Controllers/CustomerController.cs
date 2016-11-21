@@ -9,6 +9,7 @@ using GMS.Web.Admin.Common;
 using GMS.Framework.Utility;
 using GMS.Framework.Contract;
 using GMS.OA.Contract;
+using GMS.Core.Cache;
 
 namespace GMS.Web.Admin.Areas.Crm.Controllers
 {
@@ -64,9 +65,8 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
                 this.RenderMyViewData(model);
                 return View("Edit", model);
             }
-
-
-            return this.RefreshParent();
+            CacheHelper.Clear(LoginInfo.LoginName + "__Customers");
+            return this.RefreshBussiness();
         }
 
         //
@@ -122,7 +122,8 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
                 return View("Edit", model);
             }
 
-            return this.RefreshParent();
+            CacheHelper.Clear(LoginInfo.LoginName + "__Customers");
+            return this.RefreshBussiness();
         }
 
         // POST: /Crm/Customer/Delete/5

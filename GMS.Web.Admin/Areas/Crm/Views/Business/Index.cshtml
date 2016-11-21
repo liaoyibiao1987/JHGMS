@@ -208,11 +208,13 @@
                 $(source.Embranchment).each(function(i,item){
                     if(item.ID == id){
                         p = item;
+                        return false;
                     }
                     else{
                         GetBranch(item , id);
                     }
                 });
+                return;
             }
         }
 
@@ -710,6 +712,7 @@
             dend = $("#end").datepicker("getDate");
             $('#example').dataTable().fnClearTable(false);
             $('#example').DataTable().columns.adjust().draw();
+            tb_remove();
         }
 
         function Initselect() {

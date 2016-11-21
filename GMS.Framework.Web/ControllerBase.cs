@@ -51,6 +51,12 @@ namespace GMS.Framework.Web
             return this.Content(script);
         }
 
+        public ContentResult RefreshBussiness()
+        {
+            var script = string.Format("<script>if(top.location != location) parent.refeshTable()</script>");
+            return this.Content(script);
+        }
+
         public new ContentResult RefreshParentTab(string alert = null)
         {
             var script = string.Format("<script>{0}; if (window.opener != null) {{ window.opener.location.reload(); window.opener = null;window.open('', '_self', '');  window.close()}} else {{parent.location.reload(1)}}</script>", string.IsNullOrEmpty(alert) ? string.Empty : "alert('" + alert + "')");

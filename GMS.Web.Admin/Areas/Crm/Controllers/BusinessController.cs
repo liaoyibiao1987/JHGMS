@@ -27,7 +27,6 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
         {
             //RenderMyViewData(rquester);
             RenderMyViewData();
-            CacheHelper.Clear(LoginInfo.LoginName + "__Customers");
             //rquester.StartDate = DateTime.Now.AddDays(-7);
             //rquester.EndDate = DateTime.Now;
             //int currentstaffid = UserContext.LoginInfo.StaffID.HasValue ? UserContext.LoginInfo.StaffID.Value : -1;
@@ -401,7 +400,7 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
                             cells.Add(new Cell(13, list[rowNumber].Staff != null ? list[rowNumber].Staff.Name : ""));
                             cells.Add(new Cell(14, list[rowNumber].Staff != null ? EnumHelper.GetEnumTitle((EnumPosition)list[rowNumber].Staff.Position) : ""));
 
-                            fristcells.Add(new Cell(15, StringHelper.XmlStringReplace(list[rowNumber].Customer.UnitName)));
+                            cells.Add(new Cell(15, StringHelper.XmlStringReplace(list[rowNumber].Customer.UnitName)));
 
                             bool iscop = list[rowNumber].Customer.CooperationOrNot.HasValue ? list[rowNumber].Customer.CooperationOrNot.Value : false;
                             cells.Add(new Cell(16, iscop == true ? "是" : "否"));
