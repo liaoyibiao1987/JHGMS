@@ -13,7 +13,18 @@ namespace GMS.OA.Contract
         List<int> GetBelongsStaff(int id);
         List<Staff> GetBelongsStaffEntity(int id);
         List<Branch> GetBelongsToBranch(int BranchID);
+
+        /// <summary>
+        /// 获取所有下属部门
+        /// </summary>
+        /// <param name="BranchID"></param>
+        /// <returns></returns>
+        List<Branch> GetBelongsBranch(int BranchID);
         Branch GetBranch(int id);
+        /// <summary>
+        /// 获取所有的部门
+        /// </summary>
+        /// <returns></returns>
         IEnumerable<Branch> GetAllBranchList();
         IEnumerable<Branch> GetBranchList(BranchRequest request = null);
         void SaveBranch(Branch branch);

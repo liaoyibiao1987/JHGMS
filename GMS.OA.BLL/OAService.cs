@@ -149,6 +149,18 @@ namespace GMS.OA.BLL
                 }
             }
         }
+
+        public List<Branch> GetBelongsBranch(int BranchID)
+        {
+            Branch current = GetBranch(BranchID);
+            List<Branch> ret = new List<Branch> { current };
+            IEnumerable<Branch> sonBranch = GetSonBranch(BranchID);
+            if (sonBranch.Count() > 0)
+            {
+                ret.AddRange(sonBranch);
+            }
+            return ret;
+        }
         private List<int> GetALLBranch(int BranchID)
         {
             List<int> ret = new List<int> { BranchID };

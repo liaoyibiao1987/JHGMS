@@ -7,34 +7,45 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section PageSpecificStyleSheetIncludes{
-
+    <style>
+        .xzou {
+            word-break: break-all;
+        }
+    </style>
 }
 @section PageSpecificJavascriptIncludes{
     <script type="text/javascript" src="@Url.StaticFile("/content/scripts/highcharts.js")"></script>
     <script type="text/javascript" src="@Url.StaticFile("/content/scripts/highcharts.exporting.js")"></script>
     <script type="text/javascript">
-  
-    var chart = new Highcharts.Chart({
+        var chart = new Highcharts.Chart({
             chart: {
                 renderTo: 'container',
                 type: 'line',
                 marginRight: 130,
-                marginBottom: 25
+                marginBottom: 70
             },
             title: {
-                text: '时段来访来电统计',
+                text: '回款统计',
                 x: -20 //center
             },
             subtitle: {
-                text: '按一天24小时来访来电统计',
+                text: '各部门的回款统计',
                 x: -20
             },
             xAxis: {
-                categories: [@Html.Raw(ViewData["hours"].ToString())],
+                categories: [@Html.Raw(ViewData["Branchs"].ToString())],
+                labels: {
+                    rotation: 0,
+                    style: {
+                        fontSize: '7px',
+                        //fontFamily: 'Verdana, sans-serif',
+                        writingMode: 'tb-rl'    //文字竖排样式
+                    }
+                }
             },
             yAxis: {
                 title: {
-                    text: '数目 (个)'
+                    text: '金额 (元)'
                 },
                 plotLines: [{
                     value: 0,
@@ -45,7 +56,7 @@
             tooltip: {
                 formatter: function () {
                     return '<b>' + this.series.name + '</b><br/>' +
-                    this.x + ': ' + this.y + '个';
+                    this.x + ': ' + this.y + '元';
                 }
             },
             legend: {
@@ -57,14 +68,14 @@
                 borderWidth: 0
             },
             series: [{
-                name: '来电来访总数',
-                data: [@Html.Raw(ViewData["visitRecordCount"].ToString())]
+                name: '本月预计回款',
+                data: [@Html.Raw(ViewData["Month"].ToString())]
             }, {
-                name: '来访数',
-                data: [@Html.Raw(ViewData["visitCount"].ToString())]
+                name: '最近三月预计回款',
+                data: [@Html.Raw(ViewData["Quarter"].ToString())]
             }, {
-                name: '来电数',
-                data: [@Html.Raw(ViewData["telCount"].ToString())]
+                name: '今年预计回款',
+                data: [@Html.Raw(ViewData["Year"].ToString())]
             }]
         });
 
@@ -87,21 +98,21 @@
     </script>
 }
 <div>
-    
+
     @using (Html.BeginForm(null, null, null, FormMethod.Get, new { id = "search", @class = "well form-inline" }))
-    { 
-    <div>
+    {
+        <div>
             开始时间：
             @Html.TextBox("startDate", null, new { @class = "m-wrap small" })
-            
+
             结束时间：
             @Html.TextBox("endDate", null, new { @class = "m-wrap small" })
-                　
+
             <button type="submit" class="btn">查询 <i class="icon-search"></i></button>
-             
-    </div>
+
+        </div>
     }
-    
+
 </div>
 
 <div class="breadcrumb">

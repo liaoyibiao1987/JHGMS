@@ -240,3 +240,8 @@ E:\Users\平平\git\GMS\GMS.Web.Admin\bin\WebGrease.dll
 E:\Users\平平\git\GMS\GMS.Web.Admin\bin\Antlr3.Runtime.pdb
 E:\Users\平平\git\GMS\GMS.Web.Admin\bin\System.Web.Optimization.xml
 E:\Users\平平\git\GMS\GMS.Web.Admin\bin\zh-Hans\System.Web.Optimization.resources.dll
+C:\Users\Administrator\git\JHDMS\JHGMS\GMS.Web.Admin\bin\Antlr3.Runtime.dll
+C:\Users\Administrator\git\JHDMS\JHGMS\GMS.Web.Admin\bin\System.Web.Optimization.dll
+C:\Users\Administrator\git\JHDMS\JHGMS\GMS.Web.Admin\bin\WebGrease.dll
+C:\Users\Administrator\git\JHDMS\JHGMS\GMS.Web.Admin\bin\Antlr3.Runtime.pdb
+C:\Users\Administrator\git\JHDMS\JHGMS\GMS.Web.Admin\bin\System.Web.Optimization.xml
