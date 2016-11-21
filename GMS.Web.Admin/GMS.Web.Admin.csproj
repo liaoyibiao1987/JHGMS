@@ -16,8 +16,7 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>false</UseIISExpress>
-    <SilverlightApplicationList>
-    </SilverlightApplicationList>
+    <SilverlightApplicationList>{F410D2D3-B9DA-4F5D-B9C6-AAC8249A135B}|..\GMS.Web.OrgChart\GMS.Web.OrgChart.csproj|ClientBin|False</SilverlightApplicationList>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
@@ -1523,6 +1522,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Global.asax" />
+    <Content Include="GMS.Web.OrgChartTestPage.aspx" />
+    <Content Include="GMS.Web.OrgChartTestPage.html" />
+    <Content Include="Silverlight.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

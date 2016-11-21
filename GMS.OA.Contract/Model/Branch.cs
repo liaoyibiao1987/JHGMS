@@ -32,7 +32,7 @@ namespace GMS.OA.Contract
         public virtual Branch ParentBranch { get; set; }
 
         [ForeignKey("ParentId")]
-        [JsonIgnore]
+        //[JsonIgnore]
         public virtual List<Branch> Embranchment { get; set; }
     }
 }

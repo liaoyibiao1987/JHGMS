@@ -272,7 +272,7 @@ namespace GMS.OA.BLL
 
         private void AppendBranch(IEnumerable<Branch> allBranch, IEnumerable<Staff> allStaff, Branch branch)
         {
-            branch.Embranchment = allBranch.Where(b => b.ParentId == branch.ID).Select(b => new Branch() { ID = b.ID, Name = b.Name }).ToList();
+            branch.Embranchment = allBranch.Where(b => b.ParentId == branch.ID).Select(b => new Branch() { ID = b.ID, Name = b.Name, ParentId = b.ParentId }).ToList();
             branch.Staffs = allStaff.Where(s => s.BranchId.Value == branch.ID).Select(b => new Staff() { ID = b.ID, Name = b.Name }).ToList();
             branch.Embranchment.ForEach(b => AppendBranch(allBranch, allStaff, b));
         }

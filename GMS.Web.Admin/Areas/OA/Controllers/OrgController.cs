@@ -33,9 +33,12 @@ namespace GMS.Web.Admin.Areas.OA.Controllers
         {
             try
             {
+
                 int bytelength = Request.ContentLength;
                 byte[] inputbytes = Request.BinaryRead(bytelength);
                 string message = System.Text.Encoding.UTF8.GetString(inputbytes);
+
+
                 var branch = JsonConvert.DeserializeObject<Branch>(message);
 
                 this.OAService.SaveOrg(branch);

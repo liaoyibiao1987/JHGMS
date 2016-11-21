@@ -59,8 +59,8 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
         [HttpPost]
         public JsonResult GetAllBranch()
         {
-            IEnumerable<Branch> all = OAService.GetBranchList();
-            return Json(all);
+            Branch root = OAService.GetOrg();
+            return Json(root);
         }
 
         [HttpPost]
@@ -357,13 +357,14 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
                         fristcells.Add(new Cell(12, "连锁合作方式"));
                         fristcells.Add(new Cell(13, "业务员"));
                         fristcells.Add(new Cell(14, "业务员类型"));
-                        fristcells.Add(new Cell(15, "是否合作"));
-                        fristcells.Add(new Cell(16, "合作品种"));
-                        fristcells.Add(new Cell(17, "预计回款"));
+                        fristcells.Add(new Cell(15, "备注"));
+                        fristcells.Add(new Cell(16, "是否合作"));
+                        fristcells.Add(new Cell(17, "合作品种"));
+                        fristcells.Add(new Cell(18, "预计回款"));
                         for (int i = 0; i < days; i++)
                         {
                             DateTime now = aoData.startdate.Value.AddDays(i);
-                            fristcells.Add(new Cell(18 + i, now.ToString("MM月dd日")));
+                            fristcells.Add(new Cell(19 + i, now.ToString("MM月dd日")));
                         }
                         rows.Add(new Row(1, fristcells));
 
@@ -400,21 +401,23 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
                             cells.Add(new Cell(13, list[rowNumber].Staff != null ? list[rowNumber].Staff.Name : ""));
                             cells.Add(new Cell(14, list[rowNumber].Staff != null ? EnumHelper.GetEnumTitle((EnumPosition)list[rowNumber].Staff.Position) : ""));
 
-                            bool iscop = list[rowNumber].Customer.CooperationOrNot.HasValue ? list[rowNumber].Customer.CooperationOrNot.Value : false;
-                            cells.Add(new Cell(15, iscop == true ? "是" : "否"));
+                            fristcells.Add(new Cell(15, StringHelper.XmlStringReplace(list[rowNumber].Customer.UnitName)));
 
-                            cells.Add(new Cell(16, GetCoopString(list[rowNumber].Customer.CooperationsIds)));
+                            bool iscop = list[rowNumber].Customer.CooperationOrNot.HasValue ? list[rowNumber].Customer.CooperationOrNot.Value : false;
+                            cells.Add(new Cell(16, iscop == true ? "是" : "否"));
+
+                            cells.Add(new Cell(17, GetCoopString(list[rowNumber].Customer.CooperationsIds)));
 
                             string strperpayment = list[rowNumber].PerPayment;
                             if (string.IsNullOrEmpty(strperpayment) == false)
                             {
                                 double dperpay = 0d;
                                 double.TryParse(strperpayment, out dperpay);
-                                cells.Add(new Cell(17, dperpay));
+                                cells.Add(new Cell(18, dperpay));
                             }
                             else
                             {
-                                cells.Add(new Cell(17, strperpayment));
+                                cells.Add(new Cell(18, strperpayment));
                             }
 
 
@@ -426,16 +429,16 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
                                     var x = list[rowNumber].Business.FirstOrDefault(p => p.CreateTime == now);
                                     if (x != null)
                                     {
-                                        cells.Add(new Cell(18 + i, StringHelper.XmlStringReplace(x.Message)));
+                                        cells.Add(new Cell(19 + i, StringHelper.XmlStringReplace(x.Message)));
                                     }
                                     else
                                     {
-                                        cells.Add(new Cell(18 + i, ""));
+                                        cells.Add(new Cell(19 + i, ""));
                                     }
                                 }
                                 else
                                 {
-                                    cells.Add(new Cell(18 + i, ""));
+                                    cells.Add(new Cell(19 + i, ""));
                                 }
                             }
                             rows.Add(new Row(rowNumber + 2, cells));

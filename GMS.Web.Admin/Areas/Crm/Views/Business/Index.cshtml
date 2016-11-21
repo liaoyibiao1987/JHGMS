@@ -167,8 +167,7 @@
         var range = 0;
         var blist;
 
-        var leaders = new Array();
-        var suboffice = new Array();
+        var branchs;
 
         $("#hideColum").select2({
             dropdownCssClass: "bigdrop"
@@ -200,35 +199,38 @@
             }
             return retstr;
         }
-
-        function getRoot(id) {
-            var parent = getParent(id);
-            var ret;
-            if (parent != null && parent != undefined) {
-                $.each(leaders, function (i, item) {
-                    if (parent.ParentId == item.ID) {
-                        ret = item.Name;
+        var p ;
+        function GetBranch(source , id){
+            if(source.ID == id){
+                p = source;
+            }
+            else if(source.Embranchment != null && source.Embranchment.length > 0){
+                $(source.Embranchment).each(function(i,item){
+                    if(item.ID == id){
+                        p = item;
+                    }
+                    else{
+                        GetBranch(item , id);
                     }
                 });
             }
-            return ret;
+        }
+
+        function getRoot(id) {
+            GetBranch(branchs, id);
+            if(p != null && p != undefined){
+                GetBranch(branchs, p.ParentId);
+            }
+            if(p!=null && p !=undefined){
+                return p.Name;
+            }
         }
 
         function getParent(id) {
-            var ret;
-            $.each(suboffice, function (i, item) {
-                if (item.ID == id) {
-                    ret = item;
-                }
-            });
-            if (ret == undefined) {
-                $.each(blist, function (i, item) {
-                    if (item.ID == id) {
-                        ret = item;
-                    }
-                });
+            GetBranch(branchs,  id);
+            if(p!=null && p !=undefined){
+                return p.Name;
             }
-            return ret;
         }
 
         function InitDatatable() {
@@ -380,8 +382,7 @@
                                , "orderable": false
                                , "className": "customername"
                                , "render": function (data, type, full, meta) {
-                                   var x = getParent(data);
-                                   return x.Name;
+                                   return getParent(data);
                                }
                            }
                            , {
@@ -735,35 +736,36 @@
             //    select: function (event, ui) {
             //    }
             //});
-            //$("#Suboffice").focus().autocomplete({
-            //    source: function (request, response) {
-            //        var matcher = new RegExp($.ui.autocomplete.escapeRegex(request.term), "ig");
-            //        debugger;
-            //        response($.map(suboffice, function (item) {
-            //            var value = item.Name || item.value || item;
-            //            if (matcher.test(value) == true) {
-            //                console.log("------------------------------------" + item.Name);
-            //                return { label: item.Name, value: item.Name };
-            //            }
-            //        }));
-            //        //response($.map(suboffice, function (item) {
-            //        //    return { label: item.Name, value: item.ID }
-            //        //}));
-            //    },
-            //    minLength: 1,
-            //    formatItem: function (item) {
-            //        return item.Name;
-            //    },
-            //    select: function (event, ui) {
-            //        alert(1);
-            //    }
-            //});
-
 
             var dates = $("select").not(".norefresh").change(function () {
                 refeshTable();
             });
         }
+
+        //function GetBranch(data){
+        //    orderlinessBranch(data,leaders,2);
+        //    $(data.Embranchment[0].Embranchment).each(function(i,item){
+        //        leaders.push(item);
+        //    });
+        //    orderlinessBranch(data,suboffice,3);
+        //    $(data.Embranchment[0].Embranchment).each(function(i,item){
+        //        suboffice.push(item);
+        //    });
+        //}
+
+        //function orderlinessBranch(source,target,depth){
+        //    if(depth > 0){
+        //        $(source.Embranchment).each(function(i,item){
+        //            var temp = orderlinessBranch(item ,target, depth - 1);
+        //            //ret.push(temp);
+        //        });
+        //    }
+        //    else{
+        //        $(source.Embranchment).each(function(i,item){
+        //            target.push(item);
+        //        });
+        //    }
+        //}
 
         $(document).ready(function () {
             $.ajax({
@@ -771,23 +773,8 @@
                 url: "/Crm/Business/GetAllBranch",
                 dataType: "json",
                 success: function (data) {
-
-                    $.each(data, function (i, item) {
-                        var ret = false;
-                        for (var j = 0; j < data.length; j++) {
-                            if (data[j].ParentId == item.ID) {
-                                ret = true;
-                            }
-                        }
-                        if (ret == true) {
-                            leaders.push(item);
-                        } else {
-                            suboffice.push(item);
-                        }
-                    });
-
+                    branchs = data;
                     Initselect();
-                    blist = data;
                     InitDatatable();
                 }
             });
@@ -822,9 +809,6 @@
                 $("select[name='example_length']").change();
             });
             //$('#tbbusiness').dataTable().fnDestroy();
-
-
-
         });
 
 
