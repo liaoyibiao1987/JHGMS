@@ -707,12 +707,12 @@
 
         //转到第几页
         //$('#example').dataTable().fnPageChange(index);
-        function refeshTable() {
+        function refeshTable() {            
+            tb_remove();
             dstart = $("#start").datepicker("getDate");
             dend = $("#end").datepicker("getDate");
             $('#example').dataTable().fnClearTable(false);
             $('#example').DataTable().columns.adjust().draw();
-            tb_remove();
         }
 
         function Initselect() {

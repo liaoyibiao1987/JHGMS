@@ -259,7 +259,7 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
                 }
             }
 
-            return this.RefreshParent();
+            return this.RefreshBussiness();
         }
         [HttpPost]
         public ActionResult MoveEvent(int ID, DateTime to)

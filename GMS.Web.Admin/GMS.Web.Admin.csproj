@@ -159,6 +159,7 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="Assets\data-tables\js\oPagination.js" />
+    <Content Include="ClientBin\GMS.Web.OrgChart.xap" />
     <Content Include="Content\Images\dotted.png" />
     <Content Include="Content\Images\grip.png" />
     <Content Include="Content\Images\th.png" />
@@ -1215,7 +1216,6 @@
     <Content Include="Assets\uniform\images\sprite_original.png" />
     <Content Include="Assets\uniform\jquery.uniform.js" />
     <Content Include="Assets\uniform\jquery.uniform.min.js" />
-    <Content Include="ClientBin\GMS.Web.OrgChart.xap" />
     <Content Include="Config\SystemConfig.xml" />
     <Content Include="Config\SettingConfig.xml" />
     <Content Include="Config\UploadConfig.xml" />
