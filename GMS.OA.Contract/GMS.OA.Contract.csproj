@@ -81,6 +81,10 @@
     <Compile Include="Model\User.cs" />
     <Compile Include="Model\VerifyCode.cs" />
     <Compile Include="Model\VisitRecord.cs" />
+    <Compile Include="Model\V_BusinessBase.cs" />
+    <Compile Include="Model\V_YearBusiness.cs" />
+    <Compile Include="Model\V_MonthBusiness.cs" />
+    <Compile Include="Model\V_QuarterBusiness.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

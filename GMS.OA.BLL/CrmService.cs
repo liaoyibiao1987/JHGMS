@@ -689,6 +689,28 @@ namespace GMS.Crm.BLL
             return ret;
         }
 
+        public List<V_MonthBusiness> GetMonthAnalysis()
+        {
+            using (var dbContext = new CRMOAContext())
+            {
+                return dbContext.V_MonthBusiness.ToList();
+            }
+        }
+        public List<V_QuarterBusiness> GetQuarterAnalysis()
+        {
+            using (var dbContext = new CRMOAContext())
+            {
+                return dbContext.V_QuarterBusiness.ToList();
+            }
+        }
+        public List<V_YearBusiness> GetYearAnalysis()
+        {
+            using (var dbContext = new CRMOAContext())
+            {
+                return dbContext.V_YearBusiness.ToList();
+            }
+        }
+
 
         public bool ModifyStaffs(List<int> customersID, int newstaffID)
         {

@@ -26,6 +26,13 @@ namespace GMS.Crm.Contract
         PagedList<BusinessVM> GetBusinessList(BusinessPostParameter request, IEnumerable<int> staffIDs);
         IEnumerable<Business> GetBusinessList(BusinessRequest request, int staffID);
         //IEnumerable<Business> GetBusinessList(BusinessRequest request, int staffID);
+
+        #region
+        List<V_MonthBusiness> GetMonthAnalysis();
+        List<V_QuarterBusiness> GetQuarterAnalysis();
+        List<V_YearBusiness> GetYearAnalysis();
+        #endregion
+
         void CreateBusiness(CreateBusinessEntity entity);
         bool UpdateBusiness(Business entity);
         bool ModifyStaffs(List<int> customersID, int newstaffID);

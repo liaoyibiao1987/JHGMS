@@ -4,6 +4,7 @@ using GMS.Core.Log;
 using GMS.Crm.Contract;
 using GMS.Framework.DAL;
 using GMS.OA.Contract;
+using GMS.OA.Contract.Model;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -80,5 +81,11 @@ namespace GMS.OA.DAL
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<VerifyCode> VerifyCodes { get; set; }
+
+
+        public DbSet<V_MonthBusiness> V_MonthBusiness { get; set; }
+        public DbSet<V_QuarterBusiness> V_QuarterBusiness { get; set; }
+        public DbSet<V_YearBusiness> V_YearBusiness { get; set; }
+
     }
 }

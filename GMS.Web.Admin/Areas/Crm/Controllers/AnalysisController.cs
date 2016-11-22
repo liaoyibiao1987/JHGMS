@@ -8,6 +8,7 @@ using GMS.Account.Contract;
 using GMS.Web.Admin.Common;
 using GMS.Framework.Utility;
 using GMS.OA.Contract;
+using GMS.OA.Contract.Model;
 
 namespace GMS.Web.Admin.Areas.Crm.Controllers
 {
@@ -81,12 +82,36 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
             {
                 branchs = OAService.GetBelongsBranch(current.BranchId.Value);
             }
-            ViewData.Add("Branchs", string.Join(",", branchs.Select(p => "'" + p.Name + "'")));
 
 
-            ViewData.Add("Month", string.Join(",", branchs.Select(p => p.ID)));
-            ViewData.Add("Quarter", string.Join(",", branchs.Select(p => p.ID)));
-            ViewData.Add("Year", string.Join(",", branchs.Select(p => p.ID)));
+
+
+            List<V_MonthBusiness> month = CrmService.GetMonthAnalysis();
+            List<V_QuarterBusiness> quarter = CrmService.GetQuarterAnalysis();
+            List<V_YearBusiness> year = CrmService.GetYearAnalysis();
+
+            var x1 = from a in branchs
+                     join b in month on a.ID equals b.BranchID into prodGroup
+                     from item in prodGroup.DefaultIfEmpty()
+                     select new { per = ((item == null || item.SumPredictPayment.HasValue == false) ? 0 : item.SumPredictPayment) };
+
+            var x2 = from a in branchs
+                     join b in quarter on a.ID equals b.BranchID into prodGroup
+                     from item in prodGroup.DefaultIfEmpty()
+                     select new { per = ((item == null || item.SumPredictPayment.HasValue == false) ? 0 : item.SumPredictPayment) };
+
+            var x3 = from a in branchs
+                     join b in year on a.ID equals b.BranchID into prodGroup
+                     from item in prodGroup.DefaultIfEmpty()
+                     select new { per = ((item == null || item.SumPredictPayment.HasValue == false) ? 0 : item.SumPredictPayment) };
+
+
+
+            ViewData.Add("Branchs", string.Join(",", branchs.Select(p => "'" + p.Name + "'")) + ",'汇总'");
+
+            ViewData.Add("Month", string.Join(",", x1.Select(p => p.per)) + "," + x1.Sum(q => q.per));
+            ViewData.Add("Quarter", string.Join(",", x2.Select(p => p.per)) + "," + x2.Sum(q => q.per));
+            ViewData.Add("Year", string.Join(",", x3.Select(p => p.per)) + "," + x3.Sum(q => q.per));
 
             return View();
         }

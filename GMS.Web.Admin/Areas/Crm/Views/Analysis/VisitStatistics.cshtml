@@ -17,6 +17,7 @@
     <script type="text/javascript" src="@Url.StaticFile("/content/scripts/highcharts.js")"></script>
     <script type="text/javascript" src="@Url.StaticFile("/content/scripts/highcharts.exporting.js")"></script>
     <script type="text/javascript">
+        debugger;
         var chart = new Highcharts.Chart({
             chart: {
                 renderTo: 'container',
@@ -37,7 +38,7 @@
                 labels: {
                     rotation: 0,
                     style: {
-                        fontSize: '7px',
+                        fontSize: '0.6em',
                         textAlign: "top",
                         writingMode: 'tb-rl'    //文字竖排样式
                     }
@@ -78,42 +79,8 @@
                 data: [@Html.Raw(ViewData["Year"].ToString())]
             }]
         });
-
-
-        var dates = $("#startDate, #endDate").datepicker({
-            dateFormat: "yy-mm-dd",
-            defaultDate: "+1w",
-            changeMonth: true,
-            numberOfMonths: 2,
-            onSelect: function (selectedDate) {
-                var option = this.id == "startDate" ? "minDate" : "maxDate",
-				instance = $(this).data("datepicker"),
-				date = $.datepicker.parseDate(
-					instance.settings.dateFormat ||
-					$.datepicker._defaults.dateFormat,
-					selectedDate, instance.settings);
-                dates.not(this).datepicker("option", option, date);
-            }
-        });
     </script>
 }
-<div>
-
-    @using (Html.BeginForm(null, null, null, FormMethod.Get, new { id = "search", @class = "well form-inline" }))
-    {
-        <div>
-            开始时间：
-            @Html.TextBox("startDate", null, new { @class = "m-wrap small" })
-
-            结束时间：
-            @Html.TextBox("endDate", null, new { @class = "m-wrap small" })
-
-            <button type="submit" class="btn">查询 <i class="icon-search"></i></button>
-
-        </div>
-    }
-
-</div>
 
 <div class="breadcrumb">
     <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
