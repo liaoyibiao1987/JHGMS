@@ -70,7 +70,7 @@ namespace GMS.OA.Contract
         [EnumTitle("销售经理")]
         SalesManager = 2,
 
-        [EnumTitle("销售经理兼临床")]
+        [EnumTitle("市场专员")]
         SMAndClinic = 3,
 
         [EnumTitle("终端经理")]
