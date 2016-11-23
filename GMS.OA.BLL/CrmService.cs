@@ -12,6 +12,7 @@ using GMS.OA.Contract;
 using GMS.OA.Contract.Model;
 using System.Data.Entity.Core.Objects;
 using GMS.OA.DAL;
+using GMS.Core.Log;
 
 namespace GMS.Crm.BLL
 {
@@ -104,13 +105,22 @@ namespace GMS.Crm.BLL
 
         public void SaveCustomer(Customer customer)
         {
+            if (customer.ID > 0)
+            {
+                using (var dbContext2 = new CRMOAContext())
+                {
+
+                }
+            }
+
             using (var dbContext = new CRMOAContext())
             {
                 if (customer.ID > 0)
                 {
+                    Customer old = dbContext.Customers.AsNoTracking().Where(p => p.ID == customer.ID).FirstOrDefault();
+                    Log4NetHelper.Debug(LoggerType.WebExceptionLog, old, null);
                     //if (dbContext.Customers.Any(c => c.Tel == customer.Tel && c.ID != customer.ID))
                     //    throw new BusinessException("Tel", "已存在此电话的客户！");
-
                     dbContext.Update<Customer>(customer);
 
                     List<Cooperations> cooperations = dbContext.Cooperations.Where(r => customer.CooperationsIds.Contains(r.ID)).ToList();
@@ -124,6 +134,8 @@ namespace GMS.Crm.BLL
 
                     customer = dbContext.Insert<Customer>(customer);
                 }
+
+                Log4NetHelper.Debug(LoggerType.WebExceptionLog, customer, null);
             }
         }
 

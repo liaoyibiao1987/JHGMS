@@ -52,6 +52,10 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -67,6 +71,10 @@
     <ProjectReference Include="..\GMS.Core.Config\GMS.Core.Config.csproj">
       <Project>{3bf4147e-d01d-4fff-b8e7-fe24959b2d7e}</Project>
       <Name>GMS.Core.Config</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GMS.Core.Log\GMS.Core.Log.csproj">
+      <Project>{8ae51ee2-67db-4f57-98fe-cbb890c9a5a2}</Project>
+      <Name>GMS.Core.Log</Name>
     </ProjectReference>
     <ProjectReference Include="..\GMS.OA.Contract\GMS.OA.Contract.csproj">
       <Project>{F6F83E95-5F65-410C-B49F-7763E2184251}</Project>

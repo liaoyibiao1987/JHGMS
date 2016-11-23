@@ -10,6 +10,7 @@ using System.Linq;
 
 namespace GMS.Crm.Contract
 {
+    [Auditable]
     [Table("Customer")]
     public class Customer : ModelBase
     {

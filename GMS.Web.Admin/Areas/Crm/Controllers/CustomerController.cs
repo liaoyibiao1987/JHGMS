@@ -55,6 +55,7 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
             model.StaffID = model.StaffID == null ? (UserContext.LoginInfo.StaffID.HasValue ? UserContext.LoginInfo.StaffID.Value : -1) : model.StaffID;
             model.Channel = collection["Channel"];
             model.BusinessType = collection["BusinessType"];
+            
             try
             {
                 this.CrmService.SaveCustomer(model);

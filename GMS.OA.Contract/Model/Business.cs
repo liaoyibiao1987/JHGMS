@@ -10,6 +10,7 @@ using System.Text;
 
 namespace GMS.Crm.Contract
 {
+    [Auditable]
     [Table("Business")]
     public class Business : ModelBase
     {
