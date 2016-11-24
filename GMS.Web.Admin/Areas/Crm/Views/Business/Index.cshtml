@@ -562,13 +562,13 @@
                        , {
                            data: 'Customer.CooperationOrNot'
                            , title: "是否合作"
-                           , "defaultContent": "未知"
                            , "width": "20px"
+                           , "defaultContent": "null"
                            , "type": "Boolean"
                            , "render": function (data, type, full, meta) {
                                if (data == true) {
                                    return "是";
-                               } else {
+                               } else if (data == false){
                                    return "否";
                                }
                            }
@@ -602,7 +602,6 @@
                        , {
                            data: "PerPayment"
                            , title: "预计回款"
-                           , "defaultContent": "未知"
                            , "cellType": "td"
                            , "render": function (data, type, full, meta) {
                                if (data != null && data !== undefined && data.length > 0) {
