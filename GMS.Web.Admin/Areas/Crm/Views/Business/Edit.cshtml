@@ -57,7 +57,7 @@
                         number: true
                     },
                     Message: {
-                        required: true,
+                        //required: true,
                         maxlength: 2000
                     }
                 },
@@ -75,7 +75,7 @@
                         number: "请输入正确的数字"
                     },
                     Message: {
-                        required: "请输入拜访信息",
+                        //required: "请输入拜访信息",
                         maxlength: "长度不能超过2000个字"
                     }
                 }
@@ -142,6 +142,12 @@
 @section MainContent{
     <div class="portlet-body form-horizontal form-bordered form-row-stripped">
         <div class="row-fluid">
+            <div class="alert alert-info">
+                <button class="close" data-dismiss="alert"></button>
+                <strong>注意:</strong>
+                若对拜访信息进行编辑,信息为空并保存,则删除该拜访记录,仅更新回款信息.
+            </div>
+
             <div class="control-group">
                 <label class="control-label"><span class="required">*</span>我的客户：</label>
                 <div class="controls">

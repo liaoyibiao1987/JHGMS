@@ -662,12 +662,14 @@ namespace GMS.Crm.BLL
             using (var dbContext = new CRMOAContext())
             {
                 Business business = new Business { CreateTime = entity.CreateTime, StaffID = entity.StaffID, CustomerID = entity.CustomerID, Message = entity.Message, IsSpecial = entity.IsSpecial, PredictPayment = entity.PredictPayment, CurrentPayment = entity.PredictPayment };
-                dbContext.Business.Where(p =>
-                    (p.CreateTime == entity.CreateTime
-                    && p.StaffID == entity.StaffID
-                    && p.CustomerID == entity.CustomerID)).Delete();
                 UpdateOrCreatePayment(entity.CustomerID.Value, business.CreateTime.ToString("yyyyMM"), entity.CurrentPayment, entity.PredictPayment);
-                dbContext.Insert<Business>(business);
+                if (string.IsNullOrEmpty(entity.Message) == false)
+                {
+                    dbContext.Business.Where(p => (p.CreateTime == entity.CreateTime
+                        && p.StaffID == entity.StaffID
+                        && p.CustomerID == entity.CustomerID)).Delete();
+                    dbContext.Insert<Business>(business);
+                }
             }
         }
 
@@ -694,9 +696,18 @@ namespace GMS.Crm.BLL
             bool ret = false;
             using (var dbContext = new CRMOAContext())
             {
-                Business bss = dbContext.Update<Business>(entity);
-                UpdateOrCreatePayment(bss.CustomerID.Value, bss.CreateTime.ToString("yyyyMM"), bss.CurrentPayment, bss.PredictPayment);
-                ret = bss != null;
+                if (string.IsNullOrEmpty(entity.Message) == false)
+                {
+                    Business bss = dbContext.Update<Business>(entity);
+                    UpdateOrCreatePayment(bss.CustomerID.Value, bss.CreateTime.ToString("yyyyMM"), bss.CurrentPayment, bss.PredictPayment);
+                    ret = bss != null;
+                }
+                else
+                {
+                    UpdateOrCreatePayment(entity.CustomerID.Value, entity.CreateTime.ToString("yyyyMM"), entity.CurrentPayment, entity.PredictPayment);
+                    return dbContext.Business.Where(p => (p.ID == entity.ID)).Delete() > 0;
+                }
+
             }
             return ret;
         }
