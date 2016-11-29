@@ -145,7 +145,7 @@
             <div class="alert alert-info">
                 <button class="close" data-dismiss="alert"></button>
                 <strong>注意:</strong>
-                若对拜访信息进行编辑,信息为空并保存,则删除该拜访记录,仅更新回款信息.
+                若对拜访信息进行编辑,信息为空并保存,则删除该拜访记录,同时更新回款信息.
             </div>
 
             <div class="control-group">
@@ -161,7 +161,7 @@
                     @Html.TextBoxFor(m => m.CreateTime, "{0:yyyy-MM-dd}", new { @class = "m-wrap small" })
                     <span class="help-inline">@Html.ValidationMessageFor(m => m.CreateTime)</span>
                     <span class="help-inline">重要：</span>
-                        @Html.CheckBox("IsSpecial")
+                    @Html.CheckBox("IsSpecial")
                 </div>
             </div>
 
@@ -178,9 +178,10 @@
                             <label>本月回款:</label>
                             @Html.TextBoxFor(m => m.CurrentPayment, "{0:###,#.00}", new { style = "width:50%;", @class = "m-wrap small" })
                         </div>*@
-                    <div style="width:48%;display:inline-block">
-                        <label>本月预计回款:</label>
-                        @Html.TextBoxFor(m => m.PredictPayment, "{0:###,#.00}", new { style = "width:50%;", @class = "m-wrap small" })
+                    <div style="width:60%;display:inline-block">
+                        <label style="vertical-align:bottom">本月预计回款:</label>
+                        @Html.TextBoxFor(m => m.PredictPayment, "{0:N2}", new { style = "width:50%;", @class = "m-wrap small" })
+                        <label style="vertical-align:bottom"> 元</label>
                     </div>
                 </div>
             </div>
