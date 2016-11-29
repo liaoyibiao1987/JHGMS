@@ -105,14 +105,6 @@ namespace GMS.Crm.BLL
 
         public void SaveCustomer(Customer customer)
         {
-            if (customer.ID > 0)
-            {
-                using (var dbContext2 = new CRMOAContext())
-                {
-
-                }
-            }
-
             using (var dbContext = new CRMOAContext())
             {
                 if (customer.ID > 0)

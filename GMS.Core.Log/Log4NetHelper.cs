@@ -13,8 +13,10 @@ namespace GMS.Core.Log
         {
             //初始化log4net配置
             var config = CachedConfigContext.Current.ConfigService.GetConfig("log4net");
+            //System.Diagnostics.Debug.WriteLine("log4 peizhi: " + config);
             //重写log4net配置里的连接字符串
             config = config.Replace("{connectionString}", CachedConfigContext.Current.DaoConfig.Log);
+            //System.Diagnostics.Debug.WriteLine("log4 peizhi: " + config);
             var ms = new MemoryStream(Encoding.Default.GetBytes(config));
             log4net.Config.XmlConfigurator.Configure(ms);
         }
