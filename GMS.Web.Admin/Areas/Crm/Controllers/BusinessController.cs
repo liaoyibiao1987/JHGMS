@@ -105,7 +105,7 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
             {
                 int currentstaffid = UserContext.LoginInfo.StaffID.HasValue ? UserContext.LoginInfo.StaffID.Value : -1;
                 var customerList = CrmService.GetCustomerList(GetCurrentUserStaffs(currentstaffid)).ToList();
-                customerList.ForEach(c => c.Name = string.Format("{0}({1})", c.Name, c.Contacter));
+                customerList.ForEach(c => c.Name = string.Format("{0}({1})", c.Name, string.IsNullOrEmpty(c.Contacter) ? c.Tel : c.Contacter));
                 ViewData.Add("CustomerId", new SelectList(customerList, "Id", "Name"));
             }
 
@@ -296,13 +296,21 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
             var request = new CustomerRequest();
             int currentstaffid = UserContext.LoginInfo.StaffID.HasValue ? UserContext.LoginInfo.StaffID.Value : -1;
             request.Customer.StaffID = currentstaffid;
-
             var customerList = this.CrmService.GetCustomerList(GetCurrentUserStaffs(currentstaffid), request).ToList();
 
-            customerList.ForEach(c => c.Name = string.Format("{0}({1})", c.Name, c.Tel));
+            customerList.ForEach(c => c.Name = string.Format("{0}({1})", c.Name, string.IsNullOrEmpty(c.Contacter) ? c.Tel : c.Contacter));
             customid = customerList.Exists(p => p.ID == customid) ? customid : -1;
+            //普通业务员，客户不会太多
+            if (GMS.Web.Admin.Common.AdminUserContext.Current.LoginInfo.BusinessPermissionList.Select(p => p.ToString()).Contains(GMS.Account.Contract.EnumBusinessPermission.CrmManage_Belongs.ToString()) == false)
+            {
 
-            ViewData.Add("CustomerId", new SelectList(customerList, "Id", "Name", customid));
+                ViewData.Add("CustomerId", new SelectList(customerList, "Id", "Name", customid));
+            }
+            else
+            {
+                List<Customer> temp = new List<Customer>() { customerList.SingleOrDefault(p => p.ID == customid) };
+                ViewData.Add("CustomerId", new SelectList(temp, "Id", "Name", customid));
+            }
         }
 
         private string GetCoopString(List<int> ids)
@@ -540,7 +548,7 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
                 {
                     int currentstaffid = UserContext.LoginInfo.StaffID.HasValue ? UserContext.LoginInfo.StaffID.Value : -1;
                     var customerList = CrmService.GetCustomerList(GetCurrentUserStaffs(currentstaffid)).ToList();
-                    customerList.ForEach(c => c.Name = string.Format("{0}({1})", c.Name, c.Contacter));
+                    customerList.ForEach(c => c.Name = string.Format("{0}({1})", c.Name, string.IsNullOrEmpty(c.Contacter) ? c.Tel : c.Contacter));
                     return customerList;
                 });
             }

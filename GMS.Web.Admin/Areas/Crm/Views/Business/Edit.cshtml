@@ -9,9 +9,11 @@
     ViewBag.Title = "添加跟单";
     //Layout = "~/Views/Shared/_Layout.cshtml";
     Layout = "~/Views/Shared/_Layout.Edit.cshtml";
+    var permissions = GMS.Web.Admin.Common.AdminUserContext.Current.LoginInfo.BusinessPermissionList.Select(p => p.ToString());
 }
 @section PageSpecificStyleSheetIncludes{
     <link rel="stylesheet" href="@Url.StaticFile("/Assets/iCheck/all.css")">
+    <link rel="stylesheet" href="@Url.StaticFile("/Assets/select2/select2.min.css")">
     <style>
         .controls label {
             display: inline;
@@ -38,12 +40,16 @@
     <script type="text/javascript" src="@Url.StaticFile("/content/scripts/jquery-ui.combobox.js")"></script>
     <script type="text/javascript" src="@Url.StaticFile("/content/scripts/jquery.powerFloat.js")"></script>
     <script type="text/javascript" src="@Url.StaticFile("/Assets/iCheck/icheck.min.js")"></script>
+    <script type="text/javascript" src="@Url.StaticFile("/Assets/select2/select2.full.min.js")"></script>
 
     <script type="text/javascript">
         $(document).ready(function () {
 
             $("#mainForm").validate({
                 rules: {
+                    CustomerId: {
+                        required: true
+                    },
                     CreateTime: {
                         required: true,
                         dateISO: true
@@ -62,6 +68,9 @@
                     }
                 },
                 messages: {
+                    CustomerId: {
+                        required: "请选择一个公司名称"
+                    },
                     CreateTime: {
                         required: "请输入时间",
                         dateISO: "请输入正确的时间格式"
@@ -106,37 +115,56 @@
                 increaseArea: '20%' // optional
 
             });
-            $("#CustomerId").combobox(
-                 {
-                     select: function (recoder) {
-                         GetPrePayment();
-                     }
-                 });
-            GetPrePayment();
-        });
 
-        function GetPrePayment() {
-            var custID = $("#CustomerId").val();
-            $.ajax({
-                type: "POST",
-                url: "/Crm/Business/GetPayment",
-                data: {
-                    ID: custID,
-                    BDate: $("#CreateTime").datepicker("getDate").format("yyyyMM")
-                },
-                dataType: "json",
-                success: function (data) {
-                    if (data != null && data != undefined && data.Payment != undefined) {
-                        $("#PredictPayment").val(data.Payment.PredictPayment);
-                    }
-                    else {
-                        $("#PredictPayment").val("");
-                    }
+            $("#CustomerId").on("change", function (e) {
+                if (GetPrePayment) {
+                    GetPrePayment();
                 }
             });
+            //$("#CustomerId").combobox(
+            //     {
+            //         select: function (recoder) {
+            //             GetPrePayment();
+            //         }
+            //     });
+            GetPrePayment();
+
+        });
+        function GetPrePayment() {
+            debugger;
+            var custID = $("#CustomerId").val();
+            if (custID != undefined && custID != -1 && custID != null && custID != "") {
+                $.ajax({
+                    type: "POST",
+                    url: "/Crm/Business/GetPayment",
+                    data: {
+                        ID: custID,
+                        BDate: $("#CreateTime").datepicker("getDate").format("yyyyMM")
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        if (data != null && data != undefined && data.Payment != undefined) {
+                            $("#PredictPayment").val(data.Payment.PredictPayment);
+                        }
+                        else {
+                            $("#PredictPayment").val("");
+                        }
+                    }
+                });
+            }
         }
+
+
     </script>
 
+    @if (permissions.Contains(GMS.Account.Contract.EnumBusinessPermission.CrmManage_Belongs.ToString()))
+    {
+        <script type="text/javascript" src="@Url.StaticFile("/Content/Scripts/SelectCustomerId_Manger.js")"></script>
+    }
+    else
+    {
+        <script type="text/javascript" src="@Url.StaticFile("/Content/Scripts/SelectCustomerId_Normal.js")"></script>
+    }
 }
 
 @section MainContent{
@@ -149,9 +177,9 @@
             </div>
 
             <div class="control-group">
-                <label class="control-label"><span class="required">*</span>我的客户：</label>
+                <label class="control-label"><span class="required">*</span>公司名称：</label>
                 <div class="controls">
-                    @Html.DropDownList("CustomerId")
+                    @Html.DropDownList("CustomerId", ViewData["CustomerId"] as SelectList, new { @class = "selects" })
                     <span class="help-inline">@Html.ValidationMessageFor(m => m.CustomerID)</span>
                 </div>
             </div>
@@ -166,7 +194,7 @@
             </div>
 
             <div class="control-group">
-                <label class="control-label"><span class="required">*</span>填写信息：</label>
+                <label class="control-label">填写信息：</label>
                 <div class="controls">
                     @Html.TextAreaFor(m => m.Message, 6, 40, new { @class = "m-wrap input-xlarge", @placeholder = "输入详细信息" })
                     <span class="help-inline">@Html.ValidationMessageFor(m => m.Message)</span>

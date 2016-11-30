@@ -601,7 +601,7 @@
                        }
                        , {
                            data: "PerPayment"
-                           , title: "预计回款"
+                           , title: "预计回款(结束时间当月)"
                            , "cellType": "td"
                            , "render": function (data, type, full, meta) {
                                if (data != null && data !== undefined && data.length > 0) {
@@ -1190,8 +1190,9 @@
                     <option class="toggle-vis" value="15">业务员类型</option>
                     <option class="toggle-vis" value="16">备注</option>
                     <option class="toggle-vis" value="17">是否合作</option>
-                    <option class="toggle-vis" value="18">业务统计</option>
-                    <option class="toggle-vis" value="19">预计回款</option>
+                    <option class="toggle-vis" value="18">合作种类</option>
+                    <option class="toggle-vis" value="19">业务统计</option>
+                    <option class="toggle-vis" value="20">预计回款</option>
                 </select>
             </span>
         </div>
@@ -1230,7 +1231,7 @@
             <th>是否合作</th>
             <th>合作种类</th>
             <th>业务统计<br />(此时间段)</th>
-            <th>预计回款</th>
+            <th>预计回款(结束时间当月)</th>
             <th id="lasthead">
             </th>
         </tr>

@@ -308,7 +308,8 @@ namespace GMS.Crm.BLL
         public PagedList<BusinessVM> GetBusinessList(BusinessPostParameter parm, IEnumerable<int> staffids)
         {
             if (parm == null || parm.startdate == null || parm.enddate == null || parm == null) return null;
-            string perpaymentmonth = parm.enddate.Value.ToString("yyyyMM");
+            //传入的时候多算了一天
+            string perpaymentmonth = parm.enddate.Value.AddDays(-1).ToString("yyyyMM");
 
             FilterLeaders(parm, ref staffids);
             using (var dbContext = new CRMOAContext())
