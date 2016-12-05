@@ -56,11 +56,12 @@
                     },
                     CurrentPayment: {
                         // required: true,
+                        maxlength: 8,
                         number: true
                     },
                     PredictPayment: {
                         //required: true,
-                        number: true
+                        digits: true
                     },
                     Message: {
                         //required: true,
@@ -77,11 +78,12 @@
                     },
                     CurrentPayment: {
                         //required: "请输入本月回款",
+                        maxlength: "最多输入八位数金额",
                         number: "请输入正确的数字"
                     },
                     PredictPayment: {
                         // required: "请输入预计回款",
-                        number: "请输入正确的数字"
+                        digits: "请输入正确的整数"
                     },
                     Message: {
                         //required: "请输入拜访信息",
@@ -208,8 +210,8 @@
                         </div>*@
                     <div style="width:60%;display:inline-block">
                         <label style="vertical-align:bottom">本月预计回款:</label>
+                        <span class="input-group-addon" style="vertical-align:bottom">￥ </span>
                         @Html.TextBoxFor(m => m.PredictPayment, "{0:N2}", new { style = "width:50%;", @class = "m-wrap small" })
-                        <label style="vertical-align:bottom"> 元</label>
                     </div>
                 </div>
             </div>
