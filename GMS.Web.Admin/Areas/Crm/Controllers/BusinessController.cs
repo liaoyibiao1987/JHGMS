@@ -367,11 +367,12 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
                         fristcells.Add(new Cell(15, "备注"));
                         fristcells.Add(new Cell(16, "是否合作"));
                         fristcells.Add(new Cell(17, "合作品种"));
-                        fristcells.Add(new Cell(18, "预计回款"));
+                        fristcells.Add(new Cell(18, "业务统计"));
+                        fristcells.Add(new Cell(19, "预计回款"));
                         for (int i = 0; i < days; i++)
                         {
                             DateTime now = aoData.startdate.Value.AddDays(i);
-                            fristcells.Add(new Cell(19 + i, now.ToString("MM月dd日")));
+                            fristcells.Add(new Cell(20 + i, now.ToString("MM月dd日(重复拜访取最后一次)")));
                         }
                         rows.Add(new Row(1, fristcells));
 
@@ -415,16 +416,25 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
 
                             cells.Add(new Cell(17, GetCoopString(list[rowNumber].Customer.CooperationsIds)));
 
+                            if (list[rowNumber].Business != null && list[rowNumber].Business.Count() > 0)
+                            {
+                                cells.Add(new Cell(18, list[rowNumber].Business.Count()));
+                            }
+                            else
+                            {
+                                cells.Add(new Cell(18, "无"));
+                            }
+
                             string strperpayment = list[rowNumber].PerPayment;
                             if (string.IsNullOrEmpty(strperpayment) == false)
                             {
                                 double dperpay = 0d;
                                 double.TryParse(strperpayment, out dperpay);
-                                cells.Add(new Cell(18, dperpay));
+                                cells.Add(new Cell(19, dperpay));
                             }
                             else
                             {
-                                cells.Add(new Cell(18, strperpayment));
+                                cells.Add(new Cell(19, strperpayment));
                             }
 
 
@@ -433,19 +443,19 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
                                 DateTime now = aoData.startdate.Value.AddDays(i);
                                 if (list[rowNumber].Business != null && list[rowNumber].Business.Count() > 0)
                                 {
-                                    var x = list[rowNumber].Business.FirstOrDefault(p => p.CreateTime == now);
+                                    var x = list[rowNumber].Business.LastOrDefault(p => p.CreateTime == now);
                                     if (x != null)
                                     {
-                                        cells.Add(new Cell(19 + i, StringHelper.XmlStringReplace(x.Message)));
+                                        cells.Add(new Cell(20 + i, StringHelper.XmlStringReplace(x.Message)));
                                     }
                                     else
                                     {
-                                        cells.Add(new Cell(19 + i, ""));
+                                        cells.Add(new Cell(20 + i, ""));
                                     }
                                 }
                                 else
                                 {
-                                    cells.Add(new Cell(19 + i, ""));
+                                    cells.Add(new Cell(20 + i, ""));
                                 }
                             }
                             rows.Add(new Row(rowNumber + 2, cells));
