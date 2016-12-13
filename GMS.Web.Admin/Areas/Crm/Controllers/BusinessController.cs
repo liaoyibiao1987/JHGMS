@@ -372,7 +372,7 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
                         for (int i = 0; i < days; i++)
                         {
                             DateTime now = aoData.startdate.Value.AddDays(i);
-                            fristcells.Add(new Cell(20 + i, now.ToString("MM月dd日(重复拜访取最后一次)")));
+                            fristcells.Add(new Cell(20 + i, now.ToString("MM月dd日")));
                         }
                         rows.Add(new Row(1, fristcells));
 
