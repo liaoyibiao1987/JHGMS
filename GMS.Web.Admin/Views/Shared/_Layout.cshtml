@@ -128,8 +128,7 @@
     <script src="@Url.StaticFile("/assets/js/respond.js")"></script>
     <![endif]-->
     <script type="text/javascript" src="@Url.StaticFile("/assets/uniform/jquery.uniform.min.js")"></script>
-    <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
-    @*<script type="text/javascript" src="@Url.StaticFile("/assets/data-tables/js/jquery.dataTables.js")"></script>*@
+    <script type="text/javascript" src="@Url.StaticFile("/assets/data-tables/js/jquery.dataTables.min.js")"></script>
     <script type="text/javascript" src="@Url.StaticFile("/assets/data-tables/DT_bootstrap.js")"></script>
     @*<script type="text/javascript" src="@Url.StaticFile("/assets/js/jquery.pulsate.min.js")"></script>	*@
     <script type="text/javascript" src="@Url.StaticFile("/assets/js/app.js")"></script>
@@ -143,7 +142,7 @@
             // initiate layout and plugins
             App.init();
             var isChrome = navigator.userAgent.toLowerCase().match(/chrome/) != null;
-            if (isChrome!=true) {
+            if (isChrome != true) {
                 $("#divarlt").show();
             }
         });
