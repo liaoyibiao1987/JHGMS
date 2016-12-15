@@ -134,7 +134,7 @@
                     calendar.fullCalendar('unselect');
                 },
                 titleFormat: "yyyy年-MM月",
-                editable: true,
+                editable: false,
                 dayNamesShort: ['星期天', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
                 dayClick: function (date, allDay, jsEvent, view) {
                     var t = "输入记录信息";
@@ -187,7 +187,7 @@
                         cancelDefault: true
                     });
                 },
-                eventDrop: function (event, dayDelta, minuteDelta, allDay, revertFunc) {
+                @*eventDrop: function (event, dayDelta, minuteDelta, allDay, revertFunc) {
                     //var todate = event.start.dateAdd("d", dayDelta);
                     $.ajax({
                         type: "POST",
@@ -207,7 +207,7 @@
                         success: function () {
                         }
                     });
-                },
+                },*@
                 events: function (start, end, callback) {
                     $.ajax({
                         type: "POST",

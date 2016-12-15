@@ -691,6 +691,10 @@ namespace GMS.Crm.BLL
             {
                 if (string.IsNullOrEmpty(entity.Message) == false)
                 {
+                    dbContext.Business.Where(p => (p.CreateTime == entity.CreateTime
+                        && p.StaffID == entity.StaffID
+                        && p.CustomerID == entity.CustomerID && p.ID != entity.ID)).Delete();
+
                     Business bss = dbContext.Update<Business>(entity);
                     UpdateOrCreatePayment(bss.CustomerID.Value, bss.CreateTime.ToString("yyyyMM"), bss.CurrentPayment, bss.PredictPayment);
                     ret = bss != null;
