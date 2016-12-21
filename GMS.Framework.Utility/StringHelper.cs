@@ -287,6 +287,7 @@ namespace GMS.Framework.Utility
         {
             if (string.IsNullOrEmpty(str) == false)
             {
+                str = ReplaceInvisibleString(str);
                 str = str.Replace("&", "&amp;");
                 str = str.Replace("<", "&lt;");
                 str = str.Replace(">", "&gt;");
@@ -294,6 +295,70 @@ namespace GMS.Framework.Utility
                 str = str.Replace("\"", "&quot;");
             }
             return str;
+        }
+
+        /// <summary>
+        /// 过滤特殊字符和不可见字符
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static string ReplaceInvisibleString(string str)
+        {
+            //string s=you make me smile ᶤ ᶫᵒᵛᵉᵧₒᵤ♥/";  
+            //s = Regex.Replace(s, @"[^/x21-/x7E]", " "); //替换所有不可见字符为空格
+            try
+            {
+                str = System.Text.RegularExpressions.Regex.Replace(str, @"[\x01-\x1f|\x22|\x26|\x27|\x2f|\x3c|\x3e|\x7b-\x7f]", "");
+            }
+            catch (Exception es)
+            {
+                
+            }
+            return str;
+        }
+
+
+        /// <summary>
+        ///是否含有XML特殊字符和不可见字符
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static bool isLegalNumber(string str)
+        {
+            char[] charStr = str.ToLower().ToCharArray();
+            for (int i = 0; i < charStr.Length; i++)
+            {
+                int num = Convert.ToInt32(charStr[i]);
+                if (!(IsChineseLetter(num) || (num >= 48 && num <= 57) || (num >= 97 && num <= 123) || (num >= 65 && num <= 90) || num == 45))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+
+        /// <summary>
+        /// 判断字符的Unicode值是否是汉字
+        /// </summary>
+        /// <param name="code">字符的Unicode</param>
+        /// <returns></returns>
+        protected static bool IsChineseLetter(int code)
+        {
+            int chfrom = Convert.ToInt32("4e00", 16);    //范围（0x4e00～0x9fff）转换成int（chfrom～chend）
+            int chend = Convert.ToInt32("9fff", 16);
+
+            if (code >= chfrom && code <= chend)
+            {
+                return true;     //当code在中文范围内返回true
+
+            }
+            else
+            {
+                return false;    //当code不在中文范围内返回false
+            }
+
+            return false;
         }
         /// <summary>
         /// 还原xml特殊字符

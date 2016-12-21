@@ -385,7 +385,7 @@ namespace GMS.Web.Admin.Areas.Crm.Controllers
                             cells.Add(new Cell(2, GetBranch(branch)));
                             cells.Add(new Cell(3, GetProvinceName(cityid)));
                             cells.Add(new Cell(4, GetCityName(cityid)));
-                            cells.Add(new Cell(5, string.IsNullOrEmpty(list[rowNumber].Customer.Name) ? "" : list[rowNumber].Customer.Name));
+                            cells.Add(new Cell(5, string.IsNullOrEmpty(list[rowNumber].Customer.Name) ? "" : StringHelper.XmlStringReplace(list[rowNumber].Customer.Name)));
                             cells.Add(new Cell(6, GetCategory(list[rowNumber].Customer.Category)));
                             cells.Add(new Cell(7, StringHelper.XmlStringReplace((list[rowNumber].Customer.Contacter))));
                             cells.Add(new Cell(8, StringHelper.XmlStringReplace(list[rowNumber].Customer.Tel)));
