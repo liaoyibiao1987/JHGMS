@@ -308,7 +308,7 @@ namespace GMS.Framework.Utility
             //s = Regex.Replace(s, @"[^/x21-/x7E]", " "); //替换所有不可见字符为空格
             try
             {
-                str = System.Text.RegularExpressions.Regex.Replace(str, @"[\x01-\x1f|\x22|\x26|\x27|\x2f|\x3c|\x3e|\x7b-\x7f]", "");
+                str = System.Text.RegularExpressions.Regex.Replace(str, @"[\x01-\x1f|\x22|\x7b-\x7f]", "");
             }
             catch (Exception es)
             {
