@@ -270,7 +270,7 @@ namespace GMS.Crm.BLL
                 GetFilter(parm, ref fristquery);
 
                 var query = (
-                            from a in fristquery.AsQueryable<Customer>()
+                            from a in fristquery
                             join b in fristbusiness on new { Cus = a.ID } equals new { Cus = b.CustomerID == null ? 0 : b.CustomerID.Value } into t
                             join d in dbContext.Staffs on (a.StaffID) equals d.ID into y
                             join f in dbContext.Payments on a.ID equals f.CustomerID into zz
@@ -284,7 +284,7 @@ namespace GMS.Crm.BLL
                                 PerPayment = (zz.FirstOrDefault(p => p.Durring == perpaymentmonth) == null && zz.FirstOrDefault(p => p.Durring == perpaymentmonth).PredictPayment.HasValue == true) ? "" : zz.FirstOrDefault(p => p.Durring == perpaymentmonth).PredictPayment.ToString()
                             });
                 //这句必须加，不加不知道什么鬼了 必须用Customer.Name排序
-                query = query.OrderByDescending(p => p.Customer.Name);
+                //query = query.OrderByDescending(p => p.Customer.Name);
                 if (parm.HasBusiness.HasValue == true)
                 {
                     if (parm.HasBusiness.Value == true)

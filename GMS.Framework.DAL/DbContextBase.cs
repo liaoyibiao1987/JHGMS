@@ -19,7 +19,7 @@ namespace GMS.Framework.DAL
         {
             //var objectContext = (this as IObjectContextAdapter).ObjectContext;
             //objectContext.CommandTimeout = 500;
-
+            this.Database.CommandTimeout = 600;
             this.Database.Connection.ConnectionString = connectionString;
             this.Configuration.LazyLoadingEnabled = false;
             this.Configuration.ProxyCreationEnabled = false;
