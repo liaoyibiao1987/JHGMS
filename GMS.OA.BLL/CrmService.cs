@@ -740,6 +740,10 @@ namespace GMS.Crm.BLL
                 try
                 {
                     var query = dbContext.Customers.Where(p => customersID.Contains(p.ID)).Update(c => new Customer { StaffID = newstaffID });
+                    string operaterName = WCFContext.Current.Operater.Name;
+                    var tempEntity = new { OlderStaff = customersID, NewStaff = newstaffID };
+                    string json = Newtonsoft.Json.JsonConvert.SerializeObject(tempEntity);
+                    dbContext.AuditLogger.WriteLog(0, operaterName, "ModifyStaffs", "Staffs", "ModifyStaffs", json);
                     dbContext.SaveChanges();
                     ret = true;
                 }

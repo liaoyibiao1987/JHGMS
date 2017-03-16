@@ -44,5 +44,21 @@ namespace GMS.Core.Log
             this.SaveChanges();
             this.Dispose();
         }
+
+        public void WriteLog(int modelId, string userName, string moduleName, string tableName, string eventType, string logmessage)
+        {
+            this.AuditLogs.Add(new AuditLog()
+            {
+                ModelId = modelId,
+                UserName = userName,
+                ModuleName = moduleName,
+                TableName = tableName,
+                EventType = eventType,
+                NewValues = logmessage
+            });
+
+            this.SaveChanges();
+            this.Dispose();
+        }
     }
 }
