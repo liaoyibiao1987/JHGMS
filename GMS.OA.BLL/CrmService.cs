@@ -258,7 +258,7 @@ namespace GMS.Crm.BLL
         public List<BusinessVM> GetBusinessDownload(BusinessPostParameter parm, IEnumerable<int> staffids)
         {
             if (parm == null || parm.startdate == null || parm.enddate == null || parm == null) return null;
-            string perpaymentmonth = parm.enddate.Value.ToString("yyyyMM");
+            string perpaymentmonth = parm.enddate.Value.AddDays(-1).ToString("yyyyMM");
 
             FilterLeaders(parm, ref staffids);
             using (var dbContext = new CRMOAContext())
