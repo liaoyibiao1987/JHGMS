@@ -263,9 +263,8 @@ namespace GMS.Crm.BLL
             FilterLeaders(parm, ref staffids);
             using (var dbContext = new CRMOAContext())
             {
-                var fristquery = dbContext.Customers.AsQueryable();
-                var fristbusiness = dbContext.Business.Where(p => (p.CreateTime >= parm.startdate.Value && p.CreateTime < parm.enddate.Value && staffids.Contains(p.StaffID == null ? -1 :
-                    p.StaffID.Value))).OrderBy(aa => aa.CreateTime);
+                var fristquery = dbContext.Customers.Where(p => staffids.Contains(p.StaffID == null ? -1 : p.StaffID.Value));
+                var fristbusiness = dbContext.Business.Where(p => (p.CreateTime >= parm.startdate.Value && p.CreateTime < parm.enddate.Value)).OrderBy(aa => aa.CreateTime);
 
                 GetFilter(parm, ref fristquery);
 
@@ -273,14 +272,16 @@ namespace GMS.Crm.BLL
                             from a in fristquery
                             join b in fristbusiness on new { Cus = a.ID } equals new { Cus = b.CustomerID == null ? 0 : b.CustomerID.Value } into t
                             join d in dbContext.Staffs on (a.StaffID) equals d.ID into y
+                            from s2 in y.DefaultIfEmpty()
+                            //join d in dbContext.Staffs on (a.StaffID) equals d.ID into y
                             join f in dbContext.Payments on a.ID equals f.CustomerID into zz
-                            where staffids.Contains(a.StaffID == null ? -1 : a.StaffID.Value)
+                            //where staffids.Contains(a.StaffID == null ? -1 : a.StaffID.Value)
                             orderby a.ID descending
                             select new BusinessVM
                             {
                                 Customer = a,
                                 Business = t,
-                                Staff = y.FirstOrDefault(),
+                                Staff = s2,
                                 PerPayment = (zz.FirstOrDefault(p => p.Durring == perpaymentmonth) == null && zz.FirstOrDefault(p => p.Durring == perpaymentmonth).PredictPayment.HasValue == true) ? "" : zz.FirstOrDefault(p => p.Durring == perpaymentmonth).PredictPayment.ToString()
                             });
                 //这句必须加，不加不知道什么鬼了 必须用Customer.Name排序
@@ -314,9 +315,8 @@ namespace GMS.Crm.BLL
             FilterLeaders(parm, ref staffids);
             using (var dbContext = new CRMOAContext())
             {
-                var fristquery = dbContext.Customers.AsQueryable();
-                var fristbusiness = dbContext.Business.Where(p => (p.CreateTime >= parm.startdate.Value && p.CreateTime < parm.enddate.Value && staffids.Contains(p.StaffID == null ? -1 :
-                    p.StaffID.Value))).OrderBy(aa => aa.CreateTime);
+                var fristquery = dbContext.Customers.Where(p => staffids.Contains(p.StaffID == null ? -1 : p.StaffID.Value));
+                var fristbusiness = dbContext.Business.Where(p => (p.CreateTime >= parm.startdate.Value && p.CreateTime < parm.enddate.Value)).OrderBy(aa => aa.CreateTime);
                 GetFilter(parm, ref fristquery);
 
                 var query = (//from a in dbContext.Customers.Include("Cooperations").Include("Staff").Include("City")
@@ -325,11 +325,13 @@ namespace GMS.Crm.BLL
                             join c in dbContext.Provinces on (a.CityId == null ? 0 : a.City.ProvinceID) equals c.ID into x
 
 
-
                             join d in dbContext.Staffs on (a.StaffID) equals d.ID into y
+                            from s2 in y.DefaultIfEmpty()
+
+                            //join d in dbContext.Staffs on (a.StaffID) equals d.ID into y
                             join e in dbContext.Citys on (a.CityId) equals e.ID into z
                             join f in dbContext.Payments on a.ID equals f.CustomerID into zz
-                            where staffids.Contains(a.StaffID == null ? -1 : a.StaffID.Value)
+                            //where staffids.Contains(a.StaffID == null ? -1 : a.StaffID.Value)
                             orderby a.ID descending
                             select new BusinessVM
                             {
@@ -337,7 +339,7 @@ namespace GMS.Crm.BLL
                                 Business = t,
                                 Provienc = x.FirstOrDefault() == null ? "" : x.FirstOrDefault().Name,
                                 CityName = z.FirstOrDefault() == null ? "" : z.FirstOrDefault().Name,
-                                Staff = y.FirstOrDefault(),
+                                Staff = s2,
                                 PerPayment = (zz.FirstOrDefault(p => p.Durring == perpaymentmonth) == null && zz.FirstOrDefault(p => p.Durring == perpaymentmonth).PredictPayment.HasValue == true) ? "" : zz.FirstOrDefault(p => p.Durring == perpaymentmonth).PredictPayment.ToString()
                             });
 
