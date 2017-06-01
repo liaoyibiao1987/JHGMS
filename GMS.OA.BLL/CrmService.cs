@@ -269,11 +269,16 @@ namespace GMS.Crm.BLL
                 GetFilter(parm, ref fristquery);
 
                 var query = (
-                            from a in fristquery
+                            from a in fristquery.AsQueryable<Customer>()
                             join b in fristbusiness on new { Cus = a.ID } equals new { Cus = b.CustomerID == null ? 0 : b.CustomerID.Value } into t
+                            //join c in dbContext.Provinces on (a.CityId == null ? 0 : a.City.ProvinceID) equals c.ID into x
+
+
                             join d in dbContext.Staffs on (a.StaffID) equals d.ID into y
                             from s2 in y.DefaultIfEmpty()
+
                             //join d in dbContext.Staffs on (a.StaffID) equals d.ID into y
+                            //join e in dbContext.Citys on (a.CityId) equals e.ID into z
                             join f in dbContext.Payments on a.ID equals f.CustomerID into zz
                             //where staffids.Contains(a.StaffID == null ? -1 : a.StaffID.Value)
                             orderby a.ID descending
@@ -286,6 +291,7 @@ namespace GMS.Crm.BLL
                             });
                 //这句必须加，不加不知道什么鬼了 必须用Customer.Name排序
                 //query = query.OrderByDescending(p => p.Customer.Name);
+                query = query.OrderBy(p => p.Customer.ID);
                 if (parm.HasBusiness.HasValue == true)
                 {
                     if (parm.HasBusiness.Value == true)
